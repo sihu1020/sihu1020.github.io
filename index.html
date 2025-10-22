@@ -1,1 +1,669 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>동신과학고 뉴스룸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #1c89f4, #3fc0ff);
+      --accent: #0f4c81;
+      --accent-light: #d7ecff;
+      --card-bg: #ffffff;
+      --text: #1c1c1c;
+      --muted: #5f7185;
+      --shadow: 0 20px 40px rgba(17, 63, 119, 0.15);
+      font-size: 16px;
+    }
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Gmarket Sans', 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
+      color: var(--text);
+      background: #f7fbff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--bg-gradient);
+      color: #fff;
+      padding: 1.5rem 4vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: rgba(15, 76, 129, 0.1) 0px 10px 30px;
+    }
+
+    header h1 {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      margin: 0;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: none;
+      border-radius: 999px;
+      padding: 0.6rem 1.4rem;
+      transition: all 0.2s ease;
+    }
+
+    .login-btn {
+      background: rgba(255, 255, 255, 0.18);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(6px);
+    }
+
+    .login-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    main {
+      flex: 1;
+      padding: 4rem 4vw 6rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero {
+      background: var(--card-bg);
+      border-radius: 24px;
+      padding: clamp(2rem, 6vw, 3.5rem);
+      margin-bottom: 2.5rem;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .hero-text h2 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      margin: 0 0 1rem;
+      color: var(--accent);
+    }
+
+    .hero-text p {
+      margin: 0 0 1.5rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .news-section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 1.5rem 0 1rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .news-section-title h3 {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      margin: 0;
+      color: var(--accent);
+    }
+
+    .news-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .news-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 28px 60px rgba(17, 63, 119, 0.18);
+    }
+
+    .news-date {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    .news-title {
+      font-size: 1.4rem;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .news-summary {
+      margin: 0;
+      color: var(--accent);
+      font-weight: 600;
+      line-height: 1.6;
+    }
+
+    .news-content {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+      white-space: pre-line;
+    }
+
+    .news-link {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+      margin-top: 0.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+
+    .admin-controls {
+      display: none;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-top: 2.5rem;
+      box-shadow: var(--shadow);
+    }
+
+    .admin-controls.visible {
+      display: block;
+    }
+
+    form {
+      display: grid;
+      gap: 1rem;
+    }
+
+    label {
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    input, textarea {
+      font: inherit;
+      padding: 0.7rem 0.9rem;
+      border-radius: 12px;
+      border: 1px solid #d4e4f7;
+      background: #f8fbff;
+      transition: border-color 0.2s ease;
+      width: 100%;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(31, 120, 220, 0.15);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .submit-btn {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .submit-btn:hover {
+      background: #0d3d6a;
+    }
+
+    .secondary-btn {
+      background: #e2efff;
+      color: var(--accent);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .login-status {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      color: #fff;
+      font-size: 0.95rem;
+    }
+
+    .badge {
+      background: rgba(255, 255, 255, 0.22);
+      border-radius: 999px;
+      padding: 0.35rem 0.8rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.04rem;
+    }
+
+    /* Login Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(15, 28, 42, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      padding: 1.5rem;
+    }
+
+    .modal.open {
+      display: grid;
+    }
+
+    .modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 400px;
+      width: min(100%, 400px);
+      box-shadow: 0 26px 50px rgba(18, 47, 80, 0.25);
+      display: grid;
+      gap: 1rem;
+    }
+
+    .modal-content h4 {
+      margin: 0;
+      color: var(--accent);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.75rem;
+    }
+
+    .error-message {
+      color: #d84f4f;
+      font-size: 0.9rem;
+      display: none;
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+
+    @media (max-width: 640px) {
+      header {
+        position: static;
+      }
+
+      main {
+        padding: 2.5rem 1.2rem 4rem;
+      }
+
+      .hero {
+        padding: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>동신과학고 뉴스룸</h1>
+    <div class="header-actions">
+      <div class="login-status" id="login-status">
+        <span class="badge">게스트</span>
+        <span>읽기 전용 모드</span>
+      </div>
+      <button class="login-btn" id="login-toggle" type="button">관리자 로그인</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="hero-text">
+        <h2>동신과학고의 모든 소식, 여기에서</h2>
+        <p>학교 행사부터 학생 성취까지! 동신과학고등학교 구성원이라면 꼭 알아야 할 이야기를 한눈에 확인하세요. 관리자 로그인을 통해 새로운 소식을 추가하고 업데이트할 수 있습니다.</p>
+        <a class="news-link" href="#news" aria-label="최신 소식 보러가기">최신 소식 보러가기 →</a>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <svg viewBox="0 0 400 280" width="100%" height="100%">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#1c89f4" />
+              <stop offset="100%" stop-color="#3fc0ff" />
+            </linearGradient>
+          </defs>
+          <rect x="20" y="20" width="360" height="240" rx="26" fill="url(#grad)" opacity="0.15" />
+          <rect x="60" y="40" width="300" height="200" rx="24" fill="#fff" opacity="0.95" />
+          <circle cx="120" cy="120" r="34" fill="#1c89f4" opacity="0.22" />
+          <rect x="110" y="160" width="180" height="18" rx="9" fill="#0f4c81" opacity="0.3" />
+          <rect x="110" y="190" width="150" height="18" rx="9" fill="#0f4c81" opacity="0.15" />
+          <rect x="110" y="220" width="120" height="18" rx="9" fill="#0f4c81" opacity="0.1" />
+          <circle cx="260" cy="110" r="22" fill="#1c89f4" opacity="0.5" />
+        </svg>
+      </div>
+    </section>
+
+    <div class="news-section-title" id="news">
+      <h3>최신 소식</h3>
+      <span id="news-count">총 0건의 업데이트</span>
+    </div>
+
+    <section class="news-list" id="news-list" aria-live="polite"></section>
+
+    <section class="admin-controls" id="admin-controls" aria-live="polite">
+      <h3>관리자 기사 관리</h3>
+      <form id="news-form">
+        <label for="news-title">제목</label>
+        <input id="news-title" name="title" type="text" placeholder="예) 2024 과학 창의력 대회 수상" required />
+
+        <label for="news-date">날짜</label>
+        <input id="news-date" name="date" type="date" required />
+
+        <label for="news-summary">요약</label>
+        <textarea id="news-summary" name="summary" placeholder="핵심 내용을 간단히 작성해 주세요." required></textarea>
+
+        <label for="news-content">본문</label>
+        <textarea id="news-content" name="content" placeholder="자세한 기사 내용을 입력해 주세요." required></textarea>
+
+        <label for="news-link">관련 링크 (선택)</label>
+        <input id="news-link" name="link" type="url" placeholder="https://" />
+
+        <div class="form-actions">
+          <button class="secondary-btn" id="cancel-edit" type="button">취소</button>
+          <button class="submit-btn" type="submit" id="submit-btn">기사 등록</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div class="modal" id="login-modal" role="dialog" aria-modal="true" aria-labelledby="login-modal-title">
+    <div class="modal-content">
+      <h4 id="login-modal-title">관리자 로그인</h4>
+      <p>관리자만 기사 수정과 등록이 가능합니다.</p>
+      <form id="login-form">
+        <label for="admin-id">아이디</label>
+        <input id="admin-id" name="admin-id" type="text" autocomplete="username" required />
+        <label for="admin-password">비밀번호</label>
+        <input id="admin-password" name="admin-password" type="password" autocomplete="current-password" required />
+        <p class="error-message" id="login-error">아이디 혹은 비밀번호가 올바르지 않습니다.</p>
+        <div class="modal-actions">
+          <button class="secondary-btn" type="button" id="close-modal">닫기</button>
+          <button class="submit-btn" type="submit">로그인</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    © <span id="year"></span> 동신과학고등학교. 모든 권리 보유.
+  </footer>
+
+  <script>
+    const defaultNews = [
+      {
+        title: '전국 과학탐구 올림피아드 대상 수상',
+        date: '2024-05-12',
+        summary: '동신과학고 대표팀이 전국 과학탐구 올림피아드에서 대상을 수상했습니다.',
+        content:
+          '물리, 화학, 생물 융합 프로젝트를 기반으로 한 연구 결과가 높은 평가를 받았습니다. 지도 교사와 함께한 꾸준한 준비가 결실을 맺었습니다.',
+        link: ''
+      },
+      {
+        title: '2024 진로박람회 성황리 개최',
+        date: '2024-04-28',
+        summary: '70여 개 대학과 기업이 참여한 진로박람회가 동신과학고 체육관에서 열렸습니다.',
+        content:
+          '학생들은 다양한 직업 체험 부스를 둘러보며 미래 진로에 대한 폭넓은 시각을 갖게 되었습니다. 학부모 대상 특강도 함께 진행되었습니다.',
+        link: 'https://www.dongshin.hs.kr/'
+      },
+      {
+        title: '기숙사 리모델링 완료 안내',
+        date: '2024-03-02',
+        summary: '1학기 개학에 맞춰 기숙사 리모델링이 완료되었습니다.',
+        content:
+          '친환경 자재와 스마트 조명 시스템이 도입되어 학생들의 생활 만족도가 크게 향상될 전망입니다. 사용 수칙을 반드시 확인해 주세요.',
+        link: ''
+      }
+    ];
+
+    const STORAGE_KEY = 'dongsin-news-items';
+    const ADMIN_ID = 'admin';
+    const ADMIN_PASSWORD = 'dongsin2024!';
+
+    let newsItems = [];
+    let isAdmin = false;
+    let editingIndex = null;
+
+    const newsList = document.getElementById('news-list');
+    const newsCount = document.getElementById('news-count');
+    const loginToggle = document.getElementById('login-toggle');
+    const loginModal = document.getElementById('login-modal');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const loginStatus = document.getElementById('login-status');
+    const adminControls = document.getElementById('admin-controls');
+    const closeModalBtn = document.getElementById('close-modal');
+    const cancelEditBtn = document.getElementById('cancel-edit');
+    const newsForm = document.getElementById('news-form');
+    const submitBtn = document.getElementById('submit-btn');
+
+    const yearSpan = document.getElementById('year');
+    yearSpan.textContent = new Date().getFullYear();
+
+    function loadNews() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            newsItems = parsed;
+            return;
+          }
+        } catch (e) {
+          console.warn('로컬 저장소 읽기 오류:', e);
+        }
+      }
+      newsItems = defaultNews;
+      saveNews();
+    }
+
+    function saveNews() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(newsItems));
+    }
+
+    function formatDate(dateString) {
+      const date = new Date(dateString + 'T09:00:00');
+      return date.toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    }
+
+    function renderNews() {
+      newsList.innerHTML = '';
+      if (!newsItems.length) {
+        newsList.innerHTML = '<p>아직 등록된 소식이 없습니다. 관리자 로그인을 통해 첫 소식을 등록해 주세요.</p>';
+        newsCount.textContent = '등록된 소식이 없습니다';
+        return;
+      }
+
+      newsItems
+        .slice()
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .forEach((item) => {
+          const originalIndex = newsItems.indexOf(item);
+          const card = document.createElement('article');
+          card.className = 'news-card';
+          card.innerHTML = `
+            <span class="news-date">${formatDate(item.date)}</span>
+            <h4 class="news-title">${item.title}</h4>
+            <p class="news-summary"><strong>${item.summary}</strong></p>
+            <p class="news-content">${item.content}</p>
+            ${
+              item.link
+                ? `<a class="news-link" href="${item.link}" target="_blank" rel="noopener">자세히 보기 →</a>`
+                : ''
+            }
+          `;
+
+          if (isAdmin) {
+            const adminButtons = document.createElement('div');
+            adminButtons.className = 'form-actions';
+            adminButtons.innerHTML = `
+              <button class="secondary-btn" data-action="edit" data-index="${originalIndex}" type="button">수정</button>
+              <button class="submit-btn" data-action="delete" data-index="${originalIndex}" type="button">삭제</button>
+            `;
+            card.appendChild(adminButtons);
+          }
+
+          newsList.appendChild(card);
+        });
+
+      newsCount.textContent = `총 ${newsItems.length}건의 업데이트`;
+    }
+
+    function toggleAdminControls(state) {
+      isAdmin = state;
+      if (isAdmin) {
+        adminControls.classList.add('visible');
+        loginToggle.textContent = '로그아웃';
+        loginStatus.innerHTML = '<span class="badge">관리자</span><span>편집 모드 활성화</span>';
+      } else {
+        adminControls.classList.remove('visible');
+        loginToggle.textContent = '관리자 로그인';
+        loginStatus.innerHTML = '<span class="badge">게스트</span><span>읽기 전용 모드</span>';
+        editingIndex = null;
+        newsForm.reset();
+        submitBtn.textContent = '기사 등록';
+      }
+      renderNews();
+    }
+
+    loginToggle.addEventListener('click', () => {
+      if (isAdmin) {
+        if (confirm('로그아웃 하시겠습니까?')) {
+          toggleAdminControls(false);
+        }
+      } else {
+        loginModal.classList.add('open');
+        loginError.classList.remove('visible');
+        document.getElementById('admin-id').focus();
+      }
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      loginModal.classList.remove('open');
+      loginForm.reset();
+    });
+
+    loginModal.addEventListener('click', (event) => {
+      if (event.target === loginModal) {
+        loginModal.classList.remove('open');
+        loginForm.reset();
+      }
+    });
+
+    loginForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const id = event.target['admin-id'].value.trim();
+      const password = event.target['admin-password'].value;
+      if (id === ADMIN_ID && password === ADMIN_PASSWORD) {
+        toggleAdminControls(true);
+        loginModal.classList.remove('open');
+        loginForm.reset();
+        loginError.classList.remove('visible');
+      } else {
+        loginError.classList.add('visible');
+      }
+    });
+
+    cancelEditBtn.addEventListener('click', () => {
+      editingIndex = null;
+      newsForm.reset();
+      submitBtn.textContent = '기사 등록';
+    });
+
+    newsForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const formData = new FormData(newsForm);
+      const newsData = {
+        title: formData.get('title').trim(),
+        date: formData.get('date'),
+        summary: formData.get('summary').trim(),
+        content: formData.get('content').trim(),
+        link: (formData.get('link') || '').trim()
+      };
+      if (editingIndex !== null) {
+        newsItems[editingIndex] = newsData;
+        editingIndex = null;
+        submitBtn.textContent = '기사 등록';
+      } else {
+        newsItems.push(newsData);
+      }
+      saveNews();
+      newsForm.reset();
+      renderNews();
+      alert('소식이 저장되었습니다.');
+    });
+
+    newsList.addEventListener('click', (event) => {
+      const button = event.target.closest('button');
+      if (!button) return;
+      const index = Number(button.dataset.index);
+      if (button.dataset.action === 'delete') {
+        if (confirm('이 기사를 삭제하시겠습니까?')) {
+          newsItems.splice(index, 1);
+          saveNews();
+          renderNews();
+        }
+      } else if (button.dataset.action === 'edit') {
+        const item = newsItems[index];
+        document.getElementById('news-title').value = item.title;
+        document.getElementById('news-date').value = item.date;
+        document.getElementById('news-summary').value = item.summary;
+        document.getElementById('news-content').value = item.content;
+        document.getElementById('news-link').value = item.link || '';
+        editingIndex = index;
+        submitBtn.textContent = '기사 수정';
+        window.scrollTo({ top: adminControls.offsetTop - 80, behavior: 'smooth' });
+      }
+    });
+
+    loadNews();
+    renderNews();
+  </script>
+</body>
+</html>
