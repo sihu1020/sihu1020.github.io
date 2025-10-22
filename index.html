@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>나만의 라이프 비서</title>
+    <title>동신과학고 12기 뉴스룸</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,17 +13,17 @@
     <style>
       :root {
         color-scheme: dark;
-        --bg: #0b1120;
-        --bg-soft: rgba(15, 23, 42, 0.72);
+        --bg: #020617;
+        --bg-soft: rgba(15, 23, 42, 0.7);
         --surface: rgba(30, 41, 59, 0.78);
-        --surface-solid: #1e293b;
+        --surface-solid: #0f172a;
         --accent: #38bdf8;
         --accent-strong: #0ea5e9;
-        --accent-soft: rgba(56, 189, 248, 0.15);
+        --accent-soft: rgba(56, 189, 248, 0.16);
         --text: #f8fafc;
         --muted: #94a3b8;
-        --border: rgba(148, 163, 184, 0.28);
-        --shadow: 0 20px 45px rgba(8, 47, 73, 0.45);
+        --border: rgba(148, 163, 184, 0.24);
+        --shadow: 0 32px 55px rgba(8, 47, 73, 0.45);
       }
 
       * {
@@ -35,8 +35,8 @@
         margin: 0;
         font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
-        background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.25), transparent 45%),
-          radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.25), transparent 55%),
+        background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.3), transparent 42%),
+          radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.28), transparent 50%),
           var(--bg);
         color: var(--text);
         min-height: 100vh;
@@ -45,17 +45,17 @@
       main {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 2.5rem 1.5rem 3.5rem;
+        padding: 2.75rem 1.75rem 4rem;
         display: grid;
-        gap: 1.75rem;
+        gap: 2rem;
       }
 
       header {
         display: grid;
-        gap: 1.5rem;
-        padding: 1.75rem;
-        border-radius: 28px;
-        background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(56, 189, 248, 0.08));
+        gap: 1.75rem;
+        padding: 2.2rem;
+        border-radius: 32px;
+        background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(14, 165, 233, 0.12));
         border: 1px solid rgba(125, 211, 252, 0.25);
         box-shadow: var(--shadow);
         position: relative;
@@ -66,958 +66,698 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 20% 30%, rgba(14, 165, 233, 0.4), transparent 55%);
-        opacity: 0.6;
+        background: radial-gradient(circle at 12% 25%, rgba(14, 165, 233, 0.42), transparent 55%);
+        opacity: 0.65;
         pointer-events: none;
       }
 
-      .header-top {
+      .branding {
         display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 1rem;
+        gap: 1.25rem;
         align-items: center;
         position: relative;
         z-index: 1;
       }
 
-      .welcome {
-        display: grid;
-        gap: 0.45rem;
+      .branding img {
+        width: clamp(82px, 18vw, 108px);
+        aspect-ratio: 1;
+        object-fit: contain;
+        border-radius: 50%;
+        border: 2px solid rgba(148, 163, 184, 0.25);
+        padding: 0.65rem;
+        background: rgba(15, 23, 42, 0.35);
+        backdrop-filter: blur(6px);
       }
 
-      .welcome h1 {
+      .branding h1 {
         margin: 0;
-        font-size: clamp(1.95rem, 3vw, 2.4rem);
-        font-weight: 700;
+        font-size: clamp(2.1rem, 4vw, 2.8rem);
+        letter-spacing: 0.02em;
       }
 
-      .welcome p {
+      .tagline {
         margin: 0;
-        color: rgba(226, 232, 240, 0.82);
+        color: rgba(226, 232, 240, 0.85);
         font-weight: 500;
-        letter-spacing: 0.01em;
       }
 
-      .clock {
-        display: flex;
-        gap: 0.75rem;
-        align-items: center;
-        padding: 0.75rem 1.1rem;
-        background: rgba(15, 23, 42, 0.65);
-        border-radius: 16px;
-        border: 1px solid rgba(148, 163, 184, 0.25);
-        backdrop-filter: blur(8px);
-      }
-
-      .clock strong {
-        font-size: 1.4rem;
-        letter-spacing: 0.08em;
-      }
-
-      .daily-focus {
-        position: relative;
-        z-index: 1;
+      .grid-two {
         display: grid;
-        gap: 1rem;
-        padding: 1.2rem;
-        border-radius: 20px;
-        background: rgba(15, 23, 42, 0.65);
-        border: 1px solid rgba(226, 232, 240, 0.08);
-        backdrop-filter: blur(10px);
+        gap: 1.6rem;
       }
 
-      .daily-focus h2 {
-        margin: 0;
-        font-size: 1.2rem;
+      @media (min-width: 900px) {
+        .grid-two {
+          grid-template-columns: 1.35fr 1fr;
+        }
       }
 
-      .focus-grid {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      }
-
-      .focus-card {
-        padding: 1rem 1.2rem;
-        border-radius: 18px;
-        background: rgba(56, 189, 248, 0.12);
-        border: 1px solid rgba(125, 211, 252, 0.32);
-        display: grid;
-        gap: 0.35rem;
-      }
-
-      .focus-card span {
-        font-size: 0.85rem;
-        color: rgba(148, 163, 184, 0.9);
-      }
-
-      .focus-card strong {
-        font-size: 1.05rem;
-      }
-
-      section {
-        display: grid;
-        gap: 1.2rem;
-      }
-
-      .grid-layout {
-        display: grid;
-        gap: 1.5rem;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      }
-
-      .panel {
+      section.card {
         background: var(--surface);
-        border-radius: 22px;
+        border-radius: 26px;
         border: 1px solid var(--border);
-        padding: 1.4rem;
+        padding: 2rem;
+        position: relative;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.45);
+      }
+
+      section.card h2 {
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        font-size: 1.45rem;
+        font-weight: 600;
+      }
+
+      .news-list {
         display: grid;
-        gap: 1rem;
-        min-height: 0;
-        box-shadow: 0 14px 35px rgba(15, 23, 42, 0.45);
-        backdrop-filter: blur(8px);
+        gap: 1.1rem;
       }
 
-      .panel h2 {
+      .news-card {
+        padding: 1.3rem 1.4rem;
+        border-radius: 20px;
+        background: linear-gradient(130deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.02));
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+      }
+
+      .news-card:hover {
+        transform: translateY(-4px);
+        border-color: rgba(56, 189, 248, 0.35);
+        box-shadow: 0 18px 38px rgba(8, 47, 73, 0.35);
+      }
+
+      .news-card h3 {
         margin: 0;
-        font-size: 1.1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.75rem;
+        font-size: 1.18rem;
+        font-weight: 600;
       }
 
-      .panel h2 span {
-        font-size: 0.8rem;
-        font-weight: 500;
+      .news-card .meta {
+        margin-top: 0.35rem;
+        font-size: 0.9rem;
         color: var(--muted);
+      }
+
+      .news-card p {
+        margin: 0.9rem 0 0;
+        line-height: 1.6;
+      }
+
+      .news-actions {
+        margin-top: 0.9rem;
+        display: flex;
+        gap: 0.65rem;
+      }
+
+      .btn {
+        font: inherit;
+        border: none;
+        border-radius: 14px;
+        padding: 0.55rem 1rem;
+        background: rgba(56, 189, 248, 0.14);
+        color: var(--text);
+        cursor: pointer;
+        transition: background 0.25s ease, transform 0.25s ease;
+      }
+
+      .btn:hover {
+        background: rgba(14, 165, 233, 0.32);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline {
+        background: transparent;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+      }
+
+      .btn-outline:hover {
+        border-color: rgba(56, 189, 248, 0.6);
       }
 
       form {
         display: grid;
-        gap: 0.75rem;
+        gap: 0.9rem;
       }
 
       label {
         display: grid;
-        gap: 0.35rem;
-        font-size: 0.85rem;
-        color: rgba(148, 163, 184, 0.95);
+        gap: 0.45rem;
+        font-size: 0.95rem;
+        color: rgba(226, 232, 240, 0.78);
       }
 
       input,
-      select,
-      textarea {
-        width: 100%;
-        border-radius: 14px;
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        background: rgba(15, 23, 42, 0.55);
+      textarea,
+      select {
+        font: inherit;
         color: var(--text);
-        padding: 0.65rem 0.85rem;
-        font-size: 0.95rem;
-        transition: border 0.2s ease, box-shadow 0.2s ease;
-      }
-
-      textarea {
-        resize: vertical;
-        min-height: 120px;
+        background: rgba(15, 23, 42, 0.75);
+        border-radius: 14px;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        padding: 0.65rem 0.9rem;
+        transition: border 0.25s ease, box-shadow 0.25s ease;
       }
 
       input:focus,
-      select:focus,
-      textarea:focus {
+      textarea:focus,
+      select:focus {
         outline: none;
-        border-color: rgba(56, 189, 248, 0.7);
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.18);
+        border-color: rgba(56, 189, 248, 0.5);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
       }
 
-      button {
-        border: none;
+      textarea {
+        min-height: 120px;
+        resize: vertical;
+      }
+
+      .form-row {
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      @media (min-width: 720px) {
+        .form-row.two {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      .status-message {
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
         border-radius: 14px;
-        padding: 0.6rem 1.1rem;
+        background: rgba(56, 189, 248, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.32);
+        color: rgba(226, 232, 240, 0.88);
         font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: transform 0.18s ease, box-shadow 0.2s ease, background 0.2s ease;
-        background: linear-gradient(135deg, rgba(56, 189, 248, 0.85), rgba(14, 165, 233, 0.85));
-        color: #0f172a;
-        box-shadow: 0 12px 28px rgba(14, 165, 233, 0.35);
       }
 
-      button:hover:not(:disabled) {
-        transform: translateY(-1px);
-        box-shadow: 0 16px 32px rgba(14, 165, 233, 0.4);
+      .hidden {
+        display: none !important;
       }
 
-      button.secondary {
-        background: rgba(148, 163, 184, 0.18);
-        color: rgba(226, 232, 240, 0.92);
-        box-shadow: none;
-      }
-
-      .timeline {
-        display: grid;
-        gap: 0.75rem;
-        max-height: 380px;
-        overflow-y: auto;
-      }
-
-      .timeline-item {
-        display: grid;
+      .pill {
+        display: inline-flex;
+        align-items: center;
         gap: 0.35rem;
-        padding: 0.85rem 1rem;
-        border-radius: 16px;
-        background: rgba(15, 23, 42, 0.55);
-        border: 1px solid rgba(148, 163, 184, 0.25);
-      }
-
-      .timeline-item strong {
-        font-size: 1.05rem;
-      }
-
-      .timeline-item footer {
-        display: flex;
-        gap: 0.75rem;
-        font-size: 0.82rem;
-        color: var(--muted);
-        flex-wrap: wrap;
-      }
-
-      .tag {
-        padding: 0.2rem 0.6rem;
+        padding: 0.3rem 0.75rem;
         border-radius: 999px;
+        font-size: 0.8rem;
         background: rgba(56, 189, 248, 0.15);
-        color: rgba(125, 211, 252, 0.95);
-        font-size: 0.75rem;
+        color: rgba(226, 232, 240, 0.85);
       }
 
-      .task-controls {
+      .class-news-header {
         display: flex;
-        gap: 0.6rem;
         flex-wrap: wrap;
-      }
-
-      .task-controls button {
-        background: rgba(15, 23, 42, 0.6);
-        color: rgba(226, 232, 240, 0.9);
-        border: 1px solid rgba(148, 163, 184, 0.25);
-        box-shadow: none;
-      }
-
-      .task-controls button.active {
-        background: rgba(56, 189, 248, 0.25);
-        border-color: rgba(56, 189, 248, 0.4);
-        color: rgba(125, 211, 252, 0.95);
-      }
-
-      .task-list {
-        display: grid;
         gap: 0.75rem;
-        max-height: 320px;
-        overflow-y: auto;
-      }
-
-      .task-item {
-        display: grid;
-        gap: 0.4rem;
-        padding: 0.85rem 1rem;
-        border-radius: 16px;
-        background: rgba(15, 23, 42, 0.55);
-        border: 1px solid rgba(148, 163, 184, 0.22);
-        position: relative;
-      }
-
-      .task-item.completed {
-        opacity: 0.6;
-      }
-
-      .task-top {
-        display: flex;
-        align-items: center;
         justify-content: space-between;
-        gap: 0.75rem;
-      }
-
-      .task-title {
-        font-size: 1.02rem;
-        font-weight: 600;
-      }
-
-      .task-meta {
-        display: flex;
-        gap: 0.5rem;
-        flex-wrap: wrap;
-        font-size: 0.8rem;
-        color: var(--muted);
         align-items: center;
-      }
-
-      .task-actions {
-        display: flex;
-        gap: 0.4rem;
-      }
-
-      .task-actions button {
-        font-size: 0.8rem;
-        padding: 0.4rem 0.7rem;
+        margin-bottom: 1.5rem;
       }
 
       .empty-state {
-        padding: 1.2rem;
+        padding: 1.3rem 1.1rem;
+        border-radius: 18px;
+        border: 1px dashed rgba(148, 163, 184, 0.35);
+        color: rgba(148, 163, 184, 0.85);
         text-align: center;
-        border-radius: 18px;
-        background: rgba(15, 23, 42, 0.45);
-        border: 1px dashed rgba(148, 163, 184, 0.3);
-        color: var(--muted);
       }
 
-      .notes textarea {
-        min-height: 200px;
-      }
-
-      .habit-grid {
-        display: grid;
-        gap: 0.8rem;
-      }
-
-      .habit-row {
-        display: grid;
-        gap: 0.75rem;
-        grid-template-columns: minmax(140px, 1fr) repeat(7, minmax(36px, 1fr));
-        align-items: center;
-        padding: 0.9rem 1rem;
-        border-radius: 16px;
-        background: rgba(15, 23, 42, 0.55);
-        border: 1px solid rgba(148, 163, 184, 0.25);
-      }
-
-      .habit-name {
-        font-weight: 600;
-      }
-
-      .habit-day {
-        display: grid;
-        place-items: center;
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        border-radius: 12px;
-        background: rgba(15, 23, 42, 0.6);
-        border: 1px solid rgba(148, 163, 184, 0.25);
-        cursor: pointer;
-        transition: background 0.18s ease, border 0.18s ease, transform 0.18s ease;
-        font-size: 0.78rem;
-      }
-
-      .habit-day.active {
-        background: rgba(56, 189, 248, 0.35);
-        border-color: rgba(56, 189, 248, 0.5);
-        color: rgba(15, 23, 42, 0.95);
-        font-weight: 600;
-      }
-
-      .summary-grid {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      }
-
-      .summary-card {
-        padding: 1.1rem 1.3rem;
-        border-radius: 18px;
-        background: rgba(15, 23, 42, 0.58);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        display: grid;
-        gap: 0.45rem;
-      }
-
-      .summary-card span {
+      footer {
+        text-align: center;
+        color: rgba(148, 163, 184, 0.7);
         font-size: 0.85rem;
-        color: var(--muted);
-      }
-
-      .summary-card strong {
-        font-size: 1.35rem;
-      }
-
-      @media (max-width: 768px) {
-        .habit-row {
-          grid-template-columns: 1fr 1fr 1fr 1fr;
-          row-gap: 0.6rem;
-        }
-
-        .habit-row .habit-name {
-          grid-column: 1 / -1;
-        }
+        margin-bottom: 2.5rem;
       }
     </style>
   </head>
   <body>
     <main>
       <header>
-        <div class="header-top">
-          <div class="welcome">
-            <h1 id="greeting">좋은 하루예요!</h1>
-            <p>오늘 해야 할 일과 일정을 제가 한눈에 정리해 드릴게요.</p>
-          </div>
-          <div class="clock">
-            <div>
-              <span>오늘은</span>
-              <div id="current-date"></div>
-            </div>
-            <strong id="current-time">00:00</strong>
-          </div>
-        </div>
-        <div class="daily-focus">
-          <h2>오늘의 포커스</h2>
-          <div class="focus-grid">
-            <div class="focus-card">
-              <span>가장 중요한 일정</span>
-              <strong id="focus-event">등록된 일정이 없습니다.</strong>
-            </div>
-            <div class="focus-card">
-              <span>최우선 할 일</span>
-              <strong id="focus-task">할 일을 추가해 보세요.</strong>
-            </div>
-            <div class="focus-card">
-              <span>오늘의 목표</span>
-              <strong id="focus-message">하루에 한 가지씩 성취해봐요.</strong>
-            </div>
+        <div class="branding">
+          <img
+            src="https://storage.googleapis.com/gpt-agent-tools-production/66e07c13fd1d7b8d4d2b6fb79635b1c0a94f66382d4d624398685f4f0fda8bb4.png"
+            alt="대전동신과학고등학교 로고"
+          />
+          <div>
+            <h1>동신과학고 12기 뉴스</h1>
+            <p class="tagline">우리 모두의 하루를 연결하는 공식 소식 허브</p>
           </div>
         </div>
       </header>
 
-      <section class="summary">
-        <div class="summary-grid">
-          <div class="summary-card">
-            <span>진행 중인 일정</span>
-            <strong id="summary-events">0개</strong>
-            <small id="next-event">다음 일정이 없습니다.</small>
-          </div>
-          <div class="summary-card">
-            <span>해야 할 일</span>
-            <strong id="summary-tasks">0개</strong>
-            <small id="next-task">마감 기한이 없습니다.</small>
-          </div>
-          <div class="summary-card">
-            <span>완료한 습관</span>
-            <strong id="summary-habits">0회</strong>
-            <small>이번 주 꾸준함을 이어가요.</small>
-          </div>
-        </div>
-      </section>
+      <div class="grid-two">
+        <section class="card" id="general-news-section">
+          <h2>학년 전체 공지</h2>
+          <div class="news-list" id="general-news-list"></div>
+        </section>
 
-      <section class="grid-layout">
-        <div class="panel">
-          <h2>
-            일정 타임라인
-            <span>오늘의 계획을 시간 순으로 정리해 드려요.</span>
-          </h2>
-          <form id="event-form">
+        <section class="card" id="class-news-section">
+          <div class="class-news-header">
+            <h2>우리 반 소식</h2>
+            <span class="pill" id="current-class-pill">반을 선택해주세요</span>
+          </div>
+          <form id="student-id-form" autocomplete="off">
             <label>
-              일정 이름
-              <input type="text" id="event-title" placeholder="예: 팀 미팅" required />
+              학번 입력 (예: 1207)
+              <div class="form-row two">
+                <input type="text" id="student-id" placeholder="학번" maxlength="4" required />
+                <button class="btn" type="submit">확인</button>
+              </div>
             </label>
-            <div class="grid-layout" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
-              <label>
-                시간
-                <input type="time" id="event-time" required />
-              </label>
-              <label>
-                위치 / 방식
-                <input type="text" id="event-location" placeholder="예: 회의실 A / 온라인" />
-              </label>
-            </div>
-            <button type="submit">일정 추가</button>
+            <p class="status-message hidden" id="student-id-message"></p>
           </form>
-          <div class="timeline" id="timeline"></div>
-        </div>
+          <div class="news-list" id="class-news-list"></div>
+        </section>
+      </div>
 
-        <div class="panel">
-          <h2>
-            할 일 관리
-            <span>중요도와 마감일을 기준으로 스마트하게 정리해요.</span>
-          </h2>
-          <form id="task-form">
+      <section class="card" id="admin-panel">
+        <div class="class-news-header">
+          <h2>관리자 콘솔</h2>
+          <span class="pill" id="admin-status">비로그인 상태</span>
+        </div>
+        <form id="admin-login-form" autocomplete="off">
+          <div class="form-row two">
             <label>
-              할 일 제목
-              <input type="text" id="task-title" placeholder="예: 보고서 검토" required />
+              관리자 비밀번호
+              <input type="password" id="admin-password" placeholder="비밀번호를 입력하세요" />
             </label>
-            <div class="grid-layout" style="grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));">
-              <label>
-                마감일
-                <input type="date" id="task-date" />
-              </label>
-              <label>
-                우선순위
-                <select id="task-priority">
-                  <option value="높음">높음</option>
-                  <option value="보통" selected>보통</option>
-                  <option value="낮음">낮음</option>
-                </select>
-              </label>
-              <label>
-                카테고리
-                <input type="text" id="task-category" placeholder="예: 업무, 개인" />
-              </label>
-            </div>
-            <button type="submit">할 일 추가</button>
-          </form>
-          <div class="task-controls" id="task-filters"></div>
-          <div class="task-list" id="task-list"></div>
-        </div>
-      </section>
+            <label>
+              <span style="visibility:hidden">submit</span>
+              <button class="btn" type="submit">로그인</button>
+            </label>
+          </div>
+          <p class="status-message hidden" id="admin-login-message"></p>
+        </form>
 
-      <section class="grid-layout">
-        <div class="panel notes">
-          <h2>
-            빠른 메모
-            <span>아이디어가 떠오르면 바로 기록해 두세요.</span>
-          </h2>
-          <textarea id="notes" placeholder="오늘의 회의 메모, 아이디어 등을 자유롭게 적어보세요."></textarea>
-          <div class="task-controls">
-            <button type="button" class="secondary" id="clear-notes">메모 비우기</button>
-            <span style="font-size: 0.8rem; color: var(--muted);">자동 저장됩니다.</span>
+        <div id="admin-tools" class="hidden">
+          <div class="form-row">
+            <h3 style="margin: 0 0 0.5rem">학년 전체 공지 등록</h3>
+            <form id="general-news-form" autocomplete="off">
+              <label>
+                제목
+                <input type="text" id="general-title" placeholder="제목을 입력하세요" required />
+              </label>
+              <label>
+                내용
+                <textarea id="general-content" placeholder="공지 내용을 작성하세요" required></textarea>
+              </label>
+              <button class="btn" type="submit">공지 등록</button>
+            </form>
+          </div>
+
+          <div class="form-row" style="margin-top: 2rem">
+            <h3 style="margin: 0 0 0.5rem">반별 소식 등록</h3>
+            <form id="class-news-form" autocomplete="off">
+              <div class="form-row two">
+                <label>
+                  학년
+                  <select id="class-grade" required>
+                    <option value="">선택</option>
+                    <option value="1">1학년</option>
+                    <option value="2">2학년</option>
+                    <option value="3">3학년</option>
+                  </select>
+                </label>
+                <label>
+                  반
+                  <select id="class-number" required>
+                    <option value="">선택</option>
+                    <option value="1">1반</option>
+                    <option value="2">2반</option>
+                    <option value="3">3반</option>
+                    <option value="4">4반</option>
+                    <option value="5">5반</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                제목
+                <input type="text" id="class-title" placeholder="제목을 입력하세요" required />
+              </label>
+              <label>
+                내용
+                <textarea id="class-content" placeholder="반 소식을 작성하세요" required></textarea>
+              </label>
+              <button class="btn" type="submit">소식 등록</button>
+            </form>
           </div>
         </div>
-
-        <div class="panel">
-          <h2>
-            주간 습관 체크
-            <span>꾸준함을 기록하고 동기부여를 유지하세요.</span>
-          </h2>
-          <div class="habit-grid" id="habit-grid"></div>
-        </div>
       </section>
+
+      <footer>© 2024 동신과학고 12기 뉴스룸 · 실시간으로 공유되는 우리 반 이야기</footer>
     </main>
 
     <script>
-      const storageKeys = {
-        events: "assistant-events",
-        tasks: "assistant-tasks",
-        notes: "assistant-notes",
-        habits: "assistant-habits"
-      };
-
       const dom = {
-        greeting: document.getElementById("greeting"),
-        currentDate: document.getElementById("current-date"),
-        currentTime: document.getElementById("current-time"),
-        focusEvent: document.getElementById("focus-event"),
-        focusTask: document.getElementById("focus-task"),
-        focusMessage: document.getElementById("focus-message"),
-        summaryEvents: document.getElementById("summary-events"),
-        nextEvent: document.getElementById("next-event"),
-        summaryTasks: document.getElementById("summary-tasks"),
-        nextTask: document.getElementById("next-task"),
-        summaryHabits: document.getElementById("summary-habits"),
-        timeline: document.getElementById("timeline"),
-        eventForm: document.getElementById("event-form"),
-        eventTitle: document.getElementById("event-title"),
-        eventTime: document.getElementById("event-time"),
-        eventLocation: document.getElementById("event-location"),
-        taskForm: document.getElementById("task-form"),
-        taskTitle: document.getElementById("task-title"),
-        taskDate: document.getElementById("task-date"),
-        taskPriority: document.getElementById("task-priority"),
-        taskCategory: document.getElementById("task-category"),
-        taskFilters: document.getElementById("task-filters"),
-        taskList: document.getElementById("task-list"),
-        notes: document.getElementById("notes"),
-        clearNotes: document.getElementById("clear-notes"),
-        habitGrid: document.getElementById("habit-grid")
+        generalList: document.getElementById("general-news-list"),
+        classList: document.getElementById("class-news-list"),
+        classPill: document.getElementById("current-class-pill"),
+        classForm: document.getElementById("student-id-form"),
+        studentIdInput: document.getElementById("student-id"),
+        studentIdMessage: document.getElementById("student-id-message"),
+        adminStatus: document.getElementById("admin-status"),
+        adminLoginForm: document.getElementById("admin-login-form"),
+        adminPassword: document.getElementById("admin-password"),
+        adminLoginMessage: document.getElementById("admin-login-message"),
+        adminTools: document.getElementById("admin-tools"),
+        generalForm: document.getElementById("general-news-form"),
+        generalTitle: document.getElementById("general-title"),
+        generalContent: document.getElementById("general-content"),
+        classNewsForm: document.getElementById("class-news-form"),
+        classGrade: document.getElementById("class-grade"),
+        classNumber: document.getElementById("class-number"),
+        classTitle: document.getElementById("class-title"),
+        classContent: document.getElementById("class-content")
       };
 
-      const defaultHabits = [
-        { name: "아침 스트레칭", days: {} },
-        { name: "집중 업무 2시간", days: {} },
-        { name: "물 8컵 마시기", days: {} },
-        { name: "영어 학습", days: {} }
-      ];
+      const STORAGE_KEY = "dongsin-news-data";
+      const ADMIN_SESSION_KEY = "dongsin-news-admin";
+      const ADMIN_PASSWORD = "dongsin12";
 
-      let events = load(storageKeys.events, []);
-      let tasks = load(storageKeys.tasks, []);
-      let habits = load(storageKeys.habits, defaultHabits);
-
-      function cloneDefault(value) {
-        if (typeof value === "string") return value;
-        try {
-          return JSON.parse(JSON.stringify(value));
-        } catch (error) {
-          console.error("기본값 복제 중 오류", error);
-          return value;
+      function uid() {
+        if (window.crypto?.randomUUID) {
+          return crypto.randomUUID();
         }
+        return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
       }
 
-      function load(key, fallback) {
-        try {
-          const raw = localStorage.getItem(key);
-          if (!raw) return cloneDefault(fallback);
-          return JSON.parse(raw);
-        } catch (err) {
-          console.error("데이터를 불러오는 중 오류", err);
-          return cloneDefault(fallback);
-        }
-      }
-
-      function persist(key, value) {
-        localStorage.setItem(key, JSON.stringify(value));
-      }
-
-      function formatDate(date) {
-        return date.toLocaleDateString("ko-KR", {
-          month: "long",
-          day: "numeric",
-          weekday: "short"
-        });
-      }
-
-      function updateClock() {
-        const now = new Date();
-        dom.currentDate.textContent = formatDate(now);
-        dom.currentTime.textContent = now.toLocaleTimeString("ko-KR", {
-          hour: "2-digit",
-          minute: "2-digit"
-        });
-
-        const hour = now.getHours();
-        let greeting = "좋은 하루예요!";
-        if (hour < 6) greeting = "새벽형 인간이시군요!";
-        else if (hour < 12) greeting = "상쾌한 아침입니다.";
-        else if (hour < 18) greeting = "에너지가 필요한 오후예요.";
-        else greeting = "오늘 하루 마무리 잘 하고 계신가요?";
-        dom.greeting.textContent = greeting;
-      }
-
-      updateClock();
-      setInterval(updateClock, 30000);
-
-      function minutesFromTime(time) {
-        if (!time) return Number.POSITIVE_INFINITY;
-        const [h, m] = time.split(":").map(Number);
-        return h * 60 + m;
-      }
-
-      function renderTimeline() {
-        if (!events.length) {
-          dom.timeline.innerHTML = `<div class="empty-state">등록된 일정이 없습니다. 중요한 약속을 추가해 보세요.</div>`;
-          return;
-        }
-
-        const sorted = [...events].sort(
-          (a, b) => minutesFromTime(a.time) - minutesFromTime(b.time)
-        );
-
-        dom.timeline.innerHTML = sorted
-          .map((event) => {
-            const location = event.location ? `<span class="tag">${event.location}</span>` : "";
-            const timeLabel = event.time ? event.time : "시간 미정";
-            return `
-              <div class="timeline-item" data-id="${event.id}">
-                <strong>${event.title}</strong>
-                <footer>
-                  <span>${timeLabel}</span>
-                  ${location}
-                  <button class="secondary" data-action="remove-event" data-id="${event.id}">삭제</button>
-                </footer>
-              </div>
-            `;
-          })
-          .join("");
-      }
-
-      function renderTaskFilters(active = "all") {
-        const filters = [
-          { key: "all", label: "전체" },
-          { key: "active", label: "진행 중" },
-          { key: "completed", label: "완료" }
-        ];
-
-        dom.taskFilters.innerHTML = filters
-          .map(
-            (filter) => `
-            <button type="button" class="${filter.key === active ? "active" : ""}" data-filter="${filter.key}">
-              ${filter.label}
-            </button>
-          `
-          )
-          .join("");
-      }
-
-      let currentFilter = "all";
-      renderTaskFilters(currentFilter);
-
-      dom.taskFilters.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-filter]");
-        if (!button) return;
-        currentFilter = button.dataset.filter;
-        renderTaskFilters(currentFilter);
-        renderTasks();
-      });
-
-      function renderTasks() {
-        if (!tasks.length) {
-          dom.taskList.innerHTML = `<div class="empty-state">할 일이 없습니다. 새 목표를 추가해 볼까요?</div>`;
-          updateFocus();
-          updateSummaries();
-          return;
-        }
-
-        const filtered = tasks.filter((task) => {
-          if (currentFilter === "completed") return task.completed;
-          if (currentFilter === "active") return !task.completed;
-          return true;
-        });
-
-        if (!filtered.length) {
-          dom.taskList.innerHTML = `<div class="empty-state">선택한 조건에 해당하는 할 일이 없어요.</div>`;
-          updateFocus();
-          updateSummaries();
-          return;
-        }
-
-        const sorted = [...filtered].sort((a, b) => {
-          if (a.completed !== b.completed) return a.completed ? 1 : -1;
-          if (a.priority !== b.priority) {
-            const rank = { 높음: 0, 보통: 1, 낮음: 2 };
-            return rank[a.priority] - rank[b.priority];
+      const defaultData = {
+        general: [
+          {
+            id: uid(),
+            title: "신학기 전교생 오리엔테이션 안내",
+            content:
+              "3월 5일(화) 오전 9시, 본교 대강당에서 12기 전교생이 함께하는 오리엔테이션이 진행됩니다. 교복 착용과 필기도구 준비를 잊지 말아주세요!",
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: uid(),
+            title: "과학탐구 진로 콘서트 신청",
+            content:
+              "4월 둘째 주에 열리는 과학탐구 진로 콘서트의 참가 신청을 3월 25일까지 받고 있습니다. 참가 희망자는 포스터의 QR코드로 신청해주세요.",
+            createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
           }
-          if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate);
-          if (a.dueDate) return -1;
-          if (b.dueDate) return 1;
-          return a.title.localeCompare(b.title, "ko");
-        });
-
-        dom.taskList.innerHTML = sorted
-          .map((task) => {
-            const due = task.dueDate
-              ? `<span>마감 ${new Date(task.dueDate + "T00:00").toLocaleDateString("ko-KR", {
-                  month: "short",
-                  day: "numeric",
-                  weekday: "short"
-                })}</span>`
-              : "";
-            const category = task.category
-              ? `<span class="tag">${task.category}</span>`
-              : "";
-            return `
-              <div class="task-item ${task.completed ? "completed" : ""}" data-id="${task.id}">
-                <div class="task-top">
-                  <div class="task-title">${task.title}</div>
-                  <div class="task-actions">
-                    <button class="secondary" data-action="toggle" data-id="${task.id}">
-                      ${task.completed ? "되돌리기" : "완료"}
-                    </button>
-                    <button class="secondary" data-action="remove" data-id="${task.id}">삭제</button>
-                  </div>
-                </div>
-                <div class="task-meta">
-                  <span class="tag">우선순위 ${task.priority}</span>
-                  ${category}
-                  ${due}
-                </div>
-              </div>
-            `;
-          })
-          .join("");
-
-        updateFocus();
-        updateSummaries();
-      }
-
-      function renderHabits() {
-        const days = ["월", "화", "수", "목", "금", "토", "일"];
-        dom.habitGrid.innerHTML = habits
-          .map((habit, habitIndex) => {
-            return `
-              <div class="habit-row" data-index="${habitIndex}">
-                <div class="habit-name">${habit.name}</div>
-                ${days
-                  .map((day, idx) => {
-                    const active = habit.days[idx] ? "active" : "";
-                    return `<div class="habit-day ${active}" data-day="${idx}">${day}</div>`;
-                  })
-                  .join("")}
-              </div>
-            `;
-          })
-          .join("");
-      }
-
-      function updateFocus() {
-        if (!events.length) {
-          dom.focusEvent.textContent = "등록된 일정이 없습니다.";
-        } else {
-          const next = [...events]
-            .filter((event) => !!event.time)
-            .sort((a, b) => minutesFromTime(a.time) - minutesFromTime(b.time))[0];
-          if (next) {
-            dom.focusEvent.textContent = `${next.time} · ${next.title}`;
-          } else {
-            dom.focusEvent.textContent = `${events[0].title}`;
-          }
-        }
-
-        const nextTask = tasks
-          .filter((task) => !task.completed)
-          .sort((a, b) => {
-            const rank = { 높음: 0, 보통: 1, 낮음: 2 };
-            if (rank[a.priority] !== rank[b.priority]) {
-              return rank[a.priority] - rank[b.priority];
+        ],
+        classes: {
+          "1-1": [
+            {
+              id: uid(),
+              title: "1반 과학실 대청소",
+              content: "이번 주 금요일 7교시 종료 후 과학실 대청소가 있습니다. 청소도구는 3조가 준비합니다.",
+              createdAt: new Date(Date.now() - 86400000).toISOString()
             }
-            if (a.dueDate && b.dueDate) return a.dueDate.localeCompare(b.dueDate);
-            if (a.dueDate) return -1;
-            if (b.dueDate) return 1;
-            return a.title.localeCompare(b.title, "ko");
-          })[0];
+          ],
+          "1-2": [
+            {
+              id: uid(),
+              title: "2반 소프트웨어 스터디",
+              content: "매주 수요일 방과후 4층 프로젝트실에서 파이썬 스터디를 진행합니다. 지각 없이 참여해주세요!",
+              createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
+            }
+          ],
+          "1-3": [],
+          "1-4": [],
+          "1-5": [],
+          "2-1": [],
+          "2-2": [],
+          "2-3": [],
+          "2-4": [],
+          "2-5": [],
+          "3-1": [],
+          "3-2": [],
+          "3-3": [],
+          "3-4": [],
+          "3-5": []
+        }
+      };
 
-        dom.focusTask.textContent = nextTask ? `${nextTask.title}` : "할 일을 추가해 보세요.";
+      function loadData() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return structuredClone(defaultData);
+          const parsed = JSON.parse(raw);
+          return {
+            general: Array.isArray(parsed.general) ? parsed.general : [],
+            classes: typeof parsed.classes === "object" && parsed.classes ? parsed.classes : {}
+          };
+        } catch (error) {
+          console.error("데이터 불러오기 실패", error);
+          return structuredClone(defaultData);
+        }
+      }
 
-        if (tasks.length > 0 || events.length > 0) {
-          dom.focusMessage.textContent = "중요한 일부터 차근차근 처리해요.";
+      function saveData() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+
+      let data = loadData();
+      let currentClassKey = null;
+      let isAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY) === "true";
+
+      function formatDate(dateString) {
+        try {
+          return new Date(dateString).toLocaleDateString("ko-KR", {
+            month: "short",
+            day: "numeric",
+            weekday: "short"
+          });
+        } catch (error) {
+          return "최근";
+        }
+      }
+
+      function renderGeneralNews() {
+        dom.generalList.innerHTML = "";
+        if (!data.general.length) {
+          dom.generalList.innerHTML = '<div class="empty-state">아직 등록된 학년 공지가 없습니다.</div>';
+          return;
+        }
+
+        data.general
+          .slice()
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .forEach((item) => {
+            const article = document.createElement("article");
+            article.className = "news-card";
+            article.dataset.id = item.id;
+            article.innerHTML = `
+              <h3>${item.title}</h3>
+              <div class="meta">${formatDate(item.createdAt)} · 학년 공지</div>
+              <p>${item.content.replace(/\n/g, "<br>")}</p>
+              ${
+                isAdmin
+                  ? '<div class="news-actions"><button class="btn-outline btn" data-action="edit-general">수정</button><button class="btn-outline btn" data-action="delete-general">삭제</button></div>'
+                  : ""
+              }
+            `;
+            dom.generalList.appendChild(article);
+          });
+      }
+
+      function ensureClassKey(key) {
+        if (!data.classes[key]) {
+          data.classes[key] = [];
+        }
+      }
+
+      function renderClassNews() {
+        dom.classList.innerHTML = "";
+        if (!currentClassKey) {
+          dom.classList.innerHTML = '<div class="empty-state">학번을 입력하면 우리 반 소식을 확인할 수 있습니다.</div>';
+          return;
+        }
+        ensureClassKey(currentClassKey);
+        const items = data.classes[currentClassKey];
+        if (!items.length) {
+          dom.classList.innerHTML = '<div class="empty-state">아직 우리 반 소식이 없습니다. 첫 소식을 기다려보세요!</div>';
+          return;
+        }
+
+        items
+          .slice()
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .forEach((item) => {
+            const article = document.createElement("article");
+            article.className = "news-card";
+            article.dataset.id = item.id;
+            article.innerHTML = `
+              <h3>${item.title}</h3>
+              <div class="meta">${formatDate(item.createdAt)} · ${currentClassKey.replace("-", "학년 ")}반</div>
+              <p>${item.content.replace(/\n/g, "<br>")}</p>
+              ${
+                isAdmin
+                  ? '<div class="news-actions"><button class="btn-outline btn" data-action="edit-class">수정</button><button class="btn-outline btn" data-action="delete-class">삭제</button></div>'
+                  : ""
+              }
+            `;
+            dom.classList.appendChild(article);
+          });
+      }
+
+      function setClassPill(text) {
+        dom.classPill.textContent = text;
+      }
+
+      function updateAdminUI() {
+        if (isAdmin) {
+          dom.adminStatus.textContent = "관리자 모드 활성화";
+          dom.adminStatus.style.background = "rgba(34, 197, 94, 0.28)";
+          dom.adminStatus.style.color = "#bbf7d0";
+          dom.adminTools.classList.remove("hidden");
+          dom.adminLoginForm.classList.add("hidden");
         } else {
-          dom.focusMessage.textContent = "하루에 한 가지씩 성취해봐요.";
+          dom.adminStatus.textContent = "비로그인 상태";
+          dom.adminStatus.style.background = "rgba(56, 189, 248, 0.15)";
+          dom.adminStatus.style.color = "rgba(226, 232, 240, 0.85)";
+          dom.adminTools.classList.add("hidden");
+          dom.adminLoginForm.classList.remove("hidden");
         }
+        renderGeneralNews();
+        renderClassNews();
       }
 
-      function updateSummaries() {
-        dom.summaryEvents.textContent = `${events.length}개`;
-        const sortedEvents = [...events].sort(
-          (a, b) => minutesFromTime(a.time) - minutesFromTime(b.time)
-        );
-        if (sortedEvents.length) {
-          const next = sortedEvents[0];
-          const timeLabel = next.time ? `${next.time}` : "시간 미정";
-          dom.nextEvent.textContent = `${timeLabel} · ${next.title}`;
+      dom.classForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const id = dom.studentIdInput.value.trim();
+        if (!/^\d{4}$/.test(id)) {
+          dom.studentIdMessage.textContent = "학번은 4자리 숫자로 입력해주세요.";
+          dom.studentIdMessage.classList.remove("hidden");
+          return;
+        }
+        dom.studentIdMessage.classList.add("hidden");
+        const grade = id.slice(0, 1);
+        const clazz = id.slice(1, 2);
+        currentClassKey = `${grade}-${clazz}`;
+        ensureClassKey(currentClassKey);
+        setClassPill(`${grade}학년 ${clazz}반 소식`);
+        renderClassNews();
+      });
+
+      dom.adminLoginForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const password = dom.adminPassword.value.trim();
+        if (password === ADMIN_PASSWORD) {
+          isAdmin = true;
+          sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
+          dom.adminLoginMessage.textContent = "관리자 인증이 완료되었습니다.";
+          dom.adminLoginMessage.classList.remove("hidden");
+          dom.adminLoginMessage.style.background = "rgba(34, 197, 94, 0.18)";
+          dom.adminLoginMessage.style.borderColor = "rgba(74, 222, 128, 0.35)";
+          dom.adminPassword.value = "";
+          updateAdminUI();
         } else {
-          dom.nextEvent.textContent = "다음 일정이 없습니다.";
+          dom.adminLoginMessage.textContent = "비밀번호가 일치하지 않습니다.";
+          dom.adminLoginMessage.classList.remove("hidden");
+          dom.adminLoginMessage.style.background = "rgba(248, 113, 113, 0.12)";
+          dom.adminLoginMessage.style.borderColor = "rgba(248, 113, 113, 0.32)";
+          dom.adminPassword.focus();
         }
+      });
 
-        dom.summaryTasks.textContent = `${tasks.filter((task) => !task.completed).length}개`;
-        const upcomingTask = tasks
-          .filter((task) => !task.completed && task.dueDate)
-          .sort((a, b) => a.dueDate.localeCompare(b.dueDate))[0];
-        dom.nextTask.textContent = upcomingTask
-          ? `${new Date(upcomingTask.dueDate + "T00:00").toLocaleDateString("ko-KR", {
-              month: "short",
-              day: "numeric"
-            })} · ${upcomingTask.title}`
-          : "마감 기한이 없습니다.";
-
-        const today = new Date().getDay();
-        const total = habits.reduce((sum, habit) => sum + (habit.days[today] ? 1 : 0), 0);
-        dom.summaryHabits.textContent = `${total}회`;
-      }
-
-      dom.eventForm.addEventListener("submit", (event) => {
+      dom.generalForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        const title = dom.eventTitle.value.trim();
-        const time = dom.eventTime.value;
-        const location = dom.eventLocation.value.trim();
-        if (!title) return;
-        events.push({
-          id: crypto.randomUUID(),
-          title,
-          time,
-          location
-        });
-        persist(storageKeys.events, events);
-        dom.eventForm.reset();
-        renderTimeline();
-        updateFocus();
-        updateSummaries();
+        if (!isAdmin) return;
+        const title = dom.generalTitle.value.trim();
+        const content = dom.generalContent.value.trim();
+        if (!title || !content) return;
+        data.general.push({ id: uid(), title, content, createdAt: new Date().toISOString() });
+        saveData();
+        dom.generalForm.reset();
+        renderGeneralNews();
       });
 
-      dom.timeline.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-action=remove-event]");
-        if (!button) return;
-        const id = button.dataset.id;
-        events = events.filter((event) => event.id !== id);
-        persist(storageKeys.events, events);
-        renderTimeline();
-        updateFocus();
-        updateSummaries();
-      });
-
-      dom.taskForm.addEventListener("submit", (event) => {
+      dom.classNewsForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        const title = dom.taskTitle.value.trim();
-        if (!title) return;
-        tasks.push({
-          id: crypto.randomUUID(),
+        if (!isAdmin) return;
+        const grade = dom.classGrade.value;
+        const clazz = dom.classNumber.value;
+        const title = dom.classTitle.value.trim();
+        const content = dom.classContent.value.trim();
+        if (!grade || !clazz || !title || !content) return;
+        const key = `${grade}-${clazz}`;
+        ensureClassKey(key);
+        data.classes[key].push({
+          id: uid(),
           title,
-          dueDate: dom.taskDate.value || null,
-          priority: dom.taskPriority.value,
-          category: dom.taskCategory.value.trim(),
-          completed: false
+          content,
+          createdAt: new Date().toISOString()
         });
-        persist(storageKeys.tasks, tasks);
-        dom.taskForm.reset();
-        renderTasks();
-      });
-
-      dom.taskList.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-action]");
-        if (!button) return;
-        const id = button.dataset.id;
-        const action = button.dataset.action;
-        if (action === "toggle") {
-          tasks = tasks.map((task) =>
-            task.id === id ? { ...task, completed: !task.completed } : task
-          );
-        } else if (action === "remove") {
-          tasks = tasks.filter((task) => task.id !== id);
+        saveData();
+        dom.classNewsForm.reset();
+        if (currentClassKey === key) {
+          renderClassNews();
         }
-        persist(storageKeys.tasks, tasks);
-        renderTasks();
       });
 
-      dom.notes.value = load(storageKeys.notes, "");
-      dom.notes.addEventListener("input", () => {
-        persist(storageKeys.notes, dom.notes.value);
+      dom.generalList.addEventListener("click", (event) => {
+        const action = event.target.dataset.action;
+        if (!action || !isAdmin) return;
+        const article = event.target.closest(".news-card");
+        if (!article) return;
+        const id = article.dataset.id;
+        const item = data.general.find((news) => news.id === id);
+        if (!item) return;
+
+        if (action === "delete-general") {
+          if (!confirm("이 공지를 삭제할까요?")) return;
+          data.general = data.general.filter((news) => news.id !== id);
+          saveData();
+          renderGeneralNews();
+        }
+        if (action === "edit-general") {
+          const newTitle = prompt("새 제목을 입력하세요", item.title);
+          if (newTitle === null) return;
+          const newContent = prompt("새 내용을 입력하세요", item.content);
+          if (newContent === null) return;
+          item.title = newTitle.trim() || item.title;
+          item.content = newContent.trim() || item.content;
+          item.createdAt = new Date().toISOString();
+          saveData();
+          renderGeneralNews();
+        }
       });
 
-      dom.clearNotes.addEventListener("click", () => {
-        if (!dom.notes.value) return;
-        if (!confirm("메모를 모두 삭제할까요?")) return;
-        dom.notes.value = "";
-        persist(storageKeys.notes, "");
+      dom.classList.addEventListener("click", (event) => {
+        const action = event.target.dataset.action;
+        if (!action || !isAdmin || !currentClassKey) return;
+        const article = event.target.closest(".news-card");
+        if (!article) return;
+        const id = article.dataset.id;
+        const items = data.classes[currentClassKey];
+        const item = items.find((news) => news.id === id);
+        if (!item) return;
+
+        if (action === "delete-class") {
+          if (!confirm("이 반 소식을 삭제할까요?")) return;
+          data.classes[currentClassKey] = items.filter((news) => news.id !== id);
+          saveData();
+          renderClassNews();
+        }
+        if (action === "edit-class") {
+          const newTitle = prompt("새 제목을 입력하세요", item.title);
+          if (newTitle === null) return;
+          const newContent = prompt("새 내용을 입력하세요", item.content);
+          if (newContent === null) return;
+          item.title = newTitle.trim() || item.title;
+          item.content = newContent.trim() || item.content;
+          item.createdAt = new Date().toISOString();
+          saveData();
+          renderClassNews();
+        }
       });
 
-      function ensureHabitStructure() {
-        // 구조 변경 시 기본값 채우기
-        habits = habits.map((habit) => ({
-          name: habit.name,
-          days: habit.days || {}
-        }));
+      if (isAdmin) {
+        updateAdminUI();
+      } else {
+        renderGeneralNews();
+        renderClassNews();
       }
-
-      ensureHabitStructure();
-
-      dom.habitGrid.addEventListener("click", (event) => {
-        const cell = event.target.closest(".habit-day");
-        if (!cell) return;
-        const row = event.target.closest(".habit-row");
-        const habitIndex = Number(row.dataset.index);
-        const day = Number(cell.dataset.day);
-        const habit = habits[habitIndex];
-        const updated = !habit.days[day];
-        habit.days[day] = updated;
-        habits[habitIndex] = habit;
-        persist(storageKeys.habits, habits);
-        renderHabits();
-        updateSummaries();
-      });
-
-      function initialize() {
-        renderTimeline();
-        renderTasks();
-        renderHabits();
-        updateFocus();
-        updateSummaries();
-      }
-
-      initialize();
     </script>
   </body>
 </html>
