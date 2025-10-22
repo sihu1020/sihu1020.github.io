@@ -1,1176 +1,967 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>동신과학고 뉴스룸</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg-gradient: linear-gradient(135deg, #1c89f4, #3fc0ff);
-      --accent: #0f4c81;
-      --accent-light: #d7ecff;
-      --card-bg: #ffffff;
-      --text: #1c1c1c;
-      --muted: #5f7185;
-      --shadow: 0 20px 40px rgba(17, 63, 119, 0.15);
-      font-size: 16px;
-    }
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>동신과학고 뉴스룸</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Gmarket+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --gradient: linear-gradient(135deg, #1c89f4, #3fc0ff);
-      --accent: #0f4c81;
-      --accent-soft: #1f65a4;
-      --surface: #ffffff;
-      --muted: #5f7185;
-      --shadow: 0 16px 36px rgba(15, 76, 129, 0.18);
-      font-size: 16px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Gmarket Sans', 'Pretendard', 'Apple SD Gothic Neo', sans-serif;
-      background: #f5faff;
-      color: #1c2432;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background: var(--gradient);
-      color: #fff;
-      padding: 1.5rem clamp(1.5rem, 4vw, 3rem);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      box-shadow: 0 18px 36px rgba(15, 76, 129, 0.22);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: clamp(1.6rem, 4vw, 2.3rem);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .status {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.18);
-      font-size: 0.95rem;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 2.1rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.22);
-      font-weight: 600;
-      font-size: 0.85rem;
-    }
-
-    button {
-      font: inherit;
-      cursor: pointer;
-      border: none;
-      border-radius: 999px;
-      padding: 0.6rem 1.4rem;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-    }
-
-    .login-btn {
-      background: rgba(255, 255, 255, 0.22);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
-    }
-
-    .login-btn:hover {
-      background: rgba(255, 255, 255, 0.32);
-    }
-
-    main {
-      flex: 1;
-      padding: clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 6vw, 3.2rem) 5rem;
-      max-width: 1180px;
-      width: 100%;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 2.5rem;
-    }
-
-    .hero {
-      background: var(--surface);
-      border-radius: 24px;
-      padding: clamp(2rem, 6vw, 3.4rem);
-      box-shadow: var(--shadow);
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 2rem;
-      align-items: center;
-    }
-
-    .hero h2 {
-      margin: 0 0 1rem;
-      color: var(--accent);
-      font-size: clamp(2rem, 5vw, 2.8rem);
-    }
-
-    .hero p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .hero .pill {
-      margin-bottom: 0.6rem;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.35rem 0.8rem;
-      border-radius: 999px;
-      background: #e2f0ff;
-      color: var(--accent);
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-
-    .news-section-title {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .news-section-title h3 {
-      margin: 0;
-      color: var(--accent);
-      font-size: clamp(1.8rem, 4vw, 2.4rem);
-    }
-
-    .news-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .news-card {
-      background: var(--surface);
-      border-radius: 20px;
-      padding: 1.7rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.85rem;
-      box-shadow: var(--shadow);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .news-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 24px 48px rgba(15, 76, 129, 0.24);
-    }
-
-    .news-date {
-      font-size: 0.92rem;
-      color: var(--muted);
-      letter-spacing: 0.04rem;
-    }
-
-    .news-title {
-      margin: 0;
-      font-size: 1.35rem;
-      color: var(--accent);
-    }
-
-    .news-summary {
-      margin: 0;
-      font-weight: 600;
-      color: var(--accent-soft);
-    }
-
-    .news-content {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-      white-space: pre-line;
-    }
-
-    .news-link {
-      margin-top: 0.2rem;
-      color: var(--accent);
-      font-weight: 600;
-      text-decoration: none;
-      display: inline-flex;
-      gap: 0.3rem;
-    }
-
-    .news-link:hover {
-      text-decoration: underline;
-    }
-
-    .panel {
-      background: var(--surface);
-      border-radius: 20px;
-      padding: clamp(1.8rem, 5vw, 2.5rem);
-      box-shadow: var(--shadow);
-      display: grid;
-      gap: 1.2rem;
-    }
-
-    .panel h3 {
-      margin: 0;
-      color: var(--accent);
-      font-size: clamp(1.6rem, 4vw, 2rem);
-    }
-
-    form {
-      display: grid;
-      gap: 1rem;
-    }
-
-    label {
-      font-weight: 600;
-      color: var(--accent);
-    }
-
-    input,
-    textarea {
-      font: inherit;
-      padding: 0.7rem 0.9rem;
-      border-radius: 12px;
-      border: 1px solid #d4e4f7;
-      background: #f8fbff;
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      width: 100%;
-    }
-
-    input:focus,
-    textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(31, 120, 220, 0.15);
-    }
-
-    textarea {
-      min-height: 120px;
-      resize: vertical;
-    }
-
-    .form-row {
-      display: grid;
-      gap: 0.75rem;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      align-items: end;
-    }
-
-    .form-actions {
-      display: flex;
-      gap: 0.75rem;
-      flex-wrap: wrap;
-    }
-
-    .submit-btn {
-      background: var(--accent);
-      color: #fff;
-      box-shadow: 0 12px 24px rgba(15, 76, 129, 0.32);
-    }
-
-    .submit-btn:hover {
-      transform: translateY(-2px);
-      background: var(--accent-soft);
-    }
-
-    .secondary-btn {
-      background: rgba(15, 76, 129, 0.12);
-      color: var(--accent);
-    }
-
-    .secondary-btn:hover {
-      background: rgba(15, 76, 129, 0.18);
-    }
-
-    .admin-controls {
-      display: none;
-    }
-
-    .admin-controls.visible {
-      display: grid;
-    }
-
-    .classroom-news {
-      display: none;
-    }
-
-    .classroom-news.visible {
-      display: grid;
-    }
-
-    .placeholder {
-      margin: 0;
-      color: var(--muted);
-    }
-
-    .error-text {
-      color: #d84f4f;
-      font-size: 0.95rem;
-      display: none;
-    }
-
-    .error-text.visible {
-      display: block;
-    }
-
-    .share-box {
-      background: rgba(15, 76, 129, 0.08);
-      border-radius: 16px;
-      padding: 1rem 1.2rem;
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    .share-actions {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 0.75rem;
-    }
-
-    .share-help {
-      margin: 0;
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.5;
-    }
-
-    footer {
-      background: #0f2f4c;
-      color: #cfe5ff;
-      padding: 2.1rem clamp(1.5rem, 4vw, 3rem);
-      text-align: center;
-      font-size: 0.95rem;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 34, 58, 0.55);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      padding: 1.5rem;
-      z-index: 20;
-    }
-
-    .modal.open {
-      display: flex;
-    }
-
-    .modal-content {
-      background: #fff;
-      border-radius: 18px;
-      padding: 2rem;
-      max-width: 360px;
-      width: 100%;
-      display: grid;
-      gap: 1.4rem;
-      box-shadow: 0 24px 48px rgba(15, 76, 129, 0.35);
-    }
-
-    .modal-content h3 {
-      margin: 0;
-      color: var(--accent);
-      text-align: center;
-    }
-
-    .modal-actions {
-      display: grid;
-      gap: 0.6rem;
-    }
-
-    .modal-close {
-      background: none;
-      color: var(--muted);
-      justify-self: center;
-      padding: 0;
-    }
-
-    @media (max-width: 640px) {
-      .share-actions {
-        grid-template-columns: 1fr;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>21세기 축구선수 티어리스트 메이커</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --panel: rgba(15, 23, 42, 0.8);
+        --surface: rgba(30, 41, 59, 0.8);
+        --accent: #38bdf8;
+        --accent-strong: #0ea5e9;
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --border: rgba(148, 163, 184, 0.3);
+        --danger: #f97316;
+        color-scheme: dark;
       }
 
-      .hero {
-        text-align: center;
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Pretendard", "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top left, rgba(56, 189, 248, 0.25), transparent 55%),
+          radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.2), transparent 50%),
+          var(--bg);
+        min-height: 100vh;
+        color: var(--text);
       }
 
       header {
-        position: static;
+        padding: clamp(1.5rem, 5vw, 3rem) clamp(1.5rem, 5vw, 4rem) 1.5rem;
       }
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>동신과학고 뉴스룸</h1>
-    <div class="header-actions">
-      <div id="login-status" class="status">
-        <span class="badge">게스트</span>
-        <span>읽기 전용 모드</span>
-      </div>
-      <button id="login-toggle" class="login-btn" type="button">관리자 로그인</button>
-    </div>
-  </header>
 
-  <main>
-    <section class="hero">
-      <div>
-        <span class="pill">학교 공식 뉴스</span>
-        <h2>동신과학고의 하루를 한눈에</h2>
-        <p>학교 행사와 교내 공지, 학생 자치 활동까지 빠르게 확인하세요. 관리자 인증 후 안전하게 내용을 수정할 수 있습니다.</p>
-      </div>
-      <div>
-        <h3 style="margin: 0; color: var(--accent-soft); font-size: 1.2rem;">1학년 반별 뉴스룸 운영</h3>
-        <p>1학년 1~5반 학생들은 부여된 3자리 고유 번호로 반별 소식을 확인하고, 관리자 모드에서 각 반의 기사를 관리할 수 있습니다.</p>
-      </div>
-    </section>
+      header h1 {
+        margin: 0 0 0.7rem;
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        font-weight: 700;
+        color: #f8fafc;
+      }
 
-    <section>
-      <div class="news-section-title">
-        <h3>학교 주요 소식</h3>
-        <span id="news-count" class="pill">총 0건의 업데이트</span>
-      </div>
-      <div id="news-list" class="news-list"></div>
-    </section>
+      header p {
+        margin: 0;
+        max-width: 740px;
+        font-size: 1.05rem;
+        line-height: 1.6;
+        color: var(--muted);
+      }
 
-    <section class="panel">
-      <h3>1학년 뉴스룸 입장</h3>
-      <p>담임 선생님께 배정받은 3자리 고유 번호를 입력하면 해당 반의 최신 소식을 확인할 수 있습니다. (예: 101 → 1학년 1반)</p>
-      <form id="classroom-form">
-        <label for="classroom-code">반 고유 번호</label>
-        <div class="form-row">
-          <input id="classroom-code" name="classroom-code" inputmode="numeric" placeholder="예: 101" required />
-          <button class="submit-btn" type="submit">입장하기</button>
-        </div>
-        <p id="classroom-error" class="error-text">등록되지 않은 고유 번호입니다. 다시 확인해 주세요.</p>
-      </form>
-    </section>
+      main {
+        display: grid;
+        grid-template-columns: minmax(260px, 360px) 1fr;
+        gap: 1.5rem;
+        padding: 0 clamp(1.5rem, 5vw, 4rem) clamp(2rem, 6vw, 4rem);
+      }
 
-    <section id="classroom-news" class="panel classroom-news">
-      <div class="news-section-title">
-        <h3 id="classroom-news-title">반별 뉴스룸</h3>
-        <span id="classroom-news-count" class="pill">총 0건</span>
-      </div>
-      <div id="class-news-list" class="news-list"></div>
-    </section>
-
-    <section id="admin-controls" class="panel admin-controls">
-      <h3>학교 기사 관리</h3>
-      <form id="news-form">
-        <div>
-          <label for="news-title">제목</label>
-          <input id="news-title" name="title" placeholder="기사 제목을 입력하세요." required />
-        </div>
-        <div>
-          <label for="news-date">날짜</label>
-          <input id="news-date" name="date" type="date" required />
-        </div>
-        <div>
-          <label for="news-summary">한 줄 요약</label>
-          <textarea id="news-summary" name="summary" placeholder="핵심 내용을 간단히 작성해 주세요." required></textarea>
-        </div>
-        <div>
-          <label for="news-content">본문</label>
-          <textarea id="news-content" name="content" placeholder="자세한 기사 내용을 입력해 주세요." required></textarea>
-        </div>
-        <div>
-          <label for="news-link">관련 링크 (선택)</label>
-          <input id="news-link" name="link" type="url" placeholder="https://" />
-        </div>
-        <div class="form-actions">
-          <button id="submit-btn" class="submit-btn" type="submit">기사 등록</button>
-          <button id="cancel-edit" class="secondary-btn" type="button">취소</button>
-        </div>
-      </form>
-      <div class="share-box">
-        <strong>최신 소식 공유 링크</strong>
-        <div class="share-actions">
-          <input id="share-url" type="text" readonly />
-          <button id="copy-share" class="secondary-btn" type="button">링크 복사</button>
-        </div>
-        <p class="share-help">이 주소를 공유하면 누구나 수정된 내용을 바로 확인할 수 있습니다. 저장 시 자동으로 갱신됩니다.</p>
-      </div>
-    </section>
-
-    <section id="class-admin-controls" class="panel admin-controls">
-      <h3 id="class-admin-heading">반별 기사 관리</h3>
-      <form id="class-news-form">
-        <div>
-          <label for="class-news-title">제목</label>
-          <input id="class-news-title" name="title" placeholder="기사 제목을 입력하세요." required />
-        </div>
-        <div>
-          <label for="class-news-date">날짜</label>
-          <input id="class-news-date" name="date" type="date" required />
-        </div>
-        <div>
-          <label for="class-news-summary">한 줄 요약</label>
-          <textarea id="class-news-summary" name="summary" placeholder="핵심 내용을 간단히 작성해 주세요." required></textarea>
-        </div>
-        <div>
-          <label for="class-news-content">본문</label>
-          <textarea id="class-news-content" name="content" placeholder="자세한 기사 내용을 입력해 주세요." required></textarea>
-        </div>
-        <div>
-          <label for="class-news-link">관련 링크 (선택)</label>
-          <input id="class-news-link" name="link" type="url" placeholder="https://" />
-        </div>
-        <div class="form-actions">
-          <button id="class-submit-btn" class="submit-btn" type="submit">기사 등록</button>
-          <button id="class-cancel-edit" class="secondary-btn" type="button">취소</button>
-        </div>
-      </form>
-      <p class="share-help">반별 기사도 동일한 공유 링크에 함께 저장됩니다.</p>
-    </section>
-  </main>
-
-  <footer>
-    <p>© <span id="year"></span> 동신과학고등학교 뉴스룸. 관리자 승인 하에 운영됩니다.</p>
-  </footer>
-
-  <div id="login-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="login-heading">
-    <div class="modal-content">
-      <h3 id="login-heading">관리자 로그인</h3>
-      <form id="login-form">
-        <div>
-          <label for="admin-id">아이디</label>
-          <input id="admin-id" name="admin-id" autocomplete="username" required />
-        </div>
-        <div>
-          <label for="admin-password">비밀번호</label>
-          <input id="admin-password" name="admin-password" type="password" autocomplete="current-password" required />
-        </div>
-        <div id="login-error" class="error-text">아이디 또는 비밀번호가 올바르지 않습니다.</div>
-        <div class="modal-actions">
-          <button class="submit-btn" type="submit">로그인</button>
-          <button id="close-modal" class="modal-close" type="button">닫기</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    (function () {
-      const ADMIN_ID = 'admin';
-      const ADMIN_PASSWORD = 'dongsin2024!';
-      const STORAGE_KEY = 'dongsin-news-state-v2';
-      const SHARE_HASH_PREFIX = 'state=';
-
-      const CLASSROOMS = {
-        '101': {
-          name: '1학년 1반',
-          defaultNews: [
-            {
-              title: '과학실 안전교육 이수 안내',
-              date: '2024-05-08',
-              summary: '실험실 안전교육 이수가 필수입니다.',
-              content: '5월 둘째 주 과학 시간에 실험실 안전교육이 진행됩니다. 교육을 이수한 학생만 실험에 참여할 수 있으니 지정된 시간표를 확인하고 정시에 입실해 주세요.',
-              link: ''
-            }
-          ]
-        },
-        '102': {
-          name: '1학년 2반',
-          defaultNews: [
-            {
-              title: '융합 프로젝트 킥오프',
-              date: '2024-05-09',
-              summary: '과학-정보 융합 프로젝트를 시작합니다.',
-              content: '팀별 주제를 선정하고 5월 말까지 1차 결과를 제출해야 합니다. 자료조사 일정과 실험 계획서를 이번 주 금요일까지 구글 클래스룸에 업로드하세요.',
-              link: ''
-            }
-          ]
-        },
-        '103': {
-          name: '1학년 3반',
-          defaultNews: [
-            {
-              title: '독서 토론 모임 모집',
-              date: '2024-05-03',
-              summary: '매주 금요일 점심시간에 토론 모임이 열립니다.',
-              content: '첫 번째 도서는 「과학자들」이며, 참여 희망자는 수요일까지 반장에게 알려 주세요. 함께 읽고 싶은 책이 있다면 추천서를 제출해 주세요.',
-              link: ''
-            }
-          ]
-        },
-        '104': {
-          name: '1학년 4반',
-          defaultNews: [
-            {
-              title: '생활기록부 특기사항 작성 안내',
-              date: '2024-05-08',
-              summary: '생활기록부 특기사항 초안을 준비해주세요.',
-              content: '5월 둘째 주 수요일까지 개인별 활동 내용을 정리해 담임 선생님께 제출해 주세요. 작성 예시는 학급 게시판에 게시되어 있으니 참고 바랍니다.',
-              link: ''
-            }
-          ]
-        },
-        '105': {
-          name: '1학년 5반',
-          defaultNews: [
-            {
-              title: '체육대회 응원 연습 일정',
-              date: '2024-05-10',
-              summary: '체육대회를 위한 응원 연습이 시작됩니다.',
-              content: '월·수 방과후 체육관에서 연습하며, 반별 응원도구는 학생회에서 제공합니다. 불참 시 담임 선생님께 사전 연락 바랍니다.',
-              link: ''
-            }
-          ]
+      @media (max-width: 980px) {
+        main {
+          grid-template-columns: 1fr;
         }
-      };
+      }
 
-      const defaultNews = [
-        {
-          title: '미래형 과학관 리모델링 완료',
-          date: '2024-05-12',
-          summary: '스마트 과학관이 새롭게 문을 열었습니다.',
-          content: '미래형 실험 장비와 VR 체험관이 도입된 과학관이 정식 개관했습니다. 예약제로 운영되며 각 반 과학 시간에 체험 일정이 안내될 예정입니다.',
-          link: ''
-        },
-        {
-          title: '동아리 페스티벌 참가 안내',
-          date: '2024-05-07',
-          summary: '6월 첫째 주 동아리 페스티벌이 열립니다.',
-          content: '체험 부스 신청은 5월 20일까지 학생회 카페에서 가능합니다. 공연 동아리는 행사 전주 리허설에 반드시 참여해 주세요.',
-          link: ''
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: clamp(1.2rem, 3vw, 1.8rem);
+        backdrop-filter: blur(16px);
+        box-shadow: 0 20px 45px rgba(8, 47, 73, 0.35);
+      }
+
+      .control-panel {
+        display: grid;
+        gap: 1.5rem;
+        align-content: start;
+        position: sticky;
+        top: 1.5rem;
+        height: fit-content;
+      }
+
+      @media (max-width: 980px) {
+        .control-panel {
+          position: static;
         }
+      }
+
+      .current-position {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+
+      .current-position h2 {
+        margin: 0;
+        font-size: 1.6rem;
+        color: #f1f5f9;
+      }
+
+      .current-position span {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--muted);
+        font-size: 0.95rem;
+      }
+
+      .current-player-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 1.2rem;
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .current-player-card h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #e0f2fe;
+      }
+
+      .current-player-name {
+        font-size: clamp(1.4rem, 3vw, 1.9rem);
+        font-weight: 700;
+        letter-spacing: 0.01em;
+        color: #bae6fd;
+      }
+
+      .current-player-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      .button-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      button {
+        font: inherit;
+        border: none;
+        border-radius: 999px;
+        padding: 0.65rem 1.3rem;
+        cursor: pointer;
+        transition: transform 0.15s ease, box-shadow 0.2s ease;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+      }
+
+      .primary {
+        background: linear-gradient(120deg, var(--accent), var(--accent-strong));
+        color: #0b1120;
+        font-weight: 700;
+        box-shadow: 0 12px 24px rgba(14, 165, 233, 0.3);
+      }
+
+      .primary:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 34px rgba(14, 165, 233, 0.35);
+      }
+
+      .ghost {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+
+      .ghost:hover:not(:disabled) {
+        border-color: rgba(148, 163, 184, 0.6);
+        transform: translateY(-1px);
+      }
+
+      .status-message {
+        min-height: 2.5em;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+
+      .status-message strong {
+        color: #f1f5f9;
+      }
+
+      .remaining-list {
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .remaining-list h3 {
+        margin: 0;
+        font-size: 1.05rem;
+        color: #e2e8f0;
+      }
+
+      .remaining-list ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.35rem;
+        max-height: 220px;
+        overflow: auto;
+        border-radius: 12px;
+      }
+
+      .remaining-list li {
+        padding: 0.45rem 0.75rem;
+        border-radius: 12px;
+        background: rgba(15, 23, 42, 0.55);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .board-panel {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .position-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .position-tab {
+        padding: 0.45rem 0.95rem;
+        border-radius: 999px;
+        border: 1px solid transparent;
+        background: rgba(15, 23, 42, 0.55);
+        color: var(--muted);
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+      }
+
+      .position-tab.active {
+        background: rgba(56, 189, 248, 0.18);
+        color: #e0f2fe;
+        border-color: rgba(56, 189, 248, 0.35);
+      }
+
+      .tier-board {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .tier-card {
+        background: var(--surface);
+        border-radius: 18px;
+        border: 1px solid var(--border);
+        padding: 1rem 1.2rem;
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .tier-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .tier-name {
+        margin: 0;
+        font-size: 1.25rem;
+        color: #f1f5f9;
+      }
+
+      .tier-capacity {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .tier-slots,
+      .tier-dynamic {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
+      }
+
+      .slot,
+      .drop-zone {
+        flex: 1 1 120px;
+        min-width: 120px;
+        border-radius: 14px;
+        border: 1px dashed rgba(148, 163, 184, 0.45);
+        padding: 0.75rem 0.9rem;
+        background: rgba(15, 23, 42, 0.35);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        justify-content: center;
+        cursor: pointer;
+        transition: border-color 0.15s ease, transform 0.15s ease, background 0.2s ease;
+      }
+
+      .slot:hover,
+      .drop-zone:hover {
+        border-color: rgba(56, 189, 248, 0.55);
+        background: rgba(15, 23, 42, 0.6);
+      }
+
+      .slot.filled {
+        border-style: solid;
+        border-color: rgba(148, 163, 184, 0.6);
+        background: rgba(15, 23, 42, 0.65);
+      }
+
+      .slot.filled:hover {
+        transform: translateY(-1px);
+      }
+
+      .slot-label {
+        font-size: 0.78rem;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .player-chip {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #e2e8f0;
+      }
+
+      .remove-button {
+        align-self: flex-end;
+        background: transparent;
+        border: none;
+        color: var(--danger);
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 0.2rem 0.4rem;
+      }
+
+      .remove-button:hover {
+        color: #fb923c;
+      }
+
+      .drop-zone.dynamic {
+        justify-content: center;
+        align-items: center;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .dynamic-player {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 0.85rem;
+        border-radius: 999px;
+        background: rgba(56, 189, 248, 0.14);
+        color: #f1f5f9;
+        border: 1px solid rgba(56, 189, 248, 0.4);
+      }
+
+      .dynamic-player button {
+        border-radius: 50%;
+        padding: 0.2rem 0.5rem;
+        background: transparent;
+        border: none;
+        color: rgba(248, 250, 252, 0.7);
+        cursor: pointer;
+      }
+
+      .dynamic-player button:hover {
+        color: #f87171;
+      }
+
+      .empty-note {
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .instructions {
+        font-size: 0.9rem;
+        color: rgba(226, 232, 240, 0.8);
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>21세기 축구선수 티어리스트 메이커</h1>
+      <p>
+        포지션별 최고의 선수들을 티어에 배치해 보세요. "다음 선수 뽑기" 버튼을 누르면 AI가 랜덤으로
+        포지션과 선수를 제안합니다. 제안된 선수는 해당 포지션의 티어 보드에서 원하는 위치를 눌러 배치할 수
+        있습니다.
+      </p>
+    </header>
+    <main>
+      <section class="control-panel panel">
+        <div class="current-position">
+          <h2><span data-current-position>GK</span> 티어 관리</h2>
+          <span>왼쪽이 더 높은 순위입니다.</span>
+        </div>
+        <div class="current-player-card">
+          <h3>현재 제안된 선수</h3>
+          <div class="current-player-name" data-current-player-name>선수를 뽑아 주세요</div>
+          <div class="current-player-meta" data-current-player-meta>
+            포지션과 티어를 선택해 배치할 선수를 뽑아 보세요.
+          </div>
+        </div>
+        <div class="instructions">
+          <p>
+            원하는 티어의 빈 슬롯을 클릭하면 선수가 배치됩니다. 이미 채워진 칸을 눌러 교체할 수도 있고, 칸의 X
+            버튼을 눌러 비울 수 있습니다.
+          </p>
+        </div>
+        <div class="button-group">
+          <button class="primary" type="button" data-action="random">다음 선수 뽑기</button>
+          <button class="ghost" type="button" data-action="reset">티어 전체 초기화</button>
+        </div>
+        <div class="status-message" data-status></div>
+        <div class="remaining-list">
+          <h3>남은 후보</h3>
+          <ul data-remaining></ul>
+        </div>
+      </section>
+      <section class="board-panel">
+        <div class="position-tabs" data-position-tabs></div>
+        <div class="tier-board" data-tier-board></div>
+      </section>
+    </main>
+    <script>
+      const POSITIONS = [
+        { key: "GK", label: "GK" },
+        { key: "LB", label: "LB" },
+        { key: "CB", label: "CB" },
+        { key: "RB", label: "RB" },
+        { key: "CDM", label: "CDM" },
+        { key: "CM", label: "CM" },
+        { key: "CAM", label: "CAM" },
+        { key: "ST", label: "ST" },
+        { key: "LW", label: "LW" },
+        { key: "RW", label: "RW" }
       ];
 
-      const defaultState = createDefaultState();
-      let appState = cloneState(defaultState);
-      let isAdmin = false;
-      let editingIndex = null;
-      let classEditingIndex = null;
-      let currentClassCode = null;
+      const TIERS = [
+        { key: "heaven", label: "Heaven", limit: 3 },
+        { key: "goat", label: "G.O.A.T", limit: 7 },
+        { key: "legend", label: "Legend", limit: 10 },
+        { key: "worldclass", label: "Worldclass", limit: null },
+        { key: "good", label: "Good", limit: null },
+        { key: "normal", label: "Normal", limit: null },
+        { key: "notGood", label: "Not good", limit: null }
+      ];
 
-      const newsList = document.getElementById('news-list');
-      const newsCount = document.getElementById('news-count');
-      const classroomForm = document.getElementById('classroom-form');
-      const classroomCodeInput = document.getElementById('classroom-code');
-      const classroomError = document.getElementById('classroom-error');
-      const classroomNewsSection = document.getElementById('classroom-news');
-      const classroomNewsTitle = document.getElementById('classroom-news-title');
-      const classroomNewsCount = document.getElementById('classroom-news-count');
-      const classNewsList = document.getElementById('class-news-list');
-      const adminControls = document.getElementById('admin-controls');
-      const classAdminControls = document.getElementById('class-admin-controls');
-      const loginToggle = document.getElementById('login-toggle');
-      const loginModal = document.getElementById('login-modal');
-      const loginForm = document.getElementById('login-form');
-      const loginError = document.getElementById('login-error');
-      const loginStatus = document.getElementById('login-status');
-      const closeModalBtn = document.getElementById('close-modal');
-      const newsForm = document.getElementById('news-form');
-      const submitBtn = document.getElementById('submit-btn');
-      const cancelEditBtn = document.getElementById('cancel-edit');
-      const classNewsForm = document.getElementById('class-news-form');
-      const classSubmitBtn = document.getElementById('class-submit-btn');
-      const classCancelEditBtn = document.getElementById('class-cancel-edit');
-      const classAdminHeading = document.getElementById('class-admin-heading');
-      const shareInput = document.getElementById('share-url');
-      const copyShareBtn = document.getElementById('copy-share');
+      const PLAYERS_BY_POSITION = {
+        GK: [
+          "Gianluigi Buffon",
+          "Iker Casillas",
+          "Manuel Neuer",
+          "Alisson Becker",
+          "Ederson",
+          "Thibaut Courtois",
+          "Petr Čech",
+          "Hugo Lloris",
+          "Jan Oblak",
+          "Marc-André ter Stegen",
+          "David de Gea",
+          "Samir Handanović"
+        ],
+        LB: [
+          "Paolo Maldini",
+          "Ashley Cole",
+          "Roberto Carlos",
+          "Marcelo",
+          "David Alaba",
+          "Andrew Robertson",
+          "Jordi Alba",
+          "Theo Hernández",
+          "Leighton Baines",
+          "Aleksandar Kolarov"
+        ],
+        CB: [
+          "Sergio Ramos",
+          "Virgil van Dijk",
+          "Carles Puyol",
+          "John Terry",
+          "Rio Ferdinand",
+          "Thiago Silva",
+          "Giorgio Chiellini",
+          "Gerard Piqué",
+          "Raphaël Varane",
+          "Nemanja Vidić",
+          "Kalidou Koulibaly",
+          "Rúben Dias"
+        ],
+        RB: [
+          "Cafu",
+          "Dani Alves",
+          "Philipp Lahm",
+          "Trent Alexander-Arnold",
+          "Kyle Walker",
+          "João Cancelo",
+          "Maicon",
+          "Juan Cuadrado",
+          "Achraf Hakimi",
+          "Kieran Trippier"
+        ],
+        CDM: [
+          "Sergio Busquets",
+          "Casemiro",
+          "Claude Makélélé",
+          "Patrick Vieira",
+          "Andrea Pirlo",
+          "Michael Essien",
+          "N'Golo Kanté",
+          "Xabi Alonso",
+          "Rodri",
+          "Fernandinho"
+        ],
+        CM: [
+          "Luka Modrić",
+          "Kevin De Bruyne",
+          "Xavi",
+          "Steven Gerrard",
+          "Frank Lampard",
+          "Toni Kroos",
+          "Paul Scholes",
+          "Andrés Iniesta",
+          "Cesc Fàbregas",
+          "Bastian Schweinsteiger",
+          "Yaya Touré",
+          "Santi Cazorla"
+        ],
+        CAM: [
+          "Zinedine Zidane",
+          "Ronaldinho",
+          "Mesut Özil",
+          "Kaká",
+          "Thomas Müller",
+          "David Silva",
+          "Bruno Fernandes",
+          "Bernardo Silva",
+          "James Rodríguez",
+          "Juan Mata"
+        ],
+        ST: [
+          "Lionel Messi",
+          "Cristiano Ronaldo",
+          "Robert Lewandowski",
+          "Karim Benzema",
+          "Zlatan Ibrahimović",
+          "Luis Suárez",
+          "Didier Drogba",
+          "Erling Haaland",
+          "Sergio Agüero",
+          "Harry Kane",
+          "Wayne Rooney",
+          "Samuel Eto'o"
+        ],
+        LW: [
+          "Neymar",
+          "Ronaldinho",
+          "Thierry Henry",
+          "Sadio Mané",
+          "Eden Hazard",
+          "Son Heung-min",
+          "Franck Ribéry",
+          "Arjen Robben",
+          "Kylian Mbappé",
+          "Vinícius Júnior"
+        ],
+        RW: [
+          "Mohamed Salah",
+          "Arjen Robben",
+          "Gareth Bale",
+          "Riyad Mahrez",
+          "Ángel Di María",
+          "Sadio Mané",
+          "Bukayo Saka",
+          "Ousmane Dembélé",
+          "Raheem Sterling",
+          "Serge Gnabry"
+        ]
+      };
 
-      document.getElementById('year').textContent = new Date().getFullYear();
+      const STORAGE_KEY = "tierlist-state-v1";
 
-      loadState();
-      renderNews();
-      updateShareLink();
+      const dom = {
+        currentPosition: document.querySelector("[data-current-position]"),
+        currentPlayerName: document.querySelector("[data-current-player-name]"),
+        currentPlayerMeta: document.querySelector("[data-current-player-meta]"),
+        status: document.querySelector("[data-status]"),
+        remaining: document.querySelector("[data-remaining]"),
+        tierBoard: document.querySelector("[data-tier-board]"),
+        positionTabs: document.querySelector("[data-position-tabs]"),
+        randomButton: document.querySelector('[data-action="random"]'),
+        resetButton: document.querySelector('[data-action="reset"]')
+      };
 
-      loginToggle.addEventListener('click', () => {
-        if (isAdmin) {
-          if (confirm('로그아웃 하시겠습니까?')) {
-            toggleAdminControls(false);
-          }
-          return;
-        }
-        loginModal.classList.add('open');
-        loginError.classList.remove('visible');
-        requestAnimationFrame(() => document.getElementById('admin-id').focus());
-      });
-
-      closeModalBtn.addEventListener('click', closeModal);
-
-      loginModal.addEventListener('click', (event) => {
-        if (event.target === loginModal) {
-          closeModal();
-        }
-      });
-
-      loginForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const id = event.target['admin-id'].value.trim();
-        const password = event.target['admin-password'].value;
-        if (id === ADMIN_ID && password === ADMIN_PASSWORD) {
-          toggleAdminControls(true);
-          loginModal.classList.remove('open');
-          loginForm.reset();
-          loginError.classList.remove('visible');
-        } else {
-          loginError.classList.add('visible');
-        }
-      });
-
-      classroomForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const code = String(classroomCodeInput.value).trim();
-        if (CLASSROOMS[code]) {
-          enterClassroom(code);
-          classroomCodeInput.value = '';
-          classroomError.classList.remove('visible');
-          setTimeout(() => {
-            classroomNewsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 60);
-        } else {
-          classroomError.classList.add('visible');
-        }
-      });
-
-      classroomCodeInput.addEventListener('input', () => classroomError.classList.remove('visible'));
-
-      newsForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        const data = serializeForm(event.target);
-        if (editingIndex !== null) {
-          appState.general.splice(editingIndex, 1, data);
-          editingIndex = null;
-          submitBtn.textContent = '기사 등록';
-        } else {
-          appState.general.push(data);
-        }
-        newsForm.reset();
-        persistState();
-        renderNews();
-        alert('소식이 저장되었습니다.');
-      });
-
-      cancelEditBtn.addEventListener('click', () => {
-        editingIndex = null;
-        newsForm.reset();
-        submitBtn.textContent = '기사 등록';
-      });
-
-      classNewsForm.addEventListener('submit', (event) => {
-        event.preventDefault();
-        if (!currentClassCode) {
-          alert('먼저 반 고유 번호를 입력해 주세요.');
-          return;
-        }
-        const data = serializeForm(event.target);
-        const list = appState.classes[currentClassCode];
-        if (classEditingIndex !== null) {
-          list.splice(classEditingIndex, 1, data);
-          classEditingIndex = null;
-          classSubmitBtn.textContent = '기사 등록';
-        } else {
-          list.push(data);
-        }
-        classNewsForm.reset();
-        persistState();
-        renderClassNews();
-        alert('반별 소식이 저장되었습니다.');
-      });
-
-      classCancelEditBtn.addEventListener('click', () => {
-        classEditingIndex = null;
-        classNewsForm.reset();
-        classSubmitBtn.textContent = '기사 등록';
-      });
-
-      newsList.addEventListener('click', (event) => {
-        const button = event.target.closest('button');
-        if (!button) return;
-        const index = Number(button.dataset.index);
-        if (button.dataset.action === 'delete') {
-          if (confirm('이 기사를 삭제하시겠습니까?')) {
-            appState.general.splice(index, 1);
-            persistState();
-            renderNews();
-          }
-        } else if (button.dataset.action === 'edit') {
-          const item = appState.general[index];
-          fillForm(newsForm, item);
-          editingIndex = index;
-          submitBtn.textContent = '기사 수정';
-          window.scrollTo({ top: adminControls.offsetTop - 80, behavior: 'smooth' });
-        }
-      });
-
-      classNewsList.addEventListener('click', (event) => {
-        const button = event.target.closest('button');
-        if (!button) return;
-        const index = Number(button.dataset.index);
-        const list = currentClassCode ? appState.classes[currentClassCode] : [];
-        if (button.dataset.action === 'delete') {
-          if (confirm('이 기사를 삭제하시겠습니까?')) {
-            list.splice(index, 1);
-            persistState();
-            renderClassNews();
-          }
-        } else if (button.dataset.action === 'edit') {
-          const item = list[index];
-          fillForm(classNewsForm, item);
-          classEditingIndex = index;
-          classSubmitBtn.textContent = '기사 수정';
-          window.scrollTo({ top: classAdminControls.offsetTop - 80, behavior: 'smooth' });
-        }
-      });
-
-      copyShareBtn.addEventListener('click', () => {
-        if (!shareInput.value) return;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(shareInput.value).then(
-            () => alert('공유 링크가 복사되었습니다.'),
-            () => fallbackCopy(shareInput)
-          );
-        } else {
-          fallbackCopy(shareInput);
-        }
-      });
-
-      window.addEventListener('hashchange', () => {
-        const decoded = decodeStateFromHash();
-        if (!decoded) return;
-        appState = normalizeState(decoded);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-        renderNews();
-        if (currentClassCode) {
-          renderClassNews();
-        }
-        updateShareLink(false);
-      });
+      let state = loadState();
+      let currentPosition = POSITIONS[0].key;
+      let currentCandidate = null;
+      let statusTimeout = null;
 
       function loadState() {
-        const fromHash = decodeStateFromHash();
-        if (fromHash) {
-          appState = normalizeState(fromHash);
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-          return;
-        }
-        const stored = localStorage.getItem(STORAGE_KEY);
-        if (stored) {
-          try {
-            appState = normalizeState(JSON.parse(stored));
-            return;
-          } catch (error) {
-            console.warn('저장된 데이터를 불러오는 중 오류 발생:', error);
-          }
-        }
-        appState = cloneState(defaultState);
-        persistState();
-      }
-
-      function persistState() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
-        updateShareLink();
-      }
-
-      function updateShareLink(updateHash = true) {
-        if (!shareInput) return;
+        const base = createEmptyState();
         try {
-          const json = JSON.stringify(appState);
-          const encoded = encodeBase64(json);
-          const base = window.location.href.split('#')[0];
-          const hash = `${SHARE_HASH_PREFIX}${encoded}`;
-          const url = `${base}#${hash}`;
-          shareInput.value = url;
-          if (updateHash) {
-            history.replaceState(null, '', `#${hash}`);
+          const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
+          if (!raw || typeof raw !== "object") {
+            return base;
           }
+          POSITIONS.forEach(({ key: position }) => {
+            const positionState = raw[position];
+            TIERS.forEach((tier) => {
+              if (tier.limit) {
+                base[position][tier.key] = Array.from({ length: tier.limit }, (_, index) => {
+                  const value = positionState?.[tier.key]?.[index];
+                  return typeof value === "string" && value.trim() ? value.trim() : null;
+                });
+              } else {
+                const value = positionState?.[tier.key];
+                if (Array.isArray(value)) {
+                  base[position][tier.key] = value
+                    .filter((item) => typeof item === "string" && item.trim())
+                    .map((item) => item.trim());
+                }
+              }
+            });
+          });
         } catch (error) {
-          console.warn('공유 링크 생성에 실패했습니다:', error);
+          console.warn("상태를 불러오는 중 문제가 발생했습니다:", error);
         }
+        return base;
       }
 
-      function enterClassroom(code) {
-        currentClassCode = code;
-        classAdminHeading.textContent = `${CLASSROOMS[code].name} 기사 관리`;
-        classroomNewsTitle.textContent = `${CLASSROOMS[code].name} 뉴스룸`;
-        renderClassNews();
-        updateClassAdminVisibility();
-      }
-
-      function renderNews() {
-        newsList.innerHTML = '';
-        if (!appState.general.length) {
-          newsList.innerHTML = '<p class="placeholder">아직 등록된 소식이 없습니다. 관리자 로그인을 통해 첫 소식을 등록해 주세요.</p>';
-          newsCount.textContent = '등록된 소식이 없습니다';
-          return;
-        }
-        const sorted = [...appState.general].sort((a, b) => new Date(b.date) - new Date(a.date));
-        sorted.forEach((item) => {
-          const originalIndex = appState.general.indexOf(item);
-          const article = document.createElement('article');
-          article.className = 'news-card';
-          article.innerHTML = `
-            <span class="news-date">${formatDate(item.date)}</span>
-            <h4 class="news-title">${escapeHtml(item.title)}</h4>
-            <p class="news-summary"><strong>${escapeHtml(item.summary)}</strong></p>
-            <p class="news-content">${escapeHtml(item.content)}</p>
-            ${item.link ? `<a class="news-link" href="${escapeAttribute(item.link)}" target="_blank" rel="noopener">자세히 보기 →</a>` : ''}
-          `;
-          if (isAdmin) {
-            const actions = document.createElement('div');
-            actions.className = 'form-actions';
-            actions.innerHTML = `
-              <button class="secondary-btn" type="button" data-action="edit" data-index="${originalIndex}">수정</button>
-              <button class="submit-btn" type="button" data-action="delete" data-index="${originalIndex}">삭제</button>
-            `;
-            article.appendChild(actions);
-          }
-          newsList.appendChild(article);
+      function createEmptyState() {
+        const empty = {};
+        POSITIONS.forEach(({ key }) => {
+          empty[key] = {};
+          TIERS.forEach((tier) => {
+            empty[key][tier.key] = tier.limit ? Array.from({ length: tier.limit }, () => null) : [];
+          });
         });
-        newsCount.textContent = `총 ${appState.general.length}건의 업데이트`;
+        return empty;
       }
 
-      function renderClassNews() {
-        if (!currentClassCode) {
-          classroomNewsSection.classList.remove('visible');
-          return;
-        }
-        classroomNewsSection.classList.add('visible');
-        const list = appState.classes[currentClassCode];
-        classNewsList.innerHTML = '';
-        if (!list.length) {
-          classNewsList.innerHTML = '<p class="placeholder">아직 등록된 소식이 없습니다. 관리자 로그인을 통해 첫 소식을 등록해 주세요.</p>';
-          classroomNewsCount.textContent = '총 0건';
-          return;
-        }
-        const sorted = [...list].sort((a, b) => new Date(b.date) - new Date(a.date));
-        sorted.forEach((item) => {
-          const originalIndex = list.indexOf(item);
-          const article = document.createElement('article');
-          article.className = 'news-card';
-          article.innerHTML = `
-            <span class="news-date">${formatDate(item.date)}</span>
-            <h4 class="news-title">${escapeHtml(item.title)}</h4>
-            <p class="news-summary"><strong>${escapeHtml(item.summary)}</strong></p>
-            <p class="news-content">${escapeHtml(item.content)}</p>
-            ${item.link ? `<a class="news-link" href="${escapeAttribute(item.link)}" target="_blank" rel="noopener">자세히 보기 →</a>` : ''}
-          `;
-          if (isAdmin) {
-            const actions = document.createElement('div');
-            actions.className = 'form-actions';
-            actions.innerHTML = `
-              <button class="secondary-btn" type="button" data-action="edit" data-index="${originalIndex}">수정</button>
-              <button class="submit-btn" type="button" data-action="delete" data-index="${originalIndex}">삭제</button>
-            `;
-            article.appendChild(actions);
-          }
-          classNewsList.appendChild(article);
-        });
-        classroomNewsCount.textContent = `총 ${list.length}건`;
-      }
-
-      function toggleAdminControls(state) {
-        isAdmin = state;
-        if (isAdmin) {
-          adminControls.classList.add('visible');
-          loginToggle.textContent = '로그아웃';
-          loginStatus.innerHTML = '<span class="badge">관리자</span><span>편집 모드</span>';
-        } else {
-          adminControls.classList.remove('visible');
-          classAdminControls.classList.remove('visible');
-          loginToggle.textContent = '관리자 로그인';
-          loginStatus.innerHTML = '<span class="badge">게스트</span><span>읽기 전용 모드</span>';
-          editingIndex = null;
-          classEditingIndex = null;
-          newsForm.reset();
-          classNewsForm.reset();
-          submitBtn.textContent = '기사 등록';
-          classSubmitBtn.textContent = '기사 등록';
-        }
-        updateClassAdminVisibility();
-        renderNews();
-        if (currentClassCode) {
-          renderClassNews();
-        }
-      }
-
-      function updateClassAdminVisibility() {
-        if (isAdmin && currentClassCode) {
-          classAdminControls.classList.add('visible');
-        } else {
-          classAdminControls.classList.remove('visible');
-        }
-      }
-
-      function closeModal() {
-        loginModal.classList.remove('open');
-        loginForm.reset();
-      }
-
-      function serializeForm(form) {
-        const formData = new FormData(form);
-        return {
-          title: (formData.get('title') || '').toString().trim(),
-          date: (formData.get('date') || '').toString(),
-          summary: (formData.get('summary') || '').toString().trim(),
-          content: (formData.get('content') || '').toString().trim(),
-          link: (formData.get('link') || '').toString().trim()
-        };
-      }
-
-      function fillForm(form, data) {
-        form.querySelector('[name="title"]').value = data.title || '';
-        form.querySelector('[name="date"]').value = data.date || '';
-        form.querySelector('[name="summary"]').value = data.summary || '';
-        form.querySelector('[name="content"]').value = data.content || '';
-        form.querySelector('[name="link"]').value = data.link || '';
-      }
-
-      function formatDate(dateString) {
-        if (!dateString) return '';
-        const date = new Date(dateString + 'T09:00:00');
-        if (Number.isNaN(date.getTime())) return dateString;
-        return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
-      }
-
-      function updateClassAdminVisibilityAfterHash() {
-        if (currentClassCode && !CLASSROOMS[currentClassCode]) {
-          currentClassCode = null;
-        }
-        updateClassAdminVisibility();
-      }
-
-      function fallbackCopy(input) {
-        input.select();
-        document.execCommand('copy');
-        input.blur();
-        alert('공유 링크가 복사되었습니다.');
-      }
-
-      function decodeStateFromHash() {
-        if (!location.hash) return null;
-        const raw = location.hash.slice(1);
-        const payload = raw.startsWith(SHARE_HASH_PREFIX) ? raw.slice(SHARE_HASH_PREFIX.length) : raw;
-        if (!payload) return null;
+      function saveState() {
         try {
-          const json = decodeBase64(payload);
-          return JSON.parse(json);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         } catch (error) {
-          console.warn('URL에서 상태를 불러올 수 없습니다:', error);
-          return null;
+          console.warn("상태를 저장할 수 없습니다:", error);
         }
       }
 
-      function normalizeState(state) {
-        const normalized = {
-          general: Array.isArray(state?.general) ? state.general.map(sanitizeNews) : cloneState(defaultState.general),
-          classes: {}
-        };
-        Object.keys(CLASSROOMS).forEach((code) => {
-          const items = state?.classes?.[code];
-          normalized.classes[code] = Array.isArray(items) ? items.map(sanitizeNews) : cloneState(defaultState.classes[code]);
+      function setCurrentPosition(position) {
+        currentPosition = position;
+        renderPositionTabs();
+        renderBoard();
+        updateCurrentPositionLabel();
+        updateRemainingList();
+      }
+
+      function renderPositionTabs() {
+        dom.positionTabs.innerHTML = "";
+        POSITIONS.forEach(({ key, label }) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.textContent = label;
+          button.className = "position-tab" + (key === currentPosition ? " active" : "");
+          if (currentCandidate && currentCandidate.position === key) {
+            button.dataset.hasCandidate = "true";
+          }
+          button.addEventListener("click", () => {
+            setCurrentPosition(key);
+          });
+          dom.positionTabs.appendChild(button);
         });
-        return normalized;
       }
 
-      function sanitizeNews(item) {
-        return {
-          title: (item?.title || '').toString().trim(),
-          date: (item?.date || '').toString(),
-          summary: (item?.summary || '').toString().trim(),
-          content: (item?.content || '').toString().trim(),
-          link: (item?.link || '').toString().trim()
-        };
-      }
+      function renderBoard() {
+        dom.tierBoard.innerHTML = "";
+        TIERS.forEach((tier) => {
+          const section = document.createElement("section");
+          section.className = "tier-card";
 
-      function createDefaultState() {
-        return {
-          general: cloneState(defaultNews),
-          classes: Object.fromEntries(
-            Object.entries(CLASSROOMS).map(([code, info]) => [code, cloneState(info.defaultNews || [])])
-          )
-        };
-      }
+          const header = document.createElement("div");
+          header.className = "tier-header";
 
-      function cloneState(value) {
-        return JSON.parse(JSON.stringify(value));
-      }
+          const title = document.createElement("h3");
+          title.className = "tier-name";
+          title.textContent = tier.label;
 
-      function encodeBase64(text) {
-        const bytes = new TextEncoder().encode(text);
-        let binary = '';
-        bytes.forEach((byte) => {
-          binary += String.fromCharCode(byte);
+          const capacity = document.createElement("span");
+          capacity.className = "tier-capacity";
+          capacity.textContent = tier.limit
+            ? `${tier.limit}명까지 배치`
+            : "인원 제한 없음";
+
+          header.append(title, capacity);
+          section.appendChild(header);
+
+          const container = document.createElement("div");
+          if (tier.limit) {
+            container.className = "tier-slots";
+            const slots = state[currentPosition][tier.key];
+            slots.forEach((player, index) => {
+              const slot = document.createElement("div");
+              slot.className = "slot" + (player ? " filled" : "");
+              slot.dataset.tier = tier.key;
+              slot.dataset.index = index;
+
+              const label = document.createElement("span");
+              label.className = "slot-label";
+              label.textContent = `${index + 1}위`;
+
+              slot.appendChild(label);
+
+              if (player) {
+                const name = document.createElement("span");
+                name.className = "player-chip";
+                name.textContent = player;
+                slot.appendChild(name);
+
+                const remove = document.createElement("button");
+                remove.type = "button";
+                remove.className = "remove-button";
+                remove.textContent = "비우기";
+                remove.addEventListener("click", (event) => {
+                  event.stopPropagation();
+                  state[currentPosition][tier.key][index] = null;
+                  saveState();
+                  renderBoard();
+                  updateRemainingList();
+                  showStatus(`${tier.label} 티어 ${index + 1}위를 비웠습니다.`);
+                });
+                slot.appendChild(remove);
+              } else {
+                const empty = document.createElement("span");
+                empty.className = "empty-note";
+                empty.textContent = "빈 슬롯";
+                slot.appendChild(empty);
+              }
+
+              slot.addEventListener("click", () => {
+                handleFixedSlotSelection(tier, index);
+              });
+
+              container.appendChild(slot);
+            });
+          } else {
+            container.className = "tier-dynamic";
+            const players = state[currentPosition][tier.key];
+            if (!players.length) {
+              const zone = createDynamicDropZone(tier, 0);
+              container.appendChild(zone);
+            } else {
+              players.forEach((player, index) => {
+                const zone = createDynamicDropZone(tier, index);
+                container.appendChild(zone);
+
+                const chip = document.createElement("div");
+                chip.className = "dynamic-player";
+                chip.dataset.tier = tier.key;
+                chip.dataset.index = index;
+
+                const name = document.createElement("span");
+                name.textContent = `${index + 1}. ${player}`;
+                chip.appendChild(name);
+
+                const remove = document.createElement("button");
+                remove.type = "button";
+                remove.setAttribute("aria-label", "선수 제거");
+                remove.textContent = "✕";
+                remove.addEventListener("click", () => {
+                  state[currentPosition][tier.key].splice(index, 1);
+                  saveState();
+                  renderBoard();
+                  updateRemainingList();
+                  showStatus(`${tier.label} 티어에서 ${player} 선수를 제거했습니다.`);
+                });
+                chip.appendChild(remove);
+
+                container.appendChild(chip);
+              });
+              const zone = createDynamicDropZone(tier, players.length);
+              container.appendChild(zone);
+            }
+          }
+
+          section.appendChild(container);
+          dom.tierBoard.appendChild(section);
         });
-        return btoa(binary)
-          .replace(/\+/g, '-')
-          .replace(/\//g, '_')
-          .replace(/=+$/g, '');
       }
 
-      function decodeBase64(encoded) {
-        let base64 = encoded.replace(/-/g, '+').replace(/_/g, '/').replace(/\s/g, '+');
-        const padding = base64.length % 4;
-        if (padding) {
-          base64 += '='.repeat(4 - padding);
+      function createDynamicDropZone(tier, index) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "drop-zone dynamic";
+        button.dataset.tier = tier.key;
+        button.dataset.index = index;
+        button.textContent = currentCandidate ? `${index + 1}번째 자리에 배치` : "여기에 배치";
+        button.disabled = !currentCandidate;
+        button.addEventListener("click", () => {
+          handleDynamicInsertion(tier, index);
+        });
+        return button;
+      }
+
+      function handleFixedSlotSelection(tier, index) {
+        if (!currentCandidate) {
+          showStatus("먼저 선수를 뽑아 주세요.");
+          return;
         }
-        const binary = atob(base64);
-        const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-        return new TextDecoder().decode(bytes);
+        if (currentCandidate.position !== currentPosition) {
+          setCurrentPosition(currentCandidate.position);
+          showStatus("제안된 선수의 포지션 보드로 이동했습니다. 다시 시도하세요.");
+          return;
+        }
+
+        removePlayerFromState(currentCandidate.position, currentCandidate.name);
+        state[currentPosition][tier.key][index] = currentCandidate.name;
+        saveState();
+        showStatus(`${currentCandidate.name} 선수를 ${tier.label} 티어 ${index + 1}위에 배치했습니다.`);
+        clearCandidate();
+        renderBoard();
+        updateRemainingList();
       }
 
-      function escapeHtml(value) {
-        return (value || '')
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
+      function handleDynamicInsertion(tier, index) {
+        if (!currentCandidate) {
+          showStatus("먼저 선수를 뽑아 주세요.");
+          return;
+        }
+        if (currentCandidate.position !== currentPosition) {
+          setCurrentPosition(currentCandidate.position);
+          showStatus("제안된 선수의 포지션 보드로 이동했습니다. 다시 시도하세요.");
+          return;
+        }
+
+        removePlayerFromState(currentCandidate.position, currentCandidate.name);
+        state[currentPosition][tier.key].splice(index, 0, currentCandidate.name);
+        saveState();
+        showStatus(`${currentCandidate.name} 선수를 ${tier.label} 티어 ${index + 1}번째 자리에 배치했습니다.`);
+        clearCandidate();
+        renderBoard();
+        updateRemainingList();
       }
 
-      function escapeAttribute(value) {
-        return escapeHtml(value).replace(/\(/g, '&#40;').replace(/\)/g, '&#41;');
+      function removePlayerFromState(position, player) {
+        const tiers = state[position];
+        TIERS.forEach((tier) => {
+          if (tier.limit) {
+            tiers[tier.key] = tiers[tier.key].map((name) => (name === player ? null : name));
+          } else {
+            tiers[tier.key] = tiers[tier.key].filter((name) => name !== player);
+          }
+        });
       }
 
-      updateClassAdminVisibilityAfterHash();
-    })();
-  </script>
-</body>
+      function pickRandomPlayer() {
+        const availablePositions = POSITIONS.filter(({ key }) => getAvailablePlayers(key).length > 0);
+        if (!availablePositions.length) {
+          showStatus("모든 선수를 이미 배치했습니다! 필요하다면 초기화하세요.");
+          clearCandidate();
+          return;
+        }
+        const position = availablePositions[Math.floor(Math.random() * availablePositions.length)];
+        const remainingPlayers = getAvailablePlayers(position.key);
+        const player = remainingPlayers[Math.floor(Math.random() * remainingPlayers.length)];
+        currentCandidate = { name: player, position: position.key };
+        setCurrentPosition(position.key);
+        updateCandidateDisplay();
+        showStatus(`${position.key} 포지션에서 ${player} 선수를 추천합니다.`);
+      }
+
+      function getAvailablePlayers(position) {
+        const assigned = new Set();
+        TIERS.forEach((tier) => {
+          const players = state[position][tier.key];
+          if (tier.limit) {
+            players.forEach((player) => {
+              if (player) assigned.add(player);
+            });
+          } else {
+            players.forEach((player) => assigned.add(player));
+          }
+        });
+        return PLAYERS_BY_POSITION[position].filter((player) => !assigned.has(player));
+      }
+
+      function updateCandidateDisplay() {
+        if (currentCandidate) {
+          dom.currentPlayerName.textContent = currentCandidate.name;
+          dom.currentPlayerMeta.textContent = `${currentCandidate.position} 포지션 티어 보드에서 원하는 티어와 순위를 선택하세요.`;
+        } else {
+          dom.currentPlayerName.textContent = "선수를 뽑아 주세요";
+          dom.currentPlayerMeta.textContent = "포지션과 티어를 선택해 배치할 선수를 뽑아 보세요.";
+        }
+      }
+
+      function clearCandidate() {
+        currentCandidate = null;
+        updateCandidateDisplay();
+      }
+
+      function updateCurrentPositionLabel() {
+        dom.currentPosition.textContent = currentPosition;
+      }
+
+      function updateRemainingList() {
+        const players = getAvailablePlayers(currentPosition);
+        dom.remaining.innerHTML = "";
+        if (!players.length) {
+          const li = document.createElement("li");
+          li.textContent = "남은 선수가 없습니다.";
+          dom.remaining.appendChild(li);
+          return;
+        }
+        players.forEach((player) => {
+          const li = document.createElement("li");
+          li.textContent = player;
+          dom.remaining.appendChild(li);
+        });
+      }
+
+      function showStatus(message) {
+        if (statusTimeout) {
+          clearTimeout(statusTimeout);
+          statusTimeout = null;
+        }
+        dom.status.innerHTML = `<strong>${message}</strong>`;
+        statusTimeout = setTimeout(() => {
+          dom.status.textContent = "";
+        }, 5000);
+      }
+
+      function resetState() {
+        if (!confirm("모든 티어 배치를 초기화하시겠습니까?")) {
+          return;
+        }
+        state = createEmptyState();
+        saveState();
+        clearCandidate();
+        renderBoard();
+        updateRemainingList();
+        showStatus("티어 리스트를 초기화했습니다.");
+      }
+
+      dom.randomButton.addEventListener("click", pickRandomPlayer);
+      dom.resetButton.addEventListener("click", resetState);
+
+      renderPositionTabs();
+      setCurrentPosition(currentPosition);
+      updateCandidateDisplay();
+      updateRemainingList();
+    </script>
+  </body>
 </html>
