@@ -324,6 +324,11 @@
         transform: translateY(-1px);
       }
 
+      .slot.swap-selected {
+        border-color: rgba(56, 189, 248, 0.75);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.25);
+      }
+
       .slot-label {
         font-size: 0.78rem;
         color: var(--muted);
@@ -367,6 +372,12 @@
         background: rgba(56, 189, 248, 0.14);
         color: #f1f5f9;
         border: 1px solid rgba(56, 189, 248, 0.4);
+      }
+
+      .dynamic-player.swap-selected {
+        background: rgba(56, 189, 248, 0.25);
+        border-color: rgba(56, 189, 248, 0.65);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
       }
 
       .dynamic-player button {
@@ -424,6 +435,7 @@
         </div>
         <div class="button-group">
           <button class="primary" type="button" data-action="random">다음 선수 뽑기</button>
+          <button class="ghost" type="button" data-action="skip">현재 선수 스킵</button>
           <button class="ghost" type="button" data-action="reset">티어 전체 초기화</button>
         </div>
         <div class="status-message" data-status></div>
@@ -593,6 +605,7 @@
       };
 
       const STORAGE_KEY = "tierlist-state-v1";
+      const SKIP_STORAGE_KEY = "tierlist-skip-v1";
 
       const dom = {
         currentPosition: document.querySelector("[data-current-position]"),
@@ -603,12 +616,15 @@
         tierBoard: document.querySelector("[data-tier-board]"),
         positionTabs: document.querySelector("[data-position-tabs]"),
         randomButton: document.querySelector('[data-action="random"]'),
+        skipButton: document.querySelector('[data-action="skip"]'),
         resetButton: document.querySelector('[data-action="reset"]')
       };
 
       let state = loadState();
       let currentPosition = POSITIONS[0].key;
       let currentCandidate = null;
+      let skippedPlayers = loadSkippedPlayers();
+      let swapSelection = null;
       let statusTimeout = null;
 
       function loadState() {
@@ -653,6 +669,49 @@
         return empty;
       }
 
+      function createEmptySkipState() {
+        const empty = {};
+        POSITIONS.forEach(({ key }) => {
+          empty[key] = new Set();
+        });
+        return empty;
+      }
+
+      function loadSkippedPlayers() {
+        const base = createEmptySkipState();
+        try {
+          const raw = JSON.parse(localStorage.getItem(SKIP_STORAGE_KEY) || "null");
+          if (!raw || typeof raw !== "object") {
+            return base;
+          }
+          POSITIONS.forEach(({ key }) => {
+            const list = raw[key];
+            if (Array.isArray(list)) {
+              list.forEach((name) => {
+                if (typeof name === "string" && name.trim()) {
+                  base[key].add(name.trim());
+                }
+              });
+            }
+          });
+        } catch (error) {
+          console.warn("스킵한 선수를 불러오는 중 문제가 발생했습니다:", error);
+        }
+        return base;
+      }
+
+      function saveSkippedPlayers() {
+        try {
+          const payload = {};
+          POSITIONS.forEach(({ key }) => {
+            payload[key] = Array.from(skippedPlayers[key]);
+          });
+          localStorage.setItem(SKIP_STORAGE_KEY, JSON.stringify(payload));
+        } catch (error) {
+          console.warn("스킵한 선수를 저장할 수 없습니다:", error);
+        }
+      }
+
       function saveState() {
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -663,6 +722,7 @@
 
       function setCurrentPosition(position) {
         currentPosition = position;
+        swapSelection = null;
         renderPositionTabs();
         renderBoard();
         updateCurrentPositionLabel();
@@ -737,6 +797,15 @@
                 remove.textContent = "비우기";
                 remove.addEventListener("click", (event) => {
                   event.stopPropagation();
+                  if (
+                    swapSelection &&
+                    swapSelection.position === currentPosition &&
+                    swapSelection.tierKey === tier.key &&
+                    swapSelection.index === index &&
+                    swapSelection.type === "fixed"
+                  ) {
+                    swapSelection = null;
+                  }
                   state[currentPosition][tier.key][index] = null;
                   saveState();
                   renderBoard();
@@ -754,6 +823,16 @@
               slot.addEventListener("click", () => {
                 handleFixedSlotSelection(tier, index);
               });
+
+              if (
+                swapSelection &&
+                swapSelection.position === currentPosition &&
+                swapSelection.tierKey === tier.key &&
+                swapSelection.index === index &&
+                swapSelection.type === "fixed"
+              ) {
+                slot.classList.add("swap-selected");
+              }
 
               container.appendChild(slot);
             });
@@ -781,7 +860,17 @@
                 remove.type = "button";
                 remove.setAttribute("aria-label", "선수 제거");
                 remove.textContent = "✕";
-                remove.addEventListener("click", () => {
+                remove.addEventListener("click", (event) => {
+                  event.stopPropagation();
+                  if (
+                    swapSelection &&
+                    swapSelection.position === currentPosition &&
+                    swapSelection.tierKey === tier.key &&
+                    swapSelection.index === index &&
+                    swapSelection.type === "dynamic"
+                  ) {
+                    swapSelection = null;
+                  }
                   state[currentPosition][tier.key].splice(index, 1);
                   saveState();
                   renderBoard();
@@ -789,6 +878,20 @@
                   showStatus(`${tier.label} 티어에서 ${player} 선수를 제거했습니다.`);
                 });
                 chip.appendChild(remove);
+
+                chip.addEventListener("click", () => {
+                  handleDynamicSelection(tier, index);
+                });
+
+                if (
+                  swapSelection &&
+                  swapSelection.position === currentPosition &&
+                  swapSelection.tierKey === tier.key &&
+                  swapSelection.index === index &&
+                  swapSelection.type === "dynamic"
+                ) {
+                  chip.classList.add("swap-selected");
+                }
 
                 container.appendChild(chip);
               });
@@ -823,7 +926,12 @@
 
       function handleFixedSlotSelection(tier, index) {
         if (!currentCandidate) {
-          showStatus("먼저 선수를 뽑아 주세요.");
+          handleSwapSelection({
+            position: currentPosition,
+            tierKey: tier.key,
+            index,
+            type: "fixed"
+          });
           return;
         }
         if (currentCandidate.position !== currentPosition) {
@@ -832,6 +940,7 @@
           return;
         }
 
+        swapSelection = null;
         removePlayerFromState(currentCandidate.position, currentCandidate.name);
         state[currentPosition][tier.key][index] = currentCandidate.name;
         saveState();
@@ -852,6 +961,7 @@
           return;
         }
 
+        swapSelection = null;
         removePlayerFromState(currentCandidate.position, currentCandidate.name);
         state[currentPosition][tier.key].splice(index, 0, currentCandidate.name);
         saveState();
@@ -877,14 +987,14 @@
       }
 
       function pickRandomPlayer() {
-        const availablePositions = POSITIONS.filter(({ key }) => getAvailablePlayers(key).length > 0);
+        const availablePositions = POSITIONS.filter(({ key }) => getCandidatePool(key).length > 0);
         if (!availablePositions.length) {
-          showStatus("모든 선수를 이미 배치했습니다! 필요하다면 초기화하세요.");
+          showStatus("추천할 수 있는 선수가 남아 있지 않습니다. 스킵한 선수를 초기화하거나 리스트를 조정해 보세요.");
           clearCandidate();
           return;
         }
         const position = availablePositions[Math.floor(Math.random() * availablePositions.length)];
-        const remainingPlayers = getAvailablePlayers(position.key);
+        const remainingPlayers = getCandidatePool(position.key);
         const player = remainingPlayers[Math.floor(Math.random() * remainingPlayers.length)];
         currentCandidate = { name: player, position: position.key };
         setCurrentPosition(position.key);
@@ -892,7 +1002,11 @@
         showStatus(`${position.key} 포지션에서 ${player} 선수를 추천합니다.`);
       }
 
-      function getAvailablePlayers(position) {
+      function getCandidatePool(position) {
+        return PLAYERS_BY_POSITION[position].filter((player) => !skippedPlayers[position].has(player));
+      }
+
+      function getAssignablePlayers(position) {
         const assigned = new Set();
         TIERS.forEach((tier) => {
           const players = state[position][tier.key];
@@ -904,7 +1018,9 @@
             players.forEach((player) => assigned.add(player));
           }
         });
-        return PLAYERS_BY_POSITION[position].filter((player) => !assigned.has(player));
+        return PLAYERS_BY_POSITION[position].filter(
+          (player) => !assigned.has(player) && !skippedPlayers[position].has(player)
+        );
       }
 
       function updateCandidateDisplay() {
@@ -920,6 +1036,7 @@
       function clearCandidate() {
         currentCandidate = null;
         updateCandidateDisplay();
+        renderPositionTabs();
       }
 
       function updateCurrentPositionLabel() {
@@ -927,7 +1044,7 @@
       }
 
       function updateRemainingList() {
-        const players = getAvailablePlayers(currentPosition);
+        const players = getAssignablePlayers(currentPosition);
         dom.remaining.innerHTML = "";
         if (!players.length) {
           const li = document.createElement("li");
@@ -958,14 +1075,105 @@
           return;
         }
         state = createEmptyState();
+        skippedPlayers = createEmptySkipState();
         saveState();
+        saveSkippedPlayers();
         clearCandidate();
+        swapSelection = null;
         renderBoard();
         updateRemainingList();
         showStatus("티어 리스트를 초기화했습니다.");
       }
 
+      function handleDynamicSelection(tier, index) {
+        handleSwapSelection({
+          position: currentPosition,
+          tierKey: tier.key,
+          index,
+          type: "dynamic"
+        });
+      }
+
+      function getPlayerAt(position, tierKey, index) {
+        const collection = state[position][tierKey];
+        if (!collection) {
+          return null;
+        }
+        return collection[index] ?? null;
+      }
+
+      function handleSwapSelection(target) {
+        const player = getPlayerAt(target.position, target.tierKey, target.index);
+        if (!player) {
+          if (swapSelection) {
+            showStatus("빈 슬롯입니다. 선수가 있는 다른 칸을 선택하세요.");
+          } else {
+            showStatus("선수가 배치된 칸을 선택해 주세요.");
+          }
+          return;
+        }
+
+        if (!swapSelection) {
+          swapSelection = { ...target };
+          renderBoard();
+          showStatus(`${player} 선수를 선택했습니다. 위치를 바꿀 다른 선수를 선택하세요.`);
+          return;
+        }
+
+        if (
+          swapSelection.position === target.position &&
+          swapSelection.tierKey === target.tierKey &&
+          swapSelection.index === target.index
+        ) {
+          swapSelection = null;
+          renderBoard();
+          showStatus("선수 선택을 취소했습니다.");
+          return;
+        }
+
+        if (swapSelection.position !== target.position) {
+          swapSelection = { ...target };
+          renderBoard();
+          showStatus(`${player} 선수를 선택했습니다. 위치를 바꿀 다른 선수를 선택하세요.`);
+          return;
+        }
+
+        const fromPlayer = getPlayerAt(swapSelection.position, swapSelection.tierKey, swapSelection.index);
+        if (!fromPlayer) {
+          swapSelection = { ...target };
+          renderBoard();
+          showStatus(`${player} 선수를 선택했습니다. 위치를 바꿀 다른 선수를 선택하세요.`);
+          return;
+        }
+
+        const toPlayer = player;
+        const fromCollection = state[currentPosition][swapSelection.tierKey];
+        const toCollection = state[currentPosition][target.tierKey];
+        const temp = fromCollection[swapSelection.index];
+        fromCollection[swapSelection.index] = toCollection[target.index];
+        toCollection[target.index] = temp;
+        saveState();
+        swapSelection = null;
+        renderBoard();
+        updateRemainingList();
+        showStatus(`${fromPlayer} 선수와 ${toPlayer} 선수의 위치를 서로 바꿨습니다.`);
+      }
+
+      function skipCurrentPlayer() {
+        if (!currentCandidate) {
+          showStatus("스킵할 선수가 없습니다. 먼저 선수를 뽑아 주세요.");
+          return;
+        }
+        const { name, position } = currentCandidate;
+        skippedPlayers[position].add(name);
+        saveSkippedPlayers();
+        showStatus(`${position} 포지션에서 ${name} 선수를 스킵했습니다. 앞으로 추천되지 않습니다.`);
+        clearCandidate();
+        updateRemainingList();
+      }
+
       dom.randomButton.addEventListener("click", pickRandomPlayer);
+      dom.skipButton.addEventListener("click", skipCurrentPlayer);
       dom.resetButton.addEventListener("click", resetState);
 
       renderPositionTabs();
