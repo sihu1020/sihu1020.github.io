@@ -1,12 +1,5 @@
 {
-  "general": [
-    {
-      "id": "e8c2e93c-6b5d-42cb-af06-feab8eb6ad44",
-      "title": "야구",
-      "content": "보자",
-      "createdAt": "2025-10-23T06:25:58.775Z"
-    }
-  ],
+  "general": [],
   "classes": {
     "1-1": [],
     "1-2": [
