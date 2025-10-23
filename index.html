@@ -256,6 +256,40 @@
         font-size: 0.95rem;
       }
 
+      .helper-text {
+        display: block;
+        font-size: 0.8rem;
+        color: rgba(148, 163, 184, 0.78);
+      }
+
+      .admin-actions {
+        display: flex;
+        gap: 0.75rem;
+        align-items: flex-end;
+        justify-content: flex-end;
+      }
+
+      .admin-actions .btn {
+        flex: 1;
+      }
+
+      .status-card {
+        padding: 1rem 1.25rem;
+        border-radius: 16px;
+        background: rgba(56, 189, 248, 0.12);
+        border: 1px solid rgba(56, 189, 248, 0.28);
+        color: rgba(226, 232, 240, 0.85);
+        font-size: 0.92rem;
+        line-height: 1.5;
+      }
+
+      @media (max-width: 719px) {
+        .admin-actions {
+          flex-direction: column;
+          align-items: stretch;
+        }
+      }
+
       .hidden {
         display: none !important;
       }
@@ -352,6 +386,29 @@
         </form>
 
         <div id="admin-tools" class="hidden">
+          <div class="status-card">
+            GitHub 저장소에 뉴스를 저장하여 모든 사용자가 새로고침만으로 최신 공지와 반별 소식을 확인할 수 있습니다.
+            토큰은 이 브라우저 세션에만 사용되며 저장되지 않습니다.
+          </div>
+
+          <div class="form-row two">
+            <label>
+              GitHub Personal Access Token
+              <input
+                type="password"
+                id="admin-token"
+                placeholder="repo 권한이 포함된 토큰을 입력하세요"
+                autocomplete="new-password"
+              />
+              <span class="helper-text">토큰이 없으면 저장이 진행되지 않습니다.</span>
+            </label>
+            <div class="admin-actions">
+              <button class="btn-outline btn" type="button" id="sync-refresh-button">최신 데이터 불러오기</button>
+            </div>
+          </div>
+
+          <p class="status-message hidden" id="sync-status-message"></p>
+
           <div class="form-row">
             <h3 style="margin: 0 0 0.5rem">학년 전체 공지 등록</h3>
             <form id="general-news-form" autocomplete="off">
@@ -429,12 +486,45 @@
         classGrade: document.getElementById("class-grade"),
         classNumber: document.getElementById("class-number"),
         classTitle: document.getElementById("class-title"),
-        classContent: document.getElementById("class-content")
+        classContent: document.getElementById("class-content"),
+        adminToken: document.getElementById("admin-token"),
+        syncStatusMessage: document.getElementById("sync-status-message"),
+        syncRefreshButton: document.getElementById("sync-refresh-button")
       };
 
       const STORAGE_KEY = "dongsin-news-data";
       const ADMIN_SESSION_KEY = "dongsin-news-admin";
       const ADMIN_PASSWORD = "0928";
+      const GITHUB_CONFIG = {
+        owner: "sihu1020",
+        repo: "sihu1020.github.io",
+        path: "data/news.json",
+        branch: "main"
+      };
+
+      const STATUS_STYLES = {
+        info: {
+          background: "rgba(56, 189, 248, 0.12)",
+          border: "rgba(56, 189, 248, 0.32)"
+        },
+        success: {
+          background: "rgba(34, 197, 94, 0.16)",
+          border: "rgba(74, 222, 128, 0.38)"
+        },
+        error: {
+          background: "rgba(248, 113, 113, 0.18)",
+          border: "rgba(248, 113, 113, 0.45)"
+        }
+      };
+
+      const textEncoder = new TextEncoder();
+      const textDecoder = new TextDecoder();
+
+      let statusTimeout = null;
+      let remoteSha = null;
+      let isSaving = false;
+      let isFetching = false;
+      let hasInitialSync = false;
 
       function uid() {
         if (window.crypto?.randomUUID) {
@@ -442,6 +532,14 @@
         }
         return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
       }
+
+      const clone = (value) => {
+        try {
+          return structuredClone(value);
+        } catch (error) {
+          return JSON.parse(JSON.stringify(value));
+        }
+      };
 
       const defaultData = {
         general: [
@@ -493,26 +591,242 @@
         }
       };
 
-      function loadData() {
+      function sanitizeNewsItem(item) {
+        if (!item || typeof item !== "object") {
+          return null;
+        }
+        const normalized = {
+          id: typeof item.id === "string" && item.id ? item.id : uid(),
+          title: typeof item.title === "string" ? item.title : String(item.title ?? ""),
+          content: typeof item.content === "string" ? item.content : String(item.content ?? ""),
+          createdAt:
+            typeof item.createdAt === "string" && item.createdAt
+              ? item.createdAt
+              : new Date().toISOString()
+        };
+        if (!normalized.title.trim() || !normalized.content.trim()) {
+          return null;
+        }
+        return normalized;
+      }
+
+      function sanitizeData(raw) {
+        if (!raw || typeof raw !== "object") {
+          return clone(defaultData);
+        }
+
+        const sanitized = {
+          general: Array.isArray(raw.general)
+            ? raw.general.map(sanitizeNewsItem).filter(Boolean)
+            : [],
+          classes: {}
+        };
+
+        const classes = raw.classes && typeof raw.classes === "object" ? raw.classes : {};
+        const classKeys = new Set([...Object.keys(defaultData.classes), ...Object.keys(classes)]);
+
+        classKeys.forEach((key) => {
+          const list = Array.isArray(classes[key]) ? classes[key] : [];
+          sanitized.classes[key] = list.map(sanitizeNewsItem).filter(Boolean);
+        });
+
+        return sanitized;
+      }
+
+      function loadFromCache() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return structuredClone(defaultData);
+          if (!raw) return clone(defaultData);
           const parsed = JSON.parse(raw);
-          return {
-            general: Array.isArray(parsed.general) ? parsed.general : [],
-            classes: typeof parsed.classes === "object" && parsed.classes ? parsed.classes : {}
-          };
+          return sanitizeData(parsed);
         } catch (error) {
-          console.error("데이터 불러오기 실패", error);
-          return structuredClone(defaultData);
+          console.error("캐시 불러오기 실패", error);
+          return clone(defaultData);
         }
       }
 
-      function saveData() {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      function updateCache(snapshot) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+        } catch (error) {
+          console.warn("캐시 저장 실패", error);
+        }
       }
 
-      let data = loadData();
+      function setSyncStatus(message, type = "info", persistent = false) {
+        if (!dom.syncStatusMessage) return;
+        const styles = STATUS_STYLES[type] ?? STATUS_STYLES.info;
+        dom.syncStatusMessage.textContent = message;
+        dom.syncStatusMessage.style.background = styles.background;
+        dom.syncStatusMessage.style.borderColor = styles.border;
+        dom.syncStatusMessage.classList.remove("hidden");
+        if (statusTimeout) {
+          clearTimeout(statusTimeout);
+        }
+        if (!persistent) {
+          statusTimeout = setTimeout(() => {
+            dom.syncStatusMessage.classList.add("hidden");
+          }, 5000);
+        }
+      }
+
+      function encodeContent(payload) {
+        const json = JSON.stringify(payload, null, 2);
+        const bytes = textEncoder.encode(json);
+        let binary = "";
+        bytes.forEach((byte) => {
+          binary += String.fromCharCode(byte);
+        });
+        return btoa(binary);
+      }
+
+      function decodeContent(content) {
+        const cleaned = (content ?? "").replace(/\n/g, "");
+        const binary = atob(cleaned);
+        const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+        return textDecoder.decode(bytes);
+      }
+
+      function getGitHubContentUrl() {
+        return `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}?ref=${GITHUB_CONFIG.branch}`;
+      }
+
+      async function syncFromRemote(options = {}) {
+        const { showMessage = false } = options;
+        if (isSaving) {
+          if (showMessage) {
+            setSyncStatus("변경 사항을 저장 중입니다. 잠시 후 다시 시도하세요.");
+          }
+          return false;
+        }
+        if (isFetching) {
+          return false;
+        }
+        isFetching = true;
+        if (showMessage) {
+          setSyncStatus("최신 데이터를 불러오는 중입니다...", "info", true);
+        }
+        try {
+          const response = await fetch(getGitHubContentUrl(), {
+            headers: {
+              Accept: "application/vnd.github+json"
+            },
+            cache: "no-store"
+          });
+          if (response.status === 404) {
+            remoteSha = null;
+            hasInitialSync = true;
+            updateCache(data);
+            renderGeneralNews();
+            renderClassNews();
+            if (showMessage) {
+              setSyncStatus("새 데이터 파일을 생성할 준비가 되었습니다.", "success");
+            }
+            return true;
+          }
+          if (!response.ok) {
+            throw new Error(`원격 데이터를 불러오지 못했습니다: ${response.status}`);
+          }
+          const payload = await response.json();
+          const decoded = decodeContent(payload.content ?? "");
+          const parsed = JSON.parse(decoded);
+          data = sanitizeData(parsed);
+          remoteSha = payload.sha;
+          updateCache(data);
+          renderGeneralNews();
+          renderClassNews();
+          hasInitialSync = true;
+          if (showMessage) {
+            setSyncStatus("최신 데이터로 동기화되었습니다.", "success");
+          }
+          return true;
+        } catch (error) {
+          console.error("데이터 동기화 실패", error);
+          if (showMessage) {
+            setSyncStatus("데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.", "error", true);
+          }
+          return false;
+        } finally {
+          isFetching = false;
+        }
+      }
+
+      async function saveData(actionDescription = "데이터 업데이트") {
+        if (!isAdmin) {
+          return false;
+        }
+        if (!hasInitialSync) {
+          const synced = await syncFromRemote({ showMessage: true });
+          if (!synced) {
+            return false;
+          }
+        }
+        const token = dom.adminToken?.value.trim();
+        if (!token) {
+          setSyncStatus("GitHub 토큰을 입력해주세요.", "error", true);
+          return false;
+        }
+        if (isSaving) {
+          setSyncStatus("이미 저장 작업이 진행 중입니다.");
+          return false;
+        }
+        isSaving = true;
+        setSyncStatus("변경 사항을 저장하는 중입니다...", "info", true);
+        try {
+          const response = await fetch(getGitHubContentUrl(), {
+            method: "PUT",
+            headers: {
+              Accept: "application/vnd.github+json",
+              Authorization: `token ${token}`,
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              message: `[Newsroom] ${actionDescription}`,
+              content: encodeContent(data),
+              sha: remoteSha ?? undefined,
+              branch: GITHUB_CONFIG.branch
+            })
+          });
+          if (!response.ok) {
+            throw new Error(`저장 실패: ${response.status}`);
+          }
+          const payload = await response.json();
+          remoteSha = payload.content?.sha ?? remoteSha;
+          updateCache(data);
+          hasInitialSync = true;
+          setSyncStatus("변경 사항이 저장되었습니다.", "success");
+          return true;
+        } catch (error) {
+          console.error("데이터 저장 실패", error);
+          setSyncStatus("저장 중 오류가 발생했습니다. 토큰과 저장소 권한을 확인해주세요.", "error", true);
+          return false;
+        } finally {
+          isSaving = false;
+        }
+      }
+
+      function deepCloneData(snapshot) {
+        return clone(snapshot);
+      }
+
+      async function applyChange(mutator, actionDescription, onSuccess) {
+        const previous = deepCloneData(data);
+        mutator();
+        renderGeneralNews();
+        renderClassNews();
+        const saved = await saveData(actionDescription);
+        if (saved) {
+          if (typeof onSuccess === "function") {
+            onSuccess();
+          }
+        } else {
+          data = previous;
+          renderGeneralNews();
+          renderClassNews();
+        }
+      }
+
+      let data = loadFromCache();
       let currentClassKey = null;
       let isAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY) === "true";
 
@@ -647,6 +961,7 @@
           dom.adminLoginMessage.style.borderColor = "rgba(74, 222, 128, 0.35)";
           dom.adminPassword.value = "";
           updateAdminUI();
+          setSyncStatus("GitHub 토큰을 입력하면 변경 사항을 저장할 수 있습니다.");
         } else {
           dom.adminLoginMessage.textContent = "비밀번호가 일치하지 않습니다.";
           dom.adminLoginMessage.classList.remove("hidden");
@@ -656,19 +971,29 @@
         }
       });
 
-      dom.generalForm.addEventListener("submit", (event) => {
+      dom.generalForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (!isAdmin) return;
         const title = dom.generalTitle.value.trim();
         const content = dom.generalContent.value.trim();
         if (!title || !content) return;
-        data.general.push({ id: uid(), title, content, createdAt: new Date().toISOString() });
-        saveData();
-        dom.generalForm.reset();
-        renderGeneralNews();
+        await applyChange(
+          () => {
+            data.general.push({
+              id: uid(),
+              title,
+              content,
+              createdAt: new Date().toISOString()
+            });
+          },
+          `학년 공지 등록 - ${title}`,
+          () => {
+            dom.generalForm.reset();
+          }
+        );
       });
 
-      dom.classNewsForm.addEventListener("submit", (event) => {
+      dom.classNewsForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (!isAdmin) return;
         const grade = dom.classGrade.value;
@@ -678,20 +1003,26 @@
         if (!grade || !clazz || !title || !content) return;
         const key = `${grade}-${clazz}`;
         ensureClassKey(key);
-        data.classes[key].push({
-          id: uid(),
-          title,
-          content,
-          createdAt: new Date().toISOString()
-        });
-        saveData();
-        dom.classNewsForm.reset();
-        if (currentClassKey === key) {
-          renderClassNews();
-        }
+        await applyChange(
+          () => {
+            data.classes[key].push({
+              id: uid(),
+              title,
+              content,
+              createdAt: new Date().toISOString()
+            });
+          },
+          `${grade}학년 ${clazz}반 소식 등록 - ${title}`,
+          () => {
+            dom.classNewsForm.reset();
+            if (currentClassKey === key) {
+              renderClassNews();
+            }
+          }
+        );
       });
 
-      dom.generalList.addEventListener("click", (event) => {
+      dom.generalList.addEventListener("click", async (event) => {
         const action = event.target.dataset.action;
         if (!action || !isAdmin) return;
         const article = event.target.closest(".news-card");
@@ -702,24 +1033,32 @@
 
         if (action === "delete-general") {
           if (!confirm("이 공지를 삭제할까요?")) return;
-          data.general = data.general.filter((news) => news.id !== id);
-          saveData();
-          renderGeneralNews();
+          const title = item.title;
+          await applyChange(
+            () => {
+              data.general = data.general.filter((news) => news.id !== id);
+            },
+            `학년 공지 삭제 - ${title}`
+          );
         }
         if (action === "edit-general") {
           const newTitle = prompt("새 제목을 입력하세요", item.title);
           if (newTitle === null) return;
           const newContent = prompt("새 내용을 입력하세요", item.content);
           if (newContent === null) return;
-          item.title = newTitle.trim() || item.title;
-          item.content = newContent.trim() || item.content;
-          item.createdAt = new Date().toISOString();
-          saveData();
-          renderGeneralNews();
+          const originalTitle = item.title;
+          await applyChange(
+            () => {
+              item.title = newTitle.trim() || item.title;
+              item.content = newContent.trim() || item.content;
+              item.createdAt = new Date().toISOString();
+            },
+            `학년 공지 수정 - ${originalTitle}`
+          );
         }
       });
 
-      dom.classList.addEventListener("click", (event) => {
+      dom.classList.addEventListener("click", async (event) => {
         const action = event.target.dataset.action;
         if (!action || !isAdmin || !currentClassKey) return;
         const article = event.target.closest(".news-card");
@@ -731,29 +1070,45 @@
 
         if (action === "delete-class") {
           if (!confirm("이 반 소식을 삭제할까요?")) return;
-          data.classes[currentClassKey] = items.filter((news) => news.id !== id);
-          saveData();
-          renderClassNews();
+          const title = item.title;
+          await applyChange(
+            () => {
+              data.classes[currentClassKey] = items.filter((news) => news.id !== id);
+            },
+            `${currentClassKey.replace("-", "학년 ")}반 소식 삭제 - ${title}`
+          );
         }
         if (action === "edit-class") {
           const newTitle = prompt("새 제목을 입력하세요", item.title);
           if (newTitle === null) return;
           const newContent = prompt("새 내용을 입력하세요", item.content);
           if (newContent === null) return;
-          item.title = newTitle.trim() || item.title;
-          item.content = newContent.trim() || item.content;
-          item.createdAt = new Date().toISOString();
-          saveData();
-          renderClassNews();
+          const originalTitle = item.title;
+          await applyChange(
+            () => {
+              item.title = newTitle.trim() || item.title;
+              item.content = newContent.trim() || item.content;
+              item.createdAt = new Date().toISOString();
+            },
+            `${currentClassKey.replace("-", "학년 ")}반 소식 수정 - ${originalTitle}`
+          );
         }
       });
 
-      if (isAdmin) {
-        updateAdminUI();
-      } else {
+      dom.syncRefreshButton?.addEventListener("click", () => {
+        syncFromRemote({ showMessage: true });
+      });
+
+      function initialize() {
         renderGeneralNews();
         renderClassNews();
+        if (isAdmin) {
+          updateAdminUI();
+        }
+        syncFromRemote();
       }
+
+      initialize();
     </script>
   </body>
 </html>
