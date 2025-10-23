@@ -12,18 +12,18 @@
     />
     <style>
       :root {
-        color-scheme: dark;
-        --bg: #020617;
-        --bg-soft: rgba(15, 23, 42, 0.7);
-        --surface: rgba(30, 41, 59, 0.78);
-        --surface-solid: #0f172a;
-        --accent: #38bdf8;
-        --accent-strong: #0ea5e9;
-        --accent-soft: rgba(56, 189, 248, 0.16);
-        --text: #f8fafc;
-        --muted: #94a3b8;
-        --border: rgba(148, 163, 184, 0.24);
-        --shadow: 0 32px 55px rgba(8, 47, 73, 0.45);
+        color-scheme: light;
+        --bg: #f8fbff;
+        --bg-soft: rgba(224, 242, 254, 0.6);
+        --surface: rgba(255, 255, 255, 0.92);
+        --surface-solid: #ffffff;
+        --accent: #0ea5e9;
+        --accent-strong: #0284c7;
+        --accent-soft: rgba(14, 165, 233, 0.14);
+        --text: #1f2937;
+        --muted: #475569;
+        --border: rgba(148, 163, 184, 0.28);
+        --shadow: 0 22px 45px rgba(15, 118, 205, 0.18);
       }
 
       * {
@@ -35,8 +35,9 @@
         margin: 0;
         font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
-        background: radial-gradient(circle at top right, rgba(56, 189, 248, 0.3), transparent 42%),
-          radial-gradient(circle at bottom left, rgba(99, 102, 241, 0.28), transparent 50%),
+        background:
+          radial-gradient(circle at top right, rgba(186, 230, 253, 0.6), transparent 45%),
+          radial-gradient(circle at bottom left, rgba(191, 219, 254, 0.5), transparent 55%),
           var(--bg);
         color: var(--text);
         min-height: 100vh;
@@ -55,8 +56,8 @@
         gap: 1.75rem;
         padding: 2.2rem;
         border-radius: 32px;
-        background: linear-gradient(135deg, rgba(56, 189, 248, 0.22), rgba(14, 165, 233, 0.12));
-        border: 1px solid rgba(125, 211, 252, 0.25);
+        background: linear-gradient(135deg, rgba(224, 242, 254, 0.9), rgba(191, 219, 254, 0.7));
+        border: 1px solid rgba(125, 211, 252, 0.4);
         box-shadow: var(--shadow);
         position: relative;
         overflow: hidden;
@@ -66,8 +67,8 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 12% 25%, rgba(14, 165, 233, 0.42), transparent 55%);
-        opacity: 0.65;
+        background: radial-gradient(circle at 12% 25%, rgba(59, 130, 246, 0.25), transparent 55%);
+        opacity: 0.9;
         pointer-events: none;
       }
 
@@ -84,21 +85,22 @@
         aspect-ratio: 1;
         object-fit: contain;
         border-radius: 50%;
-        border: 2px solid rgba(148, 163, 184, 0.25);
+        border: 2px solid rgba(125, 211, 252, 0.45);
         padding: 0.65rem;
-        background: rgba(15, 23, 42, 0.35);
-        backdrop-filter: blur(6px);
+        background: rgba(191, 219, 254, 0.65);
+        backdrop-filter: blur(4px);
       }
 
       .branding h1 {
         margin: 0;
         font-size: clamp(2.1rem, 4vw, 2.8rem);
         letter-spacing: 0.02em;
+        color: #0f172a;
       }
 
       .tagline {
         margin: 0;
-        color: rgba(226, 232, 240, 0.85);
+        color: #1d4ed8;
         font-weight: 500;
       }
 
@@ -119,8 +121,8 @@
         border: 1px solid var(--border);
         padding: 2rem;
         position: relative;
-        backdrop-filter: blur(12px);
-        box-shadow: 0 20px 50px rgba(15, 23, 42, 0.45);
+        backdrop-filter: blur(6px);
+        box-shadow: 0 16px 40px rgba(148, 197, 235, 0.35);
       }
 
       section.card h2 {
@@ -138,16 +140,16 @@
       .news-card {
         padding: 1.3rem 1.4rem;
         border-radius: 20px;
-        background: linear-gradient(130deg, rgba(148, 163, 184, 0.08), rgba(148, 163, 184, 0.02));
-        border: 1px solid rgba(148, 163, 184, 0.18);
+        background: linear-gradient(130deg, rgba(191, 219, 254, 0.3), rgba(224, 242, 254, 0.25));
+        border: 1px solid rgba(148, 163, 184, 0.22);
         transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         position: relative;
       }
 
       .news-card:hover {
         transform: translateY(-4px);
-        border-color: rgba(56, 189, 248, 0.35);
-        box-shadow: 0 18px 38px rgba(8, 47, 73, 0.35);
+        border-color: rgba(14, 165, 233, 0.4);
+        box-shadow: 0 18px 38px rgba(59, 130, 246, 0.25);
       }
 
       .news-card h3 {
@@ -159,7 +161,7 @@
       .news-card .meta {
         margin-top: 0.35rem;
         font-size: 0.9rem;
-        color: var(--muted);
+        color: rgba(37, 99, 235, 0.8);
       }
 
       .news-card p {
@@ -171,6 +173,7 @@
         margin-top: 0.9rem;
         display: flex;
         gap: 0.65rem;
+        flex-wrap: wrap;
       }
 
       .btn {
@@ -178,24 +181,26 @@
         border: none;
         border-radius: 14px;
         padding: 0.55rem 1rem;
-        background: rgba(56, 189, 248, 0.14);
-        color: var(--text);
+        background: var(--accent);
+        color: white;
         cursor: pointer;
         transition: background 0.25s ease, transform 0.25s ease;
       }
 
       .btn:hover {
-        background: rgba(14, 165, 233, 0.32);
+        background: var(--accent-strong);
         transform: translateY(-1px);
       }
 
       .btn-outline {
         background: transparent;
-        border: 1px solid rgba(148, 163, 184, 0.35);
+        border: 1px solid rgba(59, 130, 246, 0.35);
+        color: var(--accent-strong);
       }
 
       .btn-outline:hover {
-        border-color: rgba(56, 189, 248, 0.6);
+        border-color: rgba(14, 165, 233, 0.65);
+        background: rgba(191, 219, 254, 0.35);
       }
 
       form {
@@ -207,7 +212,7 @@
         display: grid;
         gap: 0.45rem;
         font-size: 0.95rem;
-        color: rgba(226, 232, 240, 0.78);
+        color: #1f3f75;
       }
 
       input,
@@ -215,9 +220,9 @@
       select {
         font: inherit;
         color: var(--text);
-        background: rgba(15, 23, 42, 0.75);
+        background: rgba(255, 255, 255, 0.95);
         border-radius: 14px;
-        border: 1px solid rgba(148, 163, 184, 0.25);
+        border: 1px solid rgba(148, 163, 184, 0.4);
         padding: 0.65rem 0.9rem;
         transition: border 0.25s ease, box-shadow 0.25s ease;
       }
@@ -226,8 +231,8 @@
       textarea:focus,
       select:focus {
         outline: none;
-        border-color: rgba(56, 189, 248, 0.5);
-        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        border-color: rgba(14, 165, 233, 0.65);
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
       }
 
       textarea {
@@ -250,16 +255,16 @@
         margin-top: 1rem;
         padding: 0.75rem 1rem;
         border-radius: 14px;
-        background: rgba(56, 189, 248, 0.12);
-        border: 1px solid rgba(56, 189, 248, 0.32);
-        color: rgba(226, 232, 240, 0.88);
+        background: rgba(191, 219, 254, 0.5);
+        border: 1px solid rgba(96, 165, 250, 0.5);
+        color: #1e3a8a;
         font-size: 0.95rem;
       }
 
       .helper-text {
         display: block;
         font-size: 0.8rem;
-        color: rgba(148, 163, 184, 0.78);
+        color: rgba(37, 99, 235, 0.7);
       }
 
       .admin-actions {
@@ -276,9 +281,9 @@
       .status-card {
         padding: 1rem 1.25rem;
         border-radius: 16px;
-        background: rgba(56, 189, 248, 0.12);
-        border: 1px solid rgba(56, 189, 248, 0.28);
-        color: rgba(226, 232, 240, 0.85);
+        background: rgba(224, 242, 254, 0.8);
+        border: 1px solid rgba(96, 165, 250, 0.5);
+        color: #1e3a8a;
         font-size: 0.92rem;
         line-height: 1.5;
       }
@@ -301,8 +306,8 @@
         padding: 0.3rem 0.75rem;
         border-radius: 999px;
         font-size: 0.8rem;
-        background: rgba(56, 189, 248, 0.15);
-        color: rgba(226, 232, 240, 0.85);
+        background: rgba(191, 219, 254, 0.7);
+        color: #1e3a8a;
       }
 
       .class-news-header {
@@ -317,16 +322,98 @@
       .empty-state {
         padding: 1.3rem 1.1rem;
         border-radius: 18px;
-        border: 1px dashed rgba(148, 163, 184, 0.35);
-        color: rgba(148, 163, 184, 0.85);
+        border: 1px dashed rgba(148, 163, 184, 0.4);
+        color: rgba(37, 99, 235, 0.7);
         text-align: center;
       }
 
       footer {
         text-align: center;
-        color: rgba(148, 163, 184, 0.7);
+        color: rgba(37, 99, 235, 0.6);
         font-size: 0.85rem;
         margin-bottom: 2.5rem;
+      }
+
+      .attachments-preview {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .attachment-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(191, 219, 254, 0.6);
+        color: #1f2937;
+        font-size: 0.85rem;
+      }
+
+      .attachment-chip button {
+        border: none;
+        background: transparent;
+        color: #1d4ed8;
+        cursor: pointer;
+      }
+
+      .attachments-block {
+        margin-top: 0.85rem;
+        border-top: 1px solid rgba(148, 163, 184, 0.25);
+        padding-top: 0.75rem;
+        display: grid;
+        gap: 0.6rem;
+      }
+
+      .attachment-item {
+        display: grid;
+        gap: 0.35rem;
+      }
+
+      .attachments-block strong {
+        font-size: 0.85rem;
+        color: rgba(37, 99, 235, 0.85);
+      }
+
+      .attachments-block a {
+        color: var(--accent-strong);
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .attachments-block a:hover {
+        text-decoration: underline;
+      }
+
+      .attachment-image {
+        width: 100%;
+        max-height: 220px;
+        object-fit: cover;
+        border-radius: 14px;
+      }
+
+      .form-row.inline {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .pin-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.25rem 0.65rem;
+        border-radius: 999px;
+        background: rgba(250, 204, 21, 0.2);
+        color: #b45309;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      .news-card.pinned {
+        border-color: rgba(250, 204, 21, 0.45);
+        box-shadow: 0 20px 44px rgba(234, 179, 8, 0.25);
       }
     </style>
   </head>
@@ -420,7 +507,33 @@
                 내용
                 <textarea id="general-content" placeholder="공지 내용을 작성하세요" required></textarea>
               </label>
-              <button class="btn" type="submit">공지 등록</button>
+              <label>
+                첨부 파일 또는 사진
+                <input
+                  type="file"
+                  id="general-attachments-input"
+                  multiple
+                  accept="image/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                />
+                <span class="helper-text">여러 파일을 한 번에 선택할 수 있습니다.</span>
+              </label>
+              <label>
+                링크 첨부
+                <div class="form-row two">
+                  <input type="url" id="general-link-input" placeholder="https://example.com" />
+                  <button class="btn-outline btn" type="button" id="general-add-link">링크 추가</button>
+                </div>
+                <span class="helper-text">웹페이지, 드라이브 링크 등을 입력해주세요.</span>
+              </label>
+              <div class="attachments-preview" id="general-attachments-preview"></div>
+              <label class="form-row inline" style="align-items:center;">
+                <input type="checkbox" id="general-pinned" />
+                <span>이 공지를 상단에 고정하기</span>
+              </label>
+              <div class="form-row two">
+                <button class="btn" type="submit" id="general-submit-button">공지 등록</button>
+                <button class="btn-outline btn hidden" type="button" id="general-cancel-edit">취소</button>
+              </div>
             </form>
           </div>
 
@@ -457,7 +570,32 @@
                 내용
                 <textarea id="class-content" placeholder="반 소식을 작성하세요" required></textarea>
               </label>
-              <button class="btn" type="submit">소식 등록</button>
+              <label>
+                첨부 파일 또는 사진
+                <input
+                  type="file"
+                  id="class-attachments-input"
+                  multiple
+                  accept="image/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                />
+                <span class="helper-text">사진이나 파일을 선택하면 자동으로 첨부됩니다.</span>
+              </label>
+              <label>
+                링크 첨부
+                <div class="form-row two">
+                  <input type="url" id="class-link-input" placeholder="https://example.com" />
+                  <button class="btn-outline btn" type="button" id="class-add-link">링크 추가</button>
+                </div>
+              </label>
+              <div class="attachments-preview" id="class-attachments-preview"></div>
+              <label class="form-row inline" style="align-items:center;">
+                <input type="checkbox" id="class-pinned" />
+                <span>이 소식을 우리 반 상단에 고정하기</span>
+              </label>
+              <div class="form-row two">
+                <button class="btn" type="submit" id="class-submit-button">소식 등록</button>
+                <button class="btn-outline btn hidden" type="button" id="class-cancel-edit">취소</button>
+              </div>
             </form>
           </div>
         </div>
@@ -482,11 +620,25 @@
         generalForm: document.getElementById("general-news-form"),
         generalTitle: document.getElementById("general-title"),
         generalContent: document.getElementById("general-content"),
+        generalAttachmentsInput: document.getElementById("general-attachments-input"),
+        generalAttachmentsPreview: document.getElementById("general-attachments-preview"),
+        generalLinkInput: document.getElementById("general-link-input"),
+        generalAddLink: document.getElementById("general-add-link"),
+        generalPinned: document.getElementById("general-pinned"),
+        generalSubmitButton: document.getElementById("general-submit-button"),
+        generalCancelEdit: document.getElementById("general-cancel-edit"),
         classNewsForm: document.getElementById("class-news-form"),
         classGrade: document.getElementById("class-grade"),
         classNumber: document.getElementById("class-number"),
         classTitle: document.getElementById("class-title"),
         classContent: document.getElementById("class-content"),
+        classAttachmentsInput: document.getElementById("class-attachments-input"),
+        classAttachmentsPreview: document.getElementById("class-attachments-preview"),
+        classLinkInput: document.getElementById("class-link-input"),
+        classAddLink: document.getElementById("class-add-link"),
+        classPinned: document.getElementById("class-pinned"),
+        classSubmitButton: document.getElementById("class-submit-button"),
+        classCancelEdit: document.getElementById("class-cancel-edit"),
         adminToken: document.getElementById("admin-token"),
         syncStatusMessage: document.getElementById("sync-status-message"),
         syncRefreshButton: document.getElementById("sync-refresh-button")
@@ -541,6 +693,37 @@
         }
       };
 
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function sanitizeAttachment(raw) {
+        if (!raw || typeof raw !== "object") {
+          return null;
+        }
+        const allowedTypes = new Set(["image", "file", "link"]);
+        const type = allowedTypes.has(raw.type) ? raw.type : "file";
+        const url = typeof raw.url === "string" ? raw.url.trim() : "";
+        if (!url) {
+          return null;
+        }
+        const nameSource = typeof raw.name === "string" ? raw.name : "";
+        const attachment = {
+          id: typeof raw.id === "string" && raw.id ? raw.id : uid(),
+          type,
+          url,
+          name: nameSource.trim() || (type === "link" ? url : "첨부파일"),
+          mime: typeof raw.mime === "string" && raw.mime ? raw.mime : undefined,
+          isExternal: Boolean(raw.isExternal ?? type === "link")
+        };
+        return attachment;
+      }
+
       const defaultData = {
         general: [
           {
@@ -548,14 +731,18 @@
             title: "신학기 전교생 오리엔테이션 안내",
             content:
               "3월 5일(화) 오전 9시, 본교 대강당에서 12기 전교생이 함께하는 오리엔테이션이 진행됩니다. 교복 착용과 필기도구 준비를 잊지 말아주세요!",
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            attachments: [],
+            pinned: true
           },
           {
             id: uid(),
             title: "과학탐구 진로 콘서트 신청",
             content:
               "4월 둘째 주에 열리는 과학탐구 진로 콘서트의 참가 신청을 3월 25일까지 받고 있습니다. 참가 희망자는 포스터의 QR코드로 신청해주세요.",
-            createdAt: new Date(Date.now() - 86400000 * 2).toISOString()
+            createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
+            attachments: [],
+            pinned: false
           }
         ],
         classes: {
@@ -564,7 +751,9 @@
               id: uid(),
               title: "1반 과학실 대청소",
               content: "이번 주 금요일 7교시 종료 후 과학실 대청소가 있습니다. 청소도구는 3조가 준비합니다.",
-              createdAt: new Date(Date.now() - 86400000).toISOString()
+              createdAt: new Date(Date.now() - 86400000).toISOString(),
+              attachments: [],
+              pinned: false
             }
           ],
           "1-2": [
@@ -572,7 +761,9 @@
               id: uid(),
               title: "2반 소프트웨어 스터디",
               content: "매주 수요일 방과후 4층 프로젝트실에서 파이썬 스터디를 진행합니다. 지각 없이 참여해주세요!",
-              createdAt: new Date(Date.now() - 86400000 * 3).toISOString()
+              createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
+              attachments: [],
+              pinned: false
             }
           ],
           "1-3": [],
@@ -602,7 +793,11 @@
           createdAt:
             typeof item.createdAt === "string" && item.createdAt
               ? item.createdAt
-              : new Date().toISOString()
+              : new Date().toISOString(),
+          attachments: Array.isArray(item.attachments)
+            ? item.attachments.map(sanitizeAttachment).filter(Boolean)
+            : [],
+          pinned: Boolean(item.pinned)
         };
         if (!normalized.title.trim() || !normalized.content.trim()) {
           return null;
@@ -829,6 +1024,11 @@
       let data = loadFromCache();
       let currentClassKey = null;
       let isAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY) === "true";
+      let generalAttachments = [];
+      let classAttachments = [];
+      let editingGeneralId = null;
+      let editingClassId = null;
+      let editingClassOriginKey = null;
 
       function formatDate(dateString) {
         try {
@@ -842,6 +1042,216 @@
         }
       }
 
+      function sortNews(items = []) {
+        return items
+          .slice()
+          .sort((a, b) => {
+            if (a.pinned === b.pinned) {
+              return new Date(b.createdAt) - new Date(a.createdAt);
+            }
+            return a.pinned ? -1 : 1;
+          });
+      }
+
+      function renderAttachmentsBlock(attachments = []) {
+        if (!attachments.length) {
+          return "";
+        }
+        const items = attachments
+          .map((attachment) => {
+            const safeName = escapeHtml(attachment.name || "첨부파일");
+            if (attachment.type === "image" && !attachment.isExternal) {
+              return `
+                <div class="attachment-item">
+                  <img src="${attachment.url}" alt="${safeName}" class="attachment-image" />
+                  <a href="${attachment.url}" download="${safeName}">${safeName} 다운로드</a>
+                </div>
+              `;
+            }
+            const attrs = attachment.isExternal
+              ? 'target="_blank" rel="noopener noreferrer"'
+              : `download="${safeName}"`;
+            return `<div class="attachment-item"><a href="${attachment.url}" ${attrs}>${safeName}</a></div>`;
+          })
+          .join("");
+        return `<div class="attachments-block"><strong>첨부</strong>${items}</div>`;
+      }
+
+      function updateAttachmentPreview(scope) {
+        const isGeneral = scope === "general";
+        const container = isGeneral ? dom.generalAttachmentsPreview : dom.classAttachmentsPreview;
+        if (!container) return;
+        const attachments = isGeneral ? generalAttachments : classAttachments;
+        if (!attachments.length) {
+          container.innerHTML = '<span class="helper-text">첨부된 항목이 없습니다.</span>';
+          return;
+        }
+        container.innerHTML = attachments
+          .map((attachment) => {
+            const safeName = escapeHtml(attachment.name || attachment.url || "첨부파일");
+            return `<span class="attachment-chip" data-id="${attachment.id}"><span>${safeName}</span><button type="button" data-remove-id="${attachment.id}">&times;</button></span>`;
+          })
+          .join("");
+      }
+
+      function readFileAttachment(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            resolve({
+              id: uid(),
+              type: file.type.startsWith("image/") ? "image" : "file",
+              name: file.name,
+              url: reader.result,
+              mime: file.type || "application/octet-stream",
+              isExternal: false
+            });
+          };
+          reader.onerror = () => {
+            reject(reader.error || new Error("파일을 불러올 수 없습니다."));
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function addFileAttachments(scope, files) {
+        if (!files?.length) return;
+        const list = Array.from(files).slice(0, 12);
+        try {
+          const loaded = await Promise.all(list.map((file) => readFileAttachment(file)));
+          if (scope === "general") {
+            generalAttachments = generalAttachments.concat(loaded);
+            updateAttachmentPreview("general");
+          } else {
+            classAttachments = classAttachments.concat(loaded);
+            updateAttachmentPreview("class");
+          }
+        } catch (error) {
+          alert("파일을 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.");
+        }
+      }
+
+      function normalizeUrl(raw) {
+        if (!raw) return "";
+        const trimmed = raw.trim();
+        if (!trimmed) return "";
+        const hasProtocol = /^https?:\/\//i.test(trimmed);
+        const candidate = hasProtocol ? trimmed : `https://${trimmed}`;
+        try {
+          const url = new URL(candidate);
+          return url.href;
+        } catch (error) {
+          return "";
+        }
+      }
+
+      function makeLinkAttachment(url) {
+        try {
+          const parsed = new URL(url);
+          const pathname = parsed.pathname === "/" ? "" : parsed.pathname;
+          const label = `${parsed.hostname.replace(/^www\./, "")}${pathname}` || url;
+          return {
+            id: uid(),
+            type: "link",
+            name: label,
+            url,
+            mime: null,
+            isExternal: true
+          };
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function resetGeneralFormState() {
+        dom.generalForm?.reset();
+        generalAttachments = [];
+        editingGeneralId = null;
+        updateAttachmentPreview("general");
+        if (dom.generalSubmitButton) {
+          dom.generalSubmitButton.textContent = "공지 등록";
+        }
+        dom.generalCancelEdit?.classList.add("hidden");
+        if (dom.generalLinkInput) {
+          dom.generalLinkInput.value = "";
+        }
+        if (dom.generalAttachmentsInput) {
+          dom.generalAttachmentsInput.value = "";
+        }
+      }
+
+      function startGeneralEdit(item) {
+        if (!item) return;
+        editingGeneralId = item.id;
+        dom.generalTitle.value = item.title;
+        dom.generalContent.value = item.content;
+        if (dom.generalPinned) {
+          dom.generalPinned.checked = Boolean(item.pinned);
+        }
+        generalAttachments = clone(item.attachments || []);
+        updateAttachmentPreview("general");
+        if (dom.generalSubmitButton) {
+          dom.generalSubmitButton.textContent = "공지 수정";
+        }
+        dom.generalCancelEdit?.classList.remove("hidden");
+        if (dom.generalLinkInput) {
+          dom.generalLinkInput.value = "";
+        }
+        if (dom.generalAttachmentsInput) {
+          dom.generalAttachmentsInput.value = "";
+        }
+        dom.generalForm?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
+      function resetClassFormState() {
+        dom.classNewsForm?.reset();
+        classAttachments = [];
+        editingClassId = null;
+        editingClassOriginKey = null;
+        updateAttachmentPreview("class");
+        if (dom.classSubmitButton) {
+          dom.classSubmitButton.textContent = "소식 등록";
+        }
+        dom.classCancelEdit?.classList.add("hidden");
+        if (dom.classLinkInput) {
+          dom.classLinkInput.value = "";
+        }
+        if (dom.classAttachmentsInput) {
+          dom.classAttachmentsInput.value = "";
+        }
+      }
+
+      function startClassEdit(item, key) {
+        if (!item) return;
+        editingClassId = item.id;
+        editingClassOriginKey = key;
+        const [grade, clazz] = key.split("-");
+        if (dom.classGrade) {
+          dom.classGrade.value = grade;
+        }
+        if (dom.classNumber) {
+          dom.classNumber.value = clazz;
+        }
+        dom.classTitle.value = item.title;
+        dom.classContent.value = item.content;
+        if (dom.classPinned) {
+          dom.classPinned.checked = Boolean(item.pinned);
+        }
+        classAttachments = clone(item.attachments || []);
+        updateAttachmentPreview("class");
+        if (dom.classSubmitButton) {
+          dom.classSubmitButton.textContent = "소식 수정";
+        }
+        dom.classCancelEdit?.classList.remove("hidden");
+        if (dom.classLinkInput) {
+          dom.classLinkInput.value = "";
+        }
+        if (dom.classAttachmentsInput) {
+          dom.classAttachmentsInput.value = "";
+        }
+        dom.classNewsForm?.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+
       function renderGeneralNews() {
         dom.generalList.innerHTML = "";
         if (!data.general.length) {
@@ -849,25 +1259,31 @@
           return;
         }
 
-        data.general
-          .slice()
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .forEach((item) => {
-            const article = document.createElement("article");
-            article.className = "news-card";
-            article.dataset.id = item.id;
-            article.innerHTML = `
-              <h3>${item.title}</h3>
-              <div class="meta">${formatDate(item.createdAt)} · 학년 공지</div>
-              <p>${item.content.replace(/\n/g, "<br>")}</p>
-              ${
-                isAdmin
-                  ? '<div class="news-actions"><button class="btn-outline btn" data-action="edit-general">수정</button><button class="btn-outline btn" data-action="delete-general">삭제</button></div>'
-                  : ""
-              }
-            `;
-            dom.generalList.appendChild(article);
-          });
+        sortNews(data.general).forEach((item) => {
+          const article = document.createElement("article");
+          article.className = `news-card${item.pinned ? " pinned" : ""}`;
+          article.dataset.id = item.id;
+          const contentHtml = item.content.replace(/\n/g, "<br>");
+          article.innerHTML = `
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;">
+              <h3 style="margin:0;">${item.title}</h3>
+              ${item.pinned ? '<span class="pin-indicator">고정</span>' : ""}
+            </div>
+            <div class="meta">${formatDate(item.createdAt)} · 학년 공지</div>
+            <p>${contentHtml}</p>
+            ${renderAttachmentsBlock(item.attachments)}
+            ${
+              isAdmin
+                ? `<div class="news-actions">
+                    <button class="btn-outline btn" data-action="edit-general">수정</button>
+                    <button class="btn-outline btn" data-action="delete-general">삭제</button>
+                    <button class="btn-outline btn" data-action="toggle-pin-general">${item.pinned ? "고정 해제" : "고정"}</button>
+                  </div>`
+                : ""
+            }
+          `;
+          dom.generalList.appendChild(article);
+        });
       }
 
       function ensureClassKey(key) {
@@ -889,25 +1305,32 @@
           return;
         }
 
-        items
-          .slice()
-          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .forEach((item) => {
-            const article = document.createElement("article");
-            article.className = "news-card";
-            article.dataset.id = item.id;
-            article.innerHTML = `
-              <h3>${item.title}</h3>
-              <div class="meta">${formatDate(item.createdAt)} · ${currentClassKey.replace("-", "학년 ")}반</div>
-              <p>${item.content.replace(/\n/g, "<br>")}</p>
-              ${
-                isAdmin
-                  ? '<div class="news-actions"><button class="btn-outline btn" data-action="edit-class">수정</button><button class="btn-outline btn" data-action="delete-class">삭제</button></div>'
-                  : ""
-              }
-            `;
-            dom.classList.appendChild(article);
-          });
+        sortNews(items).forEach((item) => {
+          const article = document.createElement("article");
+          article.className = `news-card${item.pinned ? " pinned" : ""}`;
+          article.dataset.id = item.id;
+          const contentHtml = item.content.replace(/\n/g, "<br>");
+          const classLabel = currentClassKey.replace("-", "학년 ");
+          article.innerHTML = `
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;">
+              <h3 style="margin:0;">${item.title}</h3>
+              ${item.pinned ? '<span class="pin-indicator">고정</span>' : ""}
+            </div>
+            <div class="meta">${formatDate(item.createdAt)} · ${classLabel}반</div>
+            <p>${contentHtml}</p>
+            ${renderAttachmentsBlock(item.attachments)}
+            ${
+              isAdmin
+                ? `<div class="news-actions">
+                    <button class="btn-outline btn" data-action="edit-class">수정</button>
+                    <button class="btn-outline btn" data-action="delete-class">삭제</button>
+                    <button class="btn-outline btn" data-action="toggle-pin-class">${item.pinned ? "고정 해제" : "고정"}</button>
+                  </div>`
+                : ""
+            }
+          `;
+          dom.classList.appendChild(article);
+        });
       }
 
       function setClassPill(text) {
@@ -977,20 +1400,121 @@
         const title = dom.generalTitle.value.trim();
         const content = dom.generalContent.value.trim();
         if (!title || !content) return;
+        const attachments = clone(generalAttachments);
+        const pinned = Boolean(dom.generalPinned?.checked);
+        if (editingGeneralId) {
+          const item = data.general.find((news) => news.id === editingGeneralId);
+          if (!item) {
+            resetGeneralFormState();
+            return;
+          }
+          const originalTitle = item.title;
+          await applyChange(
+            () => {
+              item.title = title;
+              item.content = content;
+              item.attachments = clone(attachments);
+              item.pinned = pinned;
+              item.createdAt = new Date().toISOString();
+            },
+            `학년 공지 수정 - ${originalTitle}`,
+            () => {
+              resetGeneralFormState();
+            }
+          );
+          return;
+        }
+
         await applyChange(
           () => {
             data.general.push({
               id: uid(),
               title,
               content,
+              attachments: clone(attachments),
+              pinned,
               createdAt: new Date().toISOString()
             });
           },
           `학년 공지 등록 - ${title}`,
           () => {
-            dom.generalForm.reset();
+            resetGeneralFormState();
           }
         );
+      });
+
+      dom.generalAttachmentsInput?.addEventListener("change", (event) => {
+        addFileAttachments("general", event.target.files);
+        if (dom.generalAttachmentsInput) {
+          dom.generalAttachmentsInput.value = "";
+        }
+      });
+
+      dom.classAttachmentsInput?.addEventListener("change", (event) => {
+        addFileAttachments("class", event.target.files);
+        if (dom.classAttachmentsInput) {
+          dom.classAttachmentsInput.value = "";
+        }
+      });
+
+      dom.generalAddLink?.addEventListener("click", () => {
+        const normalized = normalizeUrl(dom.generalLinkInput?.value || "");
+        if (!normalized) {
+          alert("올바른 링크를 입력해주세요.");
+          return;
+        }
+        const attachment = makeLinkAttachment(normalized);
+        if (!attachment) {
+          alert("링크를 처리할 수 없습니다. 다시 확인해주세요.");
+          return;
+        }
+        generalAttachments.push(attachment);
+        updateAttachmentPreview("general");
+        if (dom.generalLinkInput) {
+          dom.generalLinkInput.value = "";
+        }
+      });
+
+      dom.classAddLink?.addEventListener("click", () => {
+        const normalized = normalizeUrl(dom.classLinkInput?.value || "");
+        if (!normalized) {
+          alert("올바른 링크를 입력해주세요.");
+          return;
+        }
+        const attachment = makeLinkAttachment(normalized);
+        if (!attachment) {
+          alert("링크를 처리할 수 없습니다. 다시 확인해주세요.");
+          return;
+        }
+        classAttachments.push(attachment);
+        updateAttachmentPreview("class");
+        if (dom.classLinkInput) {
+          dom.classLinkInput.value = "";
+        }
+      });
+
+      dom.generalAttachmentsPreview?.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-remove-id]");
+        if (!button) return;
+        const id = button.dataset.removeId;
+        generalAttachments = generalAttachments.filter((attachment) => attachment.id !== id);
+        updateAttachmentPreview("general");
+      });
+
+      dom.classAttachmentsPreview?.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-remove-id]");
+        if (!button) return;
+        const id = button.dataset.removeId;
+        classAttachments = classAttachments.filter((attachment) => attachment.id !== id);
+        updateAttachmentPreview("class");
+      });
+
+      dom.generalCancelEdit?.addEventListener("click", () => {
+        resetGeneralFormState();
+      });
+
+      dom.classCancelEdit?.addEventListener("click", () => {
+        resetClassFormState();
       });
 
       dom.classNewsForm.addEventListener("submit", async (event) => {
@@ -1003,18 +1527,65 @@
         if (!grade || !clazz || !title || !content) return;
         const key = `${grade}-${clazz}`;
         ensureClassKey(key);
+        const attachments = clone(classAttachments);
+        const pinned = Boolean(dom.classPinned?.checked);
+
+        if (editingClassId) {
+          const originKey = editingClassOriginKey || key;
+          ensureClassKey(originKey);
+          const originItems = data.classes[originKey];
+          const targetItem = originItems.find((news) => news.id === editingClassId);
+          if (!targetItem) {
+            resetClassFormState();
+            return;
+          }
+          const originalTitle = targetItem.title;
+          await applyChange(
+            () => {
+              if (originKey === key) {
+                targetItem.title = title;
+                targetItem.content = content;
+                targetItem.attachments = clone(attachments);
+                targetItem.pinned = pinned;
+                targetItem.createdAt = new Date().toISOString();
+              } else {
+                data.classes[originKey] = originItems.filter((news) => news.id !== editingClassId);
+                ensureClassKey(key);
+                data.classes[key].push({
+                  id: editingClassId,
+                  title,
+                  content,
+                  attachments: clone(attachments),
+                  pinned,
+                  createdAt: new Date().toISOString()
+                });
+              }
+            },
+            `${grade}학년 ${clazz}반 소식 수정 - ${originalTitle}`,
+            () => {
+              resetClassFormState();
+              if (currentClassKey === key || currentClassKey === originKey) {
+                renderClassNews();
+              }
+            }
+          );
+          return;
+        }
+
         await applyChange(
           () => {
             data.classes[key].push({
               id: uid(),
               title,
               content,
+              attachments: clone(attachments),
+              pinned,
               createdAt: new Date().toISOString()
             });
           },
           `${grade}학년 ${clazz}반 소식 등록 - ${title}`,
           () => {
-            dom.classNewsForm.reset();
+            resetClassFormState();
             if (currentClassKey === key) {
               renderClassNews();
             }
@@ -1038,22 +1609,25 @@
             () => {
               data.general = data.general.filter((news) => news.id !== id);
             },
-            `학년 공지 삭제 - ${title}`
+            `학년 공지 삭제 - ${title}`,
+            () => {
+              if (editingGeneralId === id) {
+                resetGeneralFormState();
+              }
+            }
           );
         }
         if (action === "edit-general") {
-          const newTitle = prompt("새 제목을 입력하세요", item.title);
-          if (newTitle === null) return;
-          const newContent = prompt("새 내용을 입력하세요", item.content);
-          if (newContent === null) return;
-          const originalTitle = item.title;
+          startGeneralEdit(item);
+        }
+        if (action === "toggle-pin-general") {
+          const willPin = !item.pinned;
           await applyChange(
             () => {
-              item.title = newTitle.trim() || item.title;
-              item.content = newContent.trim() || item.content;
+              item.pinned = willPin;
               item.createdAt = new Date().toISOString();
             },
-            `학년 공지 수정 - ${originalTitle}`
+            `학년 공지 ${willPin ? "고정" : "고정 해제"} - ${item.title}`
           );
         }
       });
@@ -1075,22 +1649,25 @@
             () => {
               data.classes[currentClassKey] = items.filter((news) => news.id !== id);
             },
-            `${currentClassKey.replace("-", "학년 ")}반 소식 삭제 - ${title}`
+            `${currentClassKey.replace("-", "학년 ")}반 소식 삭제 - ${title}`,
+            () => {
+              if (editingClassId === id) {
+                resetClassFormState();
+              }
+            }
           );
         }
         if (action === "edit-class") {
-          const newTitle = prompt("새 제목을 입력하세요", item.title);
-          if (newTitle === null) return;
-          const newContent = prompt("새 내용을 입력하세요", item.content);
-          if (newContent === null) return;
-          const originalTitle = item.title;
+          startClassEdit(item, currentClassKey);
+        }
+        if (action === "toggle-pin-class") {
+          const willPin = !item.pinned;
           await applyChange(
             () => {
-              item.title = newTitle.trim() || item.title;
-              item.content = newContent.trim() || item.content;
+              item.pinned = willPin;
               item.createdAt = new Date().toISOString();
             },
-            `${currentClassKey.replace("-", "학년 ")}반 소식 수정 - ${originalTitle}`
+            `${currentClassKey.replace("-", "학년 ")}반 소식 ${willPin ? "고정" : "고정 해제"} - ${item.title}`
           );
         }
       });
@@ -1100,6 +1677,8 @@
       });
 
       function initialize() {
+        resetGeneralFormState();
+        resetClassFormState();
         renderGeneralNews();
         renderClassNews();
         if (isAdmin) {
