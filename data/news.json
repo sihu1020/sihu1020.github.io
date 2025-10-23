@@ -5,6 +5,12 @@
       "title": "야구",
       "content": "보자",
       "createdAt": "2025-10-23T06:25:58.775Z"
+    },
+    {
+      "id": "b5ddd64c-a5de-4b42-a485-d2a4d4c14bd6",
+      "title": "축구",
+      "content": "보자",
+      "createdAt": "2025-10-23T06:26:45.833Z"
     }
   ],
   "classes": {
