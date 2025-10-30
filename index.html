@@ -3,27 +3,28 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>동신과학고 12기 뉴스룸</title>
+    <title>21세기 축구 티어리스트</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
         color-scheme: light;
-        --bg: #f8fbff;
-        --bg-soft: rgba(224, 242, 254, 0.6);
-        --surface: rgba(255, 255, 255, 0.92);
+        --bg: #f5f8ff;
+        --bg-accent: #dbeafe;
+        --surface: rgba(255, 255, 255, 0.9);
         --surface-solid: #ffffff;
-        --accent: #0ea5e9;
-        --accent-strong: #0284c7;
-        --accent-soft: rgba(14, 165, 233, 0.14);
-        --text: #1f2937;
+        --border: rgba(59, 130, 246, 0.25);
+        --text: #0f172a;
         --muted: #475569;
-        --border: rgba(148, 163, 184, 0.28);
-        --shadow: 0 22px 45px rgba(15, 118, 205, 0.18);
+        --accent: #2563eb;
+        --accent-strong: #1d4ed8;
+        --accent-soft: rgba(37, 99, 235, 0.08);
+        --warning: #f97316;
+        --shadow: 0 25px 55px rgba(37, 99, 235, 0.16);
       }
 
       * {
@@ -33,1661 +34,944 @@
       html,
       body {
         margin: 0;
+        padding: 0;
         font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
         background:
-          radial-gradient(circle at top right, rgba(186, 230, 253, 0.6), transparent 45%),
-          radial-gradient(circle at bottom left, rgba(191, 219, 254, 0.5), transparent 55%),
+          radial-gradient(circle at top right, rgba(191, 219, 254, 0.6), transparent 55%),
+          radial-gradient(circle at bottom left, rgba(219, 234, 254, 0.75), transparent 65%),
           var(--bg);
-        color: var(--text);
         min-height: 100vh;
+        color: var(--text);
       }
 
       main {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 2.75rem 1.75rem 4rem;
+        padding: 2.5rem 1.5rem 4rem;
         display: grid;
         gap: 2rem;
       }
 
-      header {
-        display: grid;
-        gap: 1.75rem;
-        padding: 2.2rem;
+      header.hero {
+        background: linear-gradient(140deg, rgba(219, 234, 254, 0.9), rgba(191, 219, 254, 0.6));
+        border: 1px solid rgba(59, 130, 246, 0.25);
         border-radius: 32px;
-        background: linear-gradient(135deg, rgba(224, 242, 254, 0.9), rgba(191, 219, 254, 0.7));
-        border: 1px solid rgba(125, 211, 252, 0.4);
-        box-shadow: var(--shadow);
+        padding: 2.5rem;
         position: relative;
         overflow: hidden;
+        box-shadow: var(--shadow);
       }
 
-      header::after {
+      header.hero::after {
         content: "";
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 12% 25%, rgba(59, 130, 246, 0.25), transparent 55%);
-        opacity: 0.9;
+        background: radial-gradient(circle at 18% 22%, rgba(37, 99, 235, 0.2), transparent 55%);
         pointer-events: none;
       }
 
-      .branding {
-        display: flex;
-        gap: 1.25rem;
-        align-items: center;
+      header.hero > * {
         position: relative;
         z-index: 1;
       }
 
-      .branding img {
-        width: clamp(82px, 18vw, 108px);
-        aspect-ratio: 1;
-        object-fit: contain;
-        border-radius: 50%;
-        border: 2px solid rgba(125, 211, 252, 0.45);
-        padding: 0.65rem;
-        background: rgba(191, 219, 254, 0.65);
-        backdrop-filter: blur(4px);
+      header.hero h1 {
+        margin: 0;
+        font-size: clamp(2.1rem, 3.6vw, 2.9rem);
+        color: #1e3a8a;
       }
 
-      .branding h1 {
-        margin: 0;
-        font-size: clamp(2.1rem, 4vw, 2.8rem);
-        letter-spacing: 0.02em;
-        color: #0f172a;
-      }
-
-      .tagline {
-        margin: 0;
+      header.hero p {
+        margin: 0.75rem 0 0;
         color: #1d4ed8;
-        font-weight: 500;
+        line-height: 1.7;
+        font-size: 1.05rem;
       }
 
-      .grid-two {
+      header.hero ul {
+        margin: 1.5rem 0 0;
+        padding-left: 1.25rem;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .workspace {
         display: grid;
-        gap: 1.6rem;
+        gap: 2rem;
       }
 
-      @media (min-width: 900px) {
-        .grid-two {
-          grid-template-columns: 1.35fr 1fr;
+      @media (min-width: 1080px) {
+        .workspace {
+          grid-template-columns: 360px 1fr;
+          align-items: start;
         }
       }
 
-      section.card {
+      .panel {
         background: var(--surface);
-        border-radius: 26px;
         border: 1px solid var(--border);
-        padding: 2rem;
-        position: relative;
-        backdrop-filter: blur(6px);
-        box-shadow: 0 16px 40px rgba(148, 197, 235, 0.35);
+        border-radius: 26px;
+        padding: 1.75rem;
+        box-shadow: 0 22px 60px rgba(59, 130, 246, 0.18);
+        position: sticky;
+        top: 24px;
       }
 
-      section.card h2 {
-        margin-top: 0;
-        margin-bottom: 1.5rem;
+      .panel h2 {
+        margin: 0;
         font-size: 1.45rem;
         font-weight: 600;
       }
 
-      .news-list {
+      .current-player {
+        margin-top: 1.5rem;
         display: grid;
         gap: 1.1rem;
       }
 
-      .news-card {
-        padding: 1.3rem 1.4rem;
+      .current-card {
         border-radius: 20px;
-        background: linear-gradient(130deg, rgba(191, 219, 254, 0.3), rgba(224, 242, 254, 0.25));
-        border: 1px solid rgba(148, 163, 184, 0.22);
-        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        position: relative;
+        padding: 1.4rem 1.5rem;
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(191, 219, 254, 0.35));
+        border: 1px solid rgba(59, 130, 246, 0.25);
+        display: grid;
+        gap: 0.75rem;
       }
 
-      .news-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(14, 165, 233, 0.4);
-        box-shadow: 0 18px 38px rgba(59, 130, 246, 0.25);
+      .current-label {
+        font-size: 0.95rem;
+        color: var(--muted);
       }
 
-      .news-card h3 {
+      .current-name {
         margin: 0;
-        font-size: 1.18rem;
-        font-weight: 600;
+        font-size: 1.75rem;
+        font-weight: 700;
       }
 
-      .news-card .meta {
-        margin-top: 0.35rem;
-        font-size: 0.9rem;
-        color: rgba(37, 99, 235, 0.8);
-      }
-
-      .news-card p {
-        margin: 0.9rem 0 0;
-        line-height: 1.6;
-      }
-
-      .news-actions {
-        margin-top: 0.9rem;
+      .current-extra {
         display: flex;
-        gap: 0.65rem;
         flex-wrap: wrap;
-      }
-
-      .btn {
-        font: inherit;
-        border: none;
-        border-radius: 14px;
-        padding: 0.55rem 1rem;
-        background: var(--accent);
-        color: white;
-        cursor: pointer;
-        transition: background 0.25s ease, transform 0.25s ease;
-      }
-
-      .btn:hover {
-        background: var(--accent-strong);
-        transform: translateY(-1px);
-      }
-
-      .btn-outline {
-        background: transparent;
-        border: 1px solid rgba(59, 130, 246, 0.35);
-        color: var(--accent-strong);
-      }
-
-      .btn-outline:hover {
-        border-color: rgba(14, 165, 233, 0.65);
-        background: rgba(191, 219, 254, 0.35);
-      }
-
-      form {
-        display: grid;
-        gap: 0.9rem;
-      }
-
-      label {
-        display: grid;
-        gap: 0.45rem;
-        font-size: 0.95rem;
-        color: #1f3f75;
-      }
-
-      input,
-      textarea,
-      select {
-        font: inherit;
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 14px;
-        border: 1px solid rgba(148, 163, 184, 0.4);
-        padding: 0.65rem 0.9rem;
-        transition: border 0.25s ease, box-shadow 0.25s ease;
-      }
-
-      input:focus,
-      textarea:focus,
-      select:focus {
-        outline: none;
-        border-color: rgba(14, 165, 233, 0.65);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
-      }
-
-      textarea {
-        min-height: 120px;
-        resize: vertical;
-      }
-
-      .form-row {
-        display: grid;
-        gap: 0.75rem;
-      }
-
-      @media (min-width: 720px) {
-        .form-row.two {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-      }
-
-      .status-message {
-        margin-top: 1rem;
-        padding: 0.75rem 1rem;
-        border-radius: 14px;
-        background: rgba(191, 219, 254, 0.5);
-        border: 1px solid rgba(96, 165, 250, 0.5);
-        color: #1e3a8a;
-        font-size: 0.95rem;
-      }
-
-      .helper-text {
-        display: block;
-        font-size: 0.8rem;
-        color: rgba(37, 99, 235, 0.7);
-      }
-
-      .admin-actions {
-        display: flex;
-        gap: 0.75rem;
-        align-items: flex-end;
-        justify-content: flex-end;
-      }
-
-      .admin-actions .btn {
-        flex: 1;
-      }
-
-      .status-card {
-        padding: 1rem 1.25rem;
-        border-radius: 16px;
-        background: rgba(224, 242, 254, 0.8);
-        border: 1px solid rgba(96, 165, 250, 0.5);
-        color: #1e3a8a;
-        font-size: 0.92rem;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 719px) {
-        .admin-actions {
-          flex-direction: column;
-          align-items: stretch;
-        }
-      }
-
-      .hidden {
-        display: none !important;
+        gap: 0.5rem 0.75rem;
+        color: var(--muted);
+        font-size: 0.9rem;
       }
 
       .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.3rem 0.75rem;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        background: rgba(191, 219, 254, 0.7);
-        color: #1e3a8a;
-      }
-
-      .class-news-header {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.75rem;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
-      }
-
-      .empty-state {
-        padding: 1.3rem 1.1rem;
-        border-radius: 18px;
-        border: 1px dashed rgba(148, 163, 184, 0.4);
-        color: rgba(37, 99, 235, 0.7);
-        text-align: center;
-      }
-
-      footer {
-        text-align: center;
-        color: rgba(37, 99, 235, 0.6);
-        font-size: 0.85rem;
-        margin-bottom: 2.5rem;
-      }
-
-      .attachments-preview {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-      }
-
-      .attachment-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 999px;
         background: rgba(191, 219, 254, 0.6);
-        color: #1f2937;
-        font-size: 0.85rem;
-      }
-
-      .attachment-chip button {
-        border: none;
-        background: transparent;
-        color: #1d4ed8;
-        cursor: pointer;
-      }
-
-      .attachments-block {
-        margin-top: 0.85rem;
-        border-top: 1px solid rgba(148, 163, 184, 0.25);
-        padding-top: 0.75rem;
-        display: grid;
-        gap: 0.6rem;
-      }
-
-      .attachment-item {
-        display: grid;
-        gap: 0.35rem;
-      }
-
-      .attachments-block strong {
-        font-size: 0.85rem;
-        color: rgba(37, 99, 235, 0.85);
-      }
-
-      .attachments-block a {
-        color: var(--accent-strong);
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-
-      .attachments-block a:hover {
-        text-decoration: underline;
-      }
-
-      .attachment-image {
-        width: 100%;
-        max-height: 220px;
-        object-fit: cover;
-        border-radius: 14px;
-      }
-
-      .form-row.inline {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .pin-indicator {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.25rem 0.65rem;
+        color: #1e40af;
         border-radius: 999px;
-        background: rgba(250, 204, 21, 0.2);
-        color: #b45309;
-        font-size: 0.75rem;
+        padding: 0.35rem 0.85rem;
+        font-size: 0.85rem;
+        display: inline-flex;
+        gap: 0.4rem;
+        align-items: center;
+      }
+
+      .tier-buttons {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.65rem;
+      }
+
+      .tier-btn,
+      .action-btn {
+        font: inherit;
+        border: none;
+        border-radius: 14px;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .tier-btn {
+        background: rgba(59, 130, 246, 0.14);
+        color: #1d4ed8;
         font-weight: 600;
       }
 
-      .news-card.pinned {
-        border-color: rgba(250, 204, 21, 0.45);
-        box-shadow: 0 20px 44px rgba(234, 179, 8, 0.25);
+      .tier-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 25px rgba(59, 130, 246, 0.18);
+      }
+
+      .tier-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.65rem;
+        margin-top: 0.9rem;
+      }
+
+      .action-btn.primary {
+        background: var(--accent);
+        color: white;
+      }
+
+      .action-btn.secondary {
+        background: rgba(15, 23, 42, 0.06);
+        color: var(--muted);
+      }
+
+      .action-btn.warning {
+        background: rgba(249, 115, 22, 0.12);
+        color: #c2410c;
+        border: 1px solid rgba(249, 115, 22, 0.35);
+      }
+
+      .action-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.12);
+      }
+
+      .status-line {
+        margin-top: 1.1rem;
+        font-size: 0.92rem;
+        color: var(--muted);
+      }
+
+      .boards {
+        display: grid;
+        gap: 1.5rem;
+      }
+
+      .position-card {
+        background: var(--surface-solid);
+        border: 1px solid rgba(148, 163, 184, 0.24);
+        border-radius: 24px;
+        padding: 1.6rem;
+        display: grid;
+        gap: 1.35rem;
+        transition: border 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .position-card.active {
+        border-color: rgba(37, 99, 235, 0.55);
+        box-shadow: 0 16px 40px rgba(37, 99, 235, 0.18);
+      }
+
+      .position-header {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem 1rem;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .position-header h3 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .slot-summary {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .slot-summary .pill {
+        background: rgba(59, 130, 246, 0.12);
+        color: #1d4ed8;
+        font-weight: 600;
+      }
+
+      .tier-grid {
+        display: grid;
+        gap: 1rem;
+      }
+
+      @media (min-width: 900px) {
+        .tier-grid {
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        }
+      }
+
+      .tier-column {
+        background: rgba(241, 245, 249, 0.6);
+        border-radius: 18px;
+        padding: 1rem 1.1rem 1.2rem;
+        border: 1px solid rgba(148, 163, 184, 0.2);
+        min-height: 140px;
+        display: grid;
+        gap: 0.75rem;
+      }
+
+      .tier-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 600;
+        color: #1e293b;
+      }
+
+      .tier-title span {
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      .player-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+        align-content: flex-start;
+        min-height: 44px;
+      }
+
+      .player-chip {
+        padding: 0.45rem 0.75rem;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.14);
+        color: #1e3a8a;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: grab;
+        user-select: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+      }
+
+      .player-chip.dragging {
+        opacity: 0.4;
+      }
+
+      .player-chip:active {
+        cursor: grabbing;
+      }
+
+      .player-chip .tag {
+        font-size: 0.75rem;
+        color: rgba(37, 99, 235, 0.75);
+      }
+
+      .player-list.drop-target {
+        outline: 2px dashed rgba(37, 99, 235, 0.55);
+        outline-offset: 4px;
+      }
+
+      .empty-hint {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 0;
+        pointer-events: none;
+        text-align: center;
+        width: 100%;
+      }
+
+      .note-box {
+        background: rgba(59, 130, 246, 0.08);
+        border-radius: 16px;
+        padding: 1rem 1.1rem;
+        font-size: 0.9rem;
+        color: #1e3a8a;
+        border: 1px solid rgba(59, 130, 246, 0.18);
       }
     </style>
   </head>
   <body>
     <main>
-      <header>
-        <div class="branding">
-          <div>
-            <h1>동신과학고 12기 뉴스</h1>
-            <p class="tagline">우리 모두의 하루를 연결하는 공식 소식 허브</p>
-          </div>
-        </div>
+      <header class="hero">
+        <h1>21세기 축구 포지션별 티어리스트</h1>
+        <p>
+          포지션마다 준비된 선수들을 랜덤으로 추천해 줄게. 원하는 티어와 자리로 배치하고,
+          마음에 들지 않으면 드래그해서 언제든지 재배열해 봐!
+        </p>
+        <ul>
+          <li>Heaven 3명, G.O.A.T 7명, Legend 10명의 제한을 지켜줘.</li>
+          <li>추천된 선수를 배치하거나 스킵하면 자동으로 다음 선수를 불러와.</li>
+          <li>보드 위 선수들은 드래그 앤 드롭으로 위치와 티어를 자유롭게 바꿀 수 있어.</li>
+        </ul>
       </header>
 
-      <div class="grid-two">
-        <section class="card" id="general-news-section">
-          <h2>학년 전체 공지</h2>
-          <div class="news-list" id="general-news-list"></div>
-        </section>
-
-        <section class="card" id="class-news-section">
-          <div class="class-news-header">
-            <h2>우리 반 소식</h2>
-            <span class="pill" id="current-class-pill">반을 선택해주세요</span>
-          </div>
-          <form id="student-id-form" autocomplete="off">
-            <label>
-              학번 입력 (예: 1207)
-              <div class="form-row two">
-                <input type="text" id="student-id" placeholder="학번" maxlength="4" required />
-                <button class="btn" type="submit">확인</button>
-              </div>
-            </label>
-            <p class="status-message hidden" id="student-id-message"></p>
-          </form>
-          <div class="news-list" id="class-news-list"></div>
-        </section>
-      </div>
-
-      <section class="card" id="admin-panel">
-        <div class="class-news-header">
-          <h2>관리자 콘솔</h2>
-          <span class="pill" id="admin-status">비로그인 상태</span>
-        </div>
-        <form id="admin-login-form" autocomplete="off">
-          <div class="form-row two">
-            <label>
-              관리자 비밀번호
-              <input type="password" id="admin-password" placeholder="비밀번호를 입력하세요" />
-            </label>
-            <label>
-              <span style="visibility:hidden">submit</span>
-              <button class="btn" type="submit">로그인</button>
-            </label>
-          </div>
-          <p class="status-message hidden" id="admin-login-message"></p>
-        </form>
-
-        <div id="admin-tools" class="hidden">
-          <div class="status-card">
-            GitHub 저장소에 뉴스를 저장하여 모든 사용자가 새로고침만으로 최신 공지와 반별 소식을 확인할 수 있습니다.
-            토큰은 이 브라우저 세션에만 사용되며 저장되지 않습니다.
-          </div>
-
-          <div class="form-row two">
-            <label>
-              GitHub Personal Access Token
-              <input
-                type="password"
-                id="admin-token"
-                placeholder="repo 권한이 포함된 토큰을 입력하세요"
-                autocomplete="new-password"
-              />
-              <span class="helper-text">토큰이 없으면 저장이 진행되지 않습니다.</span>
-            </label>
-            <div class="admin-actions">
-              <button class="btn-outline btn" type="button" id="sync-refresh-button">최신 데이터 불러오기</button>
+      <div class="workspace">
+        <aside class="panel">
+          <h2>오늘의 추천 선수</h2>
+          <div class="current-player">
+            <div class="current-card" id="current-card">
+              <div class="current-label">대기 중</div>
+              <div class="current-name" id="current-name">선수를 불러오는 중…</div>
+              <div class="current-extra" id="current-extra"></div>
+            </div>
+            <div class="tier-buttons" id="tier-buttons"></div>
+            <div class="actions">
+              <button class="action-btn primary" id="next-player-btn">다음 추천</button>
+              <button class="action-btn warning" id="skip-player-btn">이 선수 스킵</button>
+            </div>
+            <div class="status-line" id="status-line"></div>
+            <div class="note-box">
+              상단 버튼으로 배치하면 해당 포지션 보드에 자동으로 들어가. 티어 칼럼으로 드래그하면
+              순서를 바꿀 수 있어.
             </div>
           </div>
+        </aside>
 
-          <p class="status-message hidden" id="sync-status-message"></p>
-
-          <div class="form-row">
-            <h3 style="margin: 0 0 0.5rem">학년 전체 공지 등록</h3>
-            <form id="general-news-form" autocomplete="off">
-              <label>
-                제목
-                <input type="text" id="general-title" placeholder="제목을 입력하세요" required />
-              </label>
-              <label>
-                내용
-                <textarea id="general-content" placeholder="공지 내용을 작성하세요" required></textarea>
-              </label>
-              <label>
-                첨부 파일 또는 사진
-                <input
-                  type="file"
-                  id="general-attachments-input"
-                  multiple
-                  accept="image/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                />
-                <span class="helper-text">여러 파일을 한 번에 선택할 수 있습니다.</span>
-              </label>
-              <label>
-                링크 첨부
-                <div class="form-row two">
-                  <input type="url" id="general-link-input" placeholder="https://example.com" />
-                  <button class="btn-outline btn" type="button" id="general-add-link">링크 추가</button>
-                </div>
-                <span class="helper-text">웹페이지, 드라이브 링크 등을 입력해주세요.</span>
-              </label>
-              <div class="attachments-preview" id="general-attachments-preview"></div>
-              <label class="form-row inline" style="align-items:center;">
-                <input type="checkbox" id="general-pinned" />
-                <span>이 공지를 상단에 고정하기</span>
-              </label>
-              <div class="form-row two">
-                <button class="btn" type="submit" id="general-submit-button">공지 등록</button>
-                <button class="btn-outline btn hidden" type="button" id="general-cancel-edit">취소</button>
-              </div>
-            </form>
-          </div>
-
-          <div class="form-row" style="margin-top: 2rem">
-            <h3 style="margin: 0 0 0.5rem">반별 소식 등록</h3>
-            <form id="class-news-form" autocomplete="off">
-              <div class="form-row two">
-                <label>
-                  학년
-                  <select id="class-grade" required>
-                    <option value="">선택</option>
-                    <option value="1">1학년</option>
-                    <option value="2">2학년</option>
-                    <option value="3">3학년</option>
-                  </select>
-                </label>
-                <label>
-                  반
-                  <select id="class-number" required>
-                    <option value="">선택</option>
-                    <option value="1">1반</option>
-                    <option value="2">2반</option>
-                    <option value="3">3반</option>
-                    <option value="4">4반</option>
-                    <option value="5">5반</option>
-                  </select>
-                </label>
-              </div>
-              <label>
-                제목
-                <input type="text" id="class-title" placeholder="제목을 입력하세요" required />
-              </label>
-              <label>
-                내용
-                <textarea id="class-content" placeholder="반 소식을 작성하세요" required></textarea>
-              </label>
-              <label>
-                첨부 파일 또는 사진
-                <input
-                  type="file"
-                  id="class-attachments-input"
-                  multiple
-                  accept="image/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                />
-                <span class="helper-text">사진이나 파일을 선택하면 자동으로 첨부됩니다.</span>
-              </label>
-              <label>
-                링크 첨부
-                <div class="form-row two">
-                  <input type="url" id="class-link-input" placeholder="https://example.com" />
-                  <button class="btn-outline btn" type="button" id="class-add-link">링크 추가</button>
-                </div>
-              </label>
-              <div class="attachments-preview" id="class-attachments-preview"></div>
-              <label class="form-row inline" style="align-items:center;">
-                <input type="checkbox" id="class-pinned" />
-                <span>이 소식을 우리 반 상단에 고정하기</span>
-              </label>
-              <div class="form-row two">
-                <button class="btn" type="submit" id="class-submit-button">소식 등록</button>
-                <button class="btn-outline btn hidden" type="button" id="class-cancel-edit">취소</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
-
-      <footer>© 2024 동신과학고 12기 뉴스룸 · 실시간으로 공유되는 우리 반 이야기</footer>
+        <section class="boards" id="boards"></section>
+      </div>
     </main>
 
     <script>
-      const dom = {
-        generalList: document.getElementById("general-news-list"),
-        classList: document.getElementById("class-news-list"),
-        classPill: document.getElementById("current-class-pill"),
-        classForm: document.getElementById("student-id-form"),
-        studentIdInput: document.getElementById("student-id"),
-        studentIdMessage: document.getElementById("student-id-message"),
-        adminStatus: document.getElementById("admin-status"),
-        adminLoginForm: document.getElementById("admin-login-form"),
-        adminPassword: document.getElementById("admin-password"),
-        adminLoginMessage: document.getElementById("admin-login-message"),
-        adminTools: document.getElementById("admin-tools"),
-        generalForm: document.getElementById("general-news-form"),
-        generalTitle: document.getElementById("general-title"),
-        generalContent: document.getElementById("general-content"),
-        generalAttachmentsInput: document.getElementById("general-attachments-input"),
-        generalAttachmentsPreview: document.getElementById("general-attachments-preview"),
-        generalLinkInput: document.getElementById("general-link-input"),
-        generalAddLink: document.getElementById("general-add-link"),
-        generalPinned: document.getElementById("general-pinned"),
-        generalSubmitButton: document.getElementById("general-submit-button"),
-        generalCancelEdit: document.getElementById("general-cancel-edit"),
-        classNewsForm: document.getElementById("class-news-form"),
-        classGrade: document.getElementById("class-grade"),
-        classNumber: document.getElementById("class-number"),
-        classTitle: document.getElementById("class-title"),
-        classContent: document.getElementById("class-content"),
-        classAttachmentsInput: document.getElementById("class-attachments-input"),
-        classAttachmentsPreview: document.getElementById("class-attachments-preview"),
-        classLinkInput: document.getElementById("class-link-input"),
-        classAddLink: document.getElementById("class-add-link"),
-        classPinned: document.getElementById("class-pinned"),
-        classSubmitButton: document.getElementById("class-submit-button"),
-        classCancelEdit: document.getElementById("class-cancel-edit"),
-        adminToken: document.getElementById("admin-token"),
-        syncStatusMessage: document.getElementById("sync-status-message"),
-        syncRefreshButton: document.getElementById("sync-refresh-button")
+      const tierOrder = [
+        "Heaven",
+        "G.O.A.T",
+        "Legend",
+        "Worldclass",
+        "Good",
+        "Normal",
+        "Not good",
+      ];
+
+      const tierLimits = {
+        Heaven: 3,
+        "G.O.A.T": 7,
+        Legend: 10,
       };
 
-      const STORAGE_KEY = "dongsin-news-data";
-      const ADMIN_SESSION_KEY = "dongsin-news-admin";
-      const ADMIN_PASSWORD = "0928";
-      const GITHUB_CONFIG = {
-        owner: "sihu1020",
-        repo: "sihu1020.github.io",
-        path: "data/news.json",
-        branch: "main"
-      };
-
-      const STATUS_STYLES = {
-        info: {
-          background: "rgba(56, 189, 248, 0.12)",
-          border: "rgba(56, 189, 248, 0.32)"
-        },
-        success: {
-          background: "rgba(34, 197, 94, 0.16)",
-          border: "rgba(74, 222, 128, 0.38)"
-        },
-        error: {
-          background: "rgba(248, 113, 113, 0.18)",
-          border: "rgba(248, 113, 113, 0.45)"
-        }
-      };
-
-      const textEncoder = new TextEncoder();
-      const textDecoder = new TextDecoder();
-
-      let statusTimeout = null;
-      let remoteSha = null;
-      let isSaving = false;
-      let isFetching = false;
-      let hasInitialSync = false;
-
-      function uid() {
-        if (window.crypto?.randomUUID) {
-          return crypto.randomUUID();
-        }
-        return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-      }
-
-      const clone = (value) => {
-        try {
-          return structuredClone(value);
-        } catch (error) {
-          return JSON.parse(JSON.stringify(value));
-        }
-      };
-
-      function escapeHtml(value) {
-        return String(value ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#39;");
-      }
-
-      function sanitizeAttachment(raw) {
-        if (!raw || typeof raw !== "object") {
-          return null;
-        }
-        const allowedTypes = new Set(["image", "file", "link"]);
-        const type = allowedTypes.has(raw.type) ? raw.type : "file";
-        const url = typeof raw.url === "string" ? raw.url.trim() : "";
-        if (!url) {
-          return null;
-        }
-        const nameSource = typeof raw.name === "string" ? raw.name : "";
-        const attachment = {
-          id: typeof raw.id === "string" && raw.id ? raw.id : uid(),
-          type,
-          url,
-          name: nameSource.trim() || (type === "link" ? url : "첨부파일"),
-          mime: typeof raw.mime === "string" && raw.mime ? raw.mime : undefined,
-          isExternal: Boolean(raw.isExternal ?? type === "link")
-        };
-        return attachment;
-      }
-
-      const defaultData = {
-        general: [
-          {
-            id: uid(),
-            title: "신학기 전교생 오리엔테이션 안내",
-            content:
-              "3월 5일(화) 오전 9시, 본교 대강당에서 12기 전교생이 함께하는 오리엔테이션이 진행됩니다. 교복 착용과 필기도구 준비를 잊지 말아주세요!",
-            createdAt: new Date().toISOString(),
-            attachments: [],
-            pinned: true
-          },
-          {
-            id: uid(),
-            title: "과학탐구 진로 콘서트 신청",
-            content:
-              "4월 둘째 주에 열리는 과학탐구 진로 콘서트의 참가 신청을 3월 25일까지 받고 있습니다. 참가 희망자는 포스터의 QR코드로 신청해주세요.",
-            createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-            attachments: [],
-            pinned: false
-          }
+      const positionPlayers = {
+        GK: [
+          "잔루이지 부폰",
+          "이케르 카시야스",
+          "마누엘 노이어",
+          "페트르 체흐",
+          "티보 쿠르투아",
+          "반데사르",
+          "위고 요리스",
+          "얀 오블락",
+          "알리송 베커",
+          "다비드 데 헤아",
+          "에데르송",
+          "케일러 나바스",
+          "테어 슈테겐",
+          "잔루이지 돈나룸마",
+          "브라보",
+          "줄리우 세자르",
+          "루이 파트리시우",
+          "카스퍼 슈마이켈",
+          "얀 좀머",
+          "빅토르 발데스",
+          "페르난도 무슬레라",
+          "슈체스니",
+          "마이크 메냥",
+          "스티브 망당다",
+          "조 하트",
+          "조던 픽포드",
+          "디오구 코스타",
+          "시몽 미뇰레",
+          "베른트 레노",
+          "케빈 트랍",
+          "안드레 오나나",
+          "이고르 아킨페예프",
+          "페페 레이나",
+          "에밀리아노 마르티네스",
+          "예지 두덱",
+          "프레이저 포스터",
+          "우나이 시몬",
+          "수바시치",
+          "올리버 칸",
+          "디다",
+          "페터 슈마이켈",
+          "옌스 레만",
+          "한다노비치",
         ],
-        classes: {
-          "1-1": [
-            {
-              id: uid(),
-              title: "1반 과학실 대청소",
-              content: "이번 주 금요일 7교시 종료 후 과학실 대청소가 있습니다. 청소도구는 3조가 준비합니다.",
-              createdAt: new Date(Date.now() - 86400000).toISOString(),
-              attachments: [],
-              pinned: false
-            }
-          ],
-          "1-2": [
-            {
-              id: uid(),
-              title: "2반 소프트웨어 스터디",
-              content: "매주 수요일 방과후 4층 프로젝트실에서 파이썬 스터디를 진행합니다. 지각 없이 참여해주세요!",
-              createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-              attachments: [],
-              pinned: false
-            }
-          ],
-          "1-3": [],
-          "1-4": [],
-          "1-5": [],
-          "2-1": [],
-          "2-2": [],
-          "2-3": [],
-          "2-4": [],
-          "2-5": [],
-          "3-1": [],
-          "3-2": [],
-          "3-3": [],
-          "3-4": [],
-          "3-5": []
-        }
+        "LB+RB": [
+          "로베르토 카를로스",
+          "마르셀루",
+          "애슐리 콜",
+          "조르디 알바",
+          "앤드루 로버트슨",
+          "알폰소 데이비스",
+          "데이비드 알라바",
+          "파트리스 에브라",
+          "루크 쇼",
+          "벤 칠웰",
+          "마르쿠스 알론소",
+          "페를랑 멘디",
+          "테오 에르난데스",
+          "호세 가야",
+          "루카스 디뉴",
+          "알렉스 산드로",
+          "필립 람",
+          "다니 아우베스",
+          "카푸",
+          "카일 워커",
+          "트렌트 알렉산더 아놀드",
+          "주앙 칸셀루",
+          "하키미",
+          "마이콘",
+          "사네티",
+          "파바르",
+          "카르바할",
+          "리스 제임스",
+          "벤 화이트",
+          "아스필리쿠에타",
+          "이반 페리시치",
+          "다르미안",
+          "세르히오 레길론",
+          "그리말도",
+          "에메르송 로얄",
+          "트리피어",
+          "잠브로타",
+          "아비달",
+          "개리 네빌",
+        ],
+        CB: [
+          "말디니",
+          "네스타",
+          "칸나바로",
+          "키엘리니",
+          "보누치",
+          "세르히오 라모스",
+          "푸욜",
+          "피케",
+          "반 다이크",
+          "퍼디난드",
+          "비디치",
+          "스탐",
+          "테리",
+          "콤파니",
+          "티아구 실바",
+          "마르퀴뇨스",
+          "루카스 에르난데스",
+          "디에고 고딘",
+          "호세 히메네스",
+          "루시우",
+          "에데르 밀리탕",
+          "페페",
+          "루벤 디아스",
+          "라포르테",
+          "가브리엘 마갈량이스",
+          "윌리암 살리바",
+          "쥘 쿤데",
+          "우파메카노",
+          "마티프",
+          "코나테",
+          "데 리흐트",
+          "스톤스",
+          "아케",
+          "뤼디거",
+          "크리스텐센",
+          "김민재",
+          "토모리",
+          "오타멘디",
+          "보아텡",
+          "훔멜스",
+          "바디아실",
+          "토비 알데르베이럴트",
+          "얀 베르통언",
+          "나초 페르난데스",
+          "솔 켐벨",
+          "카르발류",
+        ],
+        CDM: [],
+        CM: [],
+        CAM: [],
+        ST: [],
+        LW: [],
+        RW: [],
       };
 
-      function sanitizeNewsItem(item) {
-        if (!item || typeof item !== "object") {
-          return null;
-        }
-        const normalized = {
-          id: typeof item.id === "string" && item.id ? item.id : uid(),
-          title: typeof item.title === "string" ? item.title : String(item.title ?? ""),
-          content: typeof item.content === "string" ? item.content : String(item.content ?? ""),
-          createdAt:
-            typeof item.createdAt === "string" && item.createdAt
-              ? item.createdAt
-              : new Date().toISOString(),
-          attachments: Array.isArray(item.attachments)
-            ? item.attachments.map(sanitizeAttachment).filter(Boolean)
-            : [],
-          pinned: Boolean(item.pinned)
-        };
-        if (!normalized.title.trim() || !normalized.content.trim()) {
-          return null;
-        }
-        return normalized;
-      }
+      const state = {};
+      let currentPick = null;
+      let draggedPlayer = null;
 
-      function sanitizeData(raw) {
-        if (!raw || typeof raw !== "object") {
-          return clone(defaultData);
-        }
+      const boardsContainer = document.getElementById("boards");
+      const tierButtonsContainer = document.getElementById("tier-buttons");
+      const currentNameEl = document.getElementById("current-name");
+      const currentLabelEl = document.getElementById("current-card");
+      const currentExtraEl = document.getElementById("current-extra");
+      const statusLineEl = document.getElementById("status-line");
+      const nextPlayerBtn = document.getElementById("next-player-btn");
+      const skipPlayerBtn = document.getElementById("skip-player-btn");
 
-        const sanitized = {
-          general: Array.isArray(raw.general)
-            ? raw.general.map(sanitizeNewsItem).filter(Boolean)
-            : [],
-          classes: {}
-        };
+      const positionCards = new Map();
+      const tierLists = new Map();
 
-        const classes = raw.classes && typeof raw.classes === "object" ? raw.classes : {};
-        const classKeys = new Set([...Object.keys(defaultData.classes), ...Object.keys(classes)]);
-
-        classKeys.forEach((key) => {
-          const list = Array.isArray(classes[key]) ? classes[key] : [];
-          sanitized.classes[key] = list.map(sanitizeNewsItem).filter(Boolean);
-        });
-
-        return sanitized;
-      }
-
-      function loadFromCache() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return clone(defaultData);
-          const parsed = JSON.parse(raw);
-          return sanitizeData(parsed);
-        } catch (error) {
-          console.error("캐시 불러오기 실패", error);
-          return clone(defaultData);
-        }
-      }
-
-      function updateCache(snapshot) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-        } catch (error) {
-          console.warn("캐시 저장 실패", error);
-        }
-      }
-
-      function setSyncStatus(message, type = "info", persistent = false) {
-        if (!dom.syncStatusMessage) return;
-        const styles = STATUS_STYLES[type] ?? STATUS_STYLES.info;
-        dom.syncStatusMessage.textContent = message;
-        dom.syncStatusMessage.style.background = styles.background;
-        dom.syncStatusMessage.style.borderColor = styles.border;
-        dom.syncStatusMessage.classList.remove("hidden");
-        if (statusTimeout) {
-          clearTimeout(statusTimeout);
-        }
-        if (!persistent) {
-          statusTimeout = setTimeout(() => {
-            dom.syncStatusMessage.classList.add("hidden");
-          }, 5000);
-        }
-      }
-
-      function encodeContent(payload) {
-        const json = JSON.stringify(payload, null, 2);
-        const bytes = textEncoder.encode(json);
-        let binary = "";
-        bytes.forEach((byte) => {
-          binary += String.fromCharCode(byte);
-        });
-        return btoa(binary);
-      }
-
-      function decodeContent(content) {
-        const cleaned = (content ?? "").replace(/\n/g, "");
-        const binary = atob(cleaned);
-        const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-        return textDecoder.decode(bytes);
-      }
-
-      function getGitHubContentUrl() {
-        return `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}?ref=${GITHUB_CONFIG.branch}`;
-      }
-
-      async function syncFromRemote(options = {}) {
-        const { showMessage = false } = options;
-        if (isSaving) {
-          if (showMessage) {
-            setSyncStatus("변경 사항을 저장 중입니다. 잠시 후 다시 시도하세요.");
-          }
-          return false;
-        }
-        if (isFetching) {
-          return false;
-        }
-        isFetching = true;
-        if (showMessage) {
-          setSyncStatus("최신 데이터를 불러오는 중입니다...", "info", true);
-        }
-        try {
-          const response = await fetch(getGitHubContentUrl(), {
-            headers: {
-              Accept: "application/vnd.github+json"
-            },
-            cache: "no-store"
+      function initState() {
+        Object.entries(positionPlayers).forEach(([position, players]) => {
+          const tiers = {};
+          tierOrder.forEach((tier) => {
+            tiers[tier] = [];
           });
-          if (response.status === 404) {
-            remoteSha = null;
-            hasInitialSync = true;
-            updateCache(data);
-            renderGeneralNews();
-            renderClassNews();
-            if (showMessage) {
-              setSyncStatus("새 데이터 파일을 생성할 준비가 되었습니다.", "success");
-            }
-            return true;
-          }
-          if (!response.ok) {
-            throw new Error(`원격 데이터를 불러오지 못했습니다: ${response.status}`);
-          }
-          const payload = await response.json();
-          const decoded = decodeContent(payload.content ?? "");
-          const parsed = JSON.parse(decoded);
-          data = sanitizeData(parsed);
-          remoteSha = payload.sha;
-          updateCache(data);
-          renderGeneralNews();
-          renderClassNews();
-          hasInitialSync = true;
-          if (showMessage) {
-            setSyncStatus("최신 데이터로 동기화되었습니다.", "success");
-          }
-          return true;
-        } catch (error) {
-          console.error("데이터 동기화 실패", error);
-          if (showMessage) {
-            setSyncStatus("데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.", "error", true);
-          }
-          return false;
-        } finally {
-          isFetching = false;
-        }
-      }
-
-      async function saveData(actionDescription = "데이터 업데이트") {
-        if (!isAdmin) {
-          return false;
-        }
-        if (!hasInitialSync) {
-          const synced = await syncFromRemote({ showMessage: true });
-          if (!synced) {
-            return false;
-          }
-        }
-        const token = dom.adminToken?.value.trim();
-        if (!token) {
-          setSyncStatus("GitHub 토큰을 입력해주세요.", "error", true);
-          return false;
-        }
-        if (isSaving) {
-          setSyncStatus("이미 저장 작업이 진행 중입니다.");
-          return false;
-        }
-        isSaving = true;
-        setSyncStatus("변경 사항을 저장하는 중입니다...", "info", true);
-        try {
-          const response = await fetch(getGitHubContentUrl(), {
-            method: "PUT",
-            headers: {
-              Accept: "application/vnd.github+json",
-              Authorization: `token ${token}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              message: `[Newsroom] ${actionDescription}`,
-              content: encodeContent(data),
-              sha: remoteSha ?? undefined,
-              branch: GITHUB_CONFIG.branch
-            })
-          });
-          if (!response.ok) {
-            throw new Error(`저장 실패: ${response.status}`);
-          }
-          const payload = await response.json();
-          remoteSha = payload.content?.sha ?? remoteSha;
-          updateCache(data);
-          hasInitialSync = true;
-          setSyncStatus("변경 사항이 저장되었습니다.", "success");
-          return true;
-        } catch (error) {
-          console.error("데이터 저장 실패", error);
-          setSyncStatus("저장 중 오류가 발생했습니다. 토큰과 저장소 권한을 확인해주세요.", "error", true);
-          return false;
-        } finally {
-          isSaving = false;
-        }
-      }
-
-      function deepCloneData(snapshot) {
-        return clone(snapshot);
-      }
-
-      async function applyChange(mutator, actionDescription, onSuccess) {
-        const previous = deepCloneData(data);
-        mutator();
-        renderGeneralNews();
-        renderClassNews();
-        const saved = await saveData(actionDescription);
-        if (saved) {
-          if (typeof onSuccess === "function") {
-            onSuccess();
-          }
-        } else {
-          data = previous;
-          renderGeneralNews();
-          renderClassNews();
-        }
-      }
-
-      let data = loadFromCache();
-      let currentClassKey = null;
-      let isAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY) === "true";
-      let generalAttachments = [];
-      let classAttachments = [];
-      let editingGeneralId = null;
-      let editingClassId = null;
-      let editingClassOriginKey = null;
-
-      function formatDate(dateString) {
-        try {
-          return new Date(dateString).toLocaleDateString("ko-KR", {
-            month: "short",
-            day: "numeric",
-            weekday: "short"
-          });
-        } catch (error) {
-          return "최근";
-        }
-      }
-
-      function sortNews(items = []) {
-        return items
-          .slice()
-          .sort((a, b) => {
-            if (a.pinned === b.pinned) {
-              return new Date(b.createdAt) - new Date(a.createdAt);
-            }
-            return a.pinned ? -1 : 1;
-          });
-      }
-
-      function renderAttachmentsBlock(attachments = []) {
-        if (!attachments.length) {
-          return "";
-        }
-        const items = attachments
-          .map((attachment) => {
-            const safeName = escapeHtml(attachment.name || "첨부파일");
-            if (attachment.type === "image" && !attachment.isExternal) {
-              return `
-                <div class="attachment-item">
-                  <img src="${attachment.url}" alt="${safeName}" class="attachment-image" />
-                  <a href="${attachment.url}" download="${safeName}">${safeName} 다운로드</a>
-                </div>
-              `;
-            }
-            const attrs = attachment.isExternal
-              ? 'target="_blank" rel="noopener noreferrer"'
-              : `download="${safeName}"`;
-            return `<div class="attachment-item"><a href="${attachment.url}" ${attrs}>${safeName}</a></div>`;
-          })
-          .join("");
-        return `<div class="attachments-block"><strong>첨부</strong>${items}</div>`;
-      }
-
-      function updateAttachmentPreview(scope) {
-        const isGeneral = scope === "general";
-        const container = isGeneral ? dom.generalAttachmentsPreview : dom.classAttachmentsPreview;
-        if (!container) return;
-        const attachments = isGeneral ? generalAttachments : classAttachments;
-        if (!attachments.length) {
-          container.innerHTML = '<span class="helper-text">첨부된 항목이 없습니다.</span>';
-          return;
-        }
-        container.innerHTML = attachments
-          .map((attachment) => {
-            const safeName = escapeHtml(attachment.name || attachment.url || "첨부파일");
-            return `<span class="attachment-chip" data-id="${attachment.id}"><span>${safeName}</span><button type="button" data-remove-id="${attachment.id}">&times;</button></span>`;
-          })
-          .join("");
-      }
-
-      function readFileAttachment(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            resolve({
-              id: uid(),
-              type: file.type.startsWith("image/") ? "image" : "file",
-              name: file.name,
-              url: reader.result,
-              mime: file.type || "application/octet-stream",
-              isExternal: false
-            });
+          state[position] = {
+            available: [...players],
+            skipped: new Set(),
+            tiers,
           };
-          reader.onerror = () => {
-            reject(reader.error || new Error("파일을 불러올 수 없습니다."));
-          };
-          reader.readAsDataURL(file);
         });
       }
 
-      async function addFileAttachments(scope, files) {
-        if (!files?.length) return;
-        const list = Array.from(files).slice(0, 12);
-        try {
-          const loaded = await Promise.all(list.map((file) => readFileAttachment(file)));
-          if (scope === "general") {
-            generalAttachments = generalAttachments.concat(loaded);
-            updateAttachmentPreview("general");
+      function buildTierButtons() {
+        tierOrder.forEach((tier) => {
+          const button = document.createElement("button");
+          button.className = "tier-btn";
+          button.dataset.tier = tier;
+          button.textContent = tier;
+          button.addEventListener("click", () => assignCurrentPlayer(tier));
+          tierButtonsContainer.appendChild(button);
+        });
+      }
+
+      function buildBoards() {
+        Object.keys(positionPlayers).forEach((position) => {
+          const card = document.createElement("section");
+          card.className = "position-card";
+          card.dataset.position = position;
+
+          const header = document.createElement("div");
+          header.className = "position-header";
+
+          const title = document.createElement("h3");
+          title.textContent = position;
+
+          const slotSummary = document.createElement("div");
+          slotSummary.className = "slot-summary";
+
+          ["Heaven", "G.O.A.T", "Legend"].forEach((tier) => {
+            const pill = document.createElement("span");
+            pill.className = "pill";
+            pill.dataset.tier = tier;
+            pill.textContent = `${tier} 남은 0`;
+            slotSummary.appendChild(pill);
+          });
+
+          header.appendChild(title);
+          header.appendChild(slotSummary);
+
+          const tierGrid = document.createElement("div");
+          tierGrid.className = "tier-grid";
+
+          tierOrder.forEach((tier) => {
+            const column = document.createElement("div");
+            column.className = "tier-column";
+
+            const tierTitle = document.createElement("div");
+            tierTitle.className = "tier-title";
+            tierTitle.innerHTML = `${tier} <span></span>`;
+
+            const playerList = document.createElement("div");
+            playerList.className = "player-list";
+            playerList.dataset.position = position;
+            playerList.dataset.tier = tier;
+
+            playerList.addEventListener("dragover", handleDragOver);
+            playerList.addEventListener("drop", handleDrop);
+            playerList.addEventListener("dragleave", handleDragLeave);
+
+            column.appendChild(tierTitle);
+            column.appendChild(playerList);
+            tierGrid.appendChild(column);
+          });
+
+          card.appendChild(header);
+          card.appendChild(tierGrid);
+          boardsContainer.appendChild(card);
+
+          positionCards.set(position, card);
+          tierLists.set(position, card.querySelectorAll(".player-list"));
+        });
+      }
+
+      function updateBoard(position) {
+        const card = positionCards.get(position);
+        if (!card) return;
+
+        const posState = state[position];
+        const summaryPills = card.querySelectorAll(".slot-summary .pill");
+        summaryPills.forEach((pill) => {
+          const tier = pill.dataset.tier;
+          const limit = tierLimits[tier];
+          const remaining = limit - posState.tiers[tier].length;
+          pill.textContent = `${tier} 남은 ${Math.max(remaining, 0)}`;
+        });
+
+        const lists = tierLists.get(position);
+        lists.forEach((listEl) => {
+          const tier = listEl.dataset.tier;
+          const players = posState.tiers[tier];
+          listEl.innerHTML = "";
+          const titleSpan = listEl.previousElementSibling.querySelector("span");
+          if (titleSpan) {
+            const limit = tierLimits[tier];
+            if (limit !== undefined) {
+              titleSpan.textContent = `${players.length}/${limit}`;
+            } else {
+              titleSpan.textContent = `${players.length}명`;
+            }
+          }
+
+          if (!players.length) {
+            const emptyHint = document.createElement("p");
+            emptyHint.className = "empty-hint";
+            emptyHint.textContent = "배치된 선수가 없어요";
+            listEl.appendChild(emptyHint);
           } else {
-            classAttachments = classAttachments.concat(loaded);
-            updateAttachmentPreview("class");
+            players.forEach((player, index) => {
+              const chip = document.createElement("div");
+              chip.className = "player-chip";
+              chip.draggable = true;
+              chip.dataset.player = player;
+              chip.dataset.position = position;
+              chip.dataset.tier = tier;
+              chip.dataset.index = index;
+              chip.textContent = player;
+              chip.addEventListener("dragstart", handleDragStart);
+              chip.addEventListener("dragend", handleDragEnd);
+              listEl.appendChild(chip);
+            });
           }
-        } catch (error) {
-          alert("파일을 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.");
-        }
-      }
-
-      function normalizeUrl(raw) {
-        if (!raw) return "";
-        const trimmed = raw.trim();
-        if (!trimmed) return "";
-        const hasProtocol = /^https?:\/\//i.test(trimmed);
-        const candidate = hasProtocol ? trimmed : `https://${trimmed}`;
-        try {
-          const url = new URL(candidate);
-          return url.href;
-        } catch (error) {
-          return "";
-        }
-      }
-
-      function makeLinkAttachment(url) {
-        try {
-          const parsed = new URL(url);
-          const pathname = parsed.pathname === "/" ? "" : parsed.pathname;
-          const label = `${parsed.hostname.replace(/^www\./, "")}${pathname}` || url;
-          return {
-            id: uid(),
-            type: "link",
-            name: label,
-            url,
-            mime: null,
-            isExternal: true
-          };
-        } catch (error) {
-          return null;
-        }
-      }
-
-      function resetGeneralFormState() {
-        dom.generalForm?.reset();
-        generalAttachments = [];
-        editingGeneralId = null;
-        updateAttachmentPreview("general");
-        if (dom.generalSubmitButton) {
-          dom.generalSubmitButton.textContent = "공지 등록";
-        }
-        dom.generalCancelEdit?.classList.add("hidden");
-        if (dom.generalLinkInput) {
-          dom.generalLinkInput.value = "";
-        }
-        if (dom.generalAttachmentsInput) {
-          dom.generalAttachmentsInput.value = "";
-        }
-      }
-
-      function startGeneralEdit(item) {
-        if (!item) return;
-        editingGeneralId = item.id;
-        dom.generalTitle.value = item.title;
-        dom.generalContent.value = item.content;
-        if (dom.generalPinned) {
-          dom.generalPinned.checked = Boolean(item.pinned);
-        }
-        generalAttachments = clone(item.attachments || []);
-        updateAttachmentPreview("general");
-        if (dom.generalSubmitButton) {
-          dom.generalSubmitButton.textContent = "공지 수정";
-        }
-        dom.generalCancelEdit?.classList.remove("hidden");
-        if (dom.generalLinkInput) {
-          dom.generalLinkInput.value = "";
-        }
-        if (dom.generalAttachmentsInput) {
-          dom.generalAttachmentsInput.value = "";
-        }
-        dom.generalForm?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-
-      function resetClassFormState() {
-        dom.classNewsForm?.reset();
-        classAttachments = [];
-        editingClassId = null;
-        editingClassOriginKey = null;
-        updateAttachmentPreview("class");
-        if (dom.classSubmitButton) {
-          dom.classSubmitButton.textContent = "소식 등록";
-        }
-        dom.classCancelEdit?.classList.add("hidden");
-        if (dom.classLinkInput) {
-          dom.classLinkInput.value = "";
-        }
-        if (dom.classAttachmentsInput) {
-          dom.classAttachmentsInput.value = "";
-        }
-      }
-
-      function startClassEdit(item, key) {
-        if (!item) return;
-        editingClassId = item.id;
-        editingClassOriginKey = key;
-        const [grade, clazz] = key.split("-");
-        if (dom.classGrade) {
-          dom.classGrade.value = grade;
-        }
-        if (dom.classNumber) {
-          dom.classNumber.value = clazz;
-        }
-        dom.classTitle.value = item.title;
-        dom.classContent.value = item.content;
-        if (dom.classPinned) {
-          dom.classPinned.checked = Boolean(item.pinned);
-        }
-        classAttachments = clone(item.attachments || []);
-        updateAttachmentPreview("class");
-        if (dom.classSubmitButton) {
-          dom.classSubmitButton.textContent = "소식 수정";
-        }
-        dom.classCancelEdit?.classList.remove("hidden");
-        if (dom.classLinkInput) {
-          dom.classLinkInput.value = "";
-        }
-        if (dom.classAttachmentsInput) {
-          dom.classAttachmentsInput.value = "";
-        }
-        dom.classNewsForm?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-
-      function renderGeneralNews() {
-        dom.generalList.innerHTML = "";
-        if (!data.general.length) {
-          dom.generalList.innerHTML = '<div class="empty-state">아직 등록된 학년 공지가 없습니다.</div>';
-          return;
-        }
-
-        sortNews(data.general).forEach((item) => {
-          const article = document.createElement("article");
-          article.className = `news-card${item.pinned ? " pinned" : ""}`;
-          article.dataset.id = item.id;
-          const contentHtml = item.content.replace(/\n/g, "<br>");
-          article.innerHTML = `
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;">
-              <h3 style="margin:0;">${item.title}</h3>
-              ${item.pinned ? '<span class="pin-indicator">고정</span>' : ""}
-            </div>
-            <div class="meta">${formatDate(item.createdAt)} · 학년 공지</div>
-            <p>${contentHtml}</p>
-            ${renderAttachmentsBlock(item.attachments)}
-            ${
-              isAdmin
-                ? `<div class="news-actions">
-                    <button class="btn-outline btn" data-action="edit-general">수정</button>
-                    <button class="btn-outline btn" data-action="delete-general">삭제</button>
-                    <button class="btn-outline btn" data-action="toggle-pin-general">${item.pinned ? "고정 해제" : "고정"}</button>
-                  </div>`
-                : ""
-            }
-          `;
-          dom.generalList.appendChild(article);
         });
       }
 
-      function ensureClassKey(key) {
-        if (!data.classes[key]) {
-          data.classes[key] = [];
-        }
+      function updateAllBoards() {
+        Object.keys(positionPlayers).forEach(updateBoard);
+        updateCurrentHighlight();
+        updateControls();
       }
 
-      function renderClassNews() {
-        dom.classList.innerHTML = "";
-        if (!currentClassKey) {
-          dom.classList.innerHTML = '<div class="empty-state">학번을 입력하면 우리 반 소식을 확인할 수 있습니다.</div>';
+      function getAvailablePositions() {
+        return Object.keys(state).filter((position) => state[position].available.length > 0);
+      }
+
+      function pickNextPlayer() {
+        const availablePositions = getAvailablePositions();
+        if (!availablePositions.length) {
+          currentPick = null;
+          renderCurrentPlayer(null);
+          updateControls();
+          setStatus("모든 선수를 배치하거나 스킵했어요!", "info");
           return;
         }
-        ensureClassKey(currentClassKey);
-        const items = data.classes[currentClassKey];
-        if (!items.length) {
-          dom.classList.innerHTML = '<div class="empty-state">아직 우리 반 소식이 없습니다. 첫 소식을 기다려보세요!</div>';
+        const position =
+          availablePositions[Math.floor(Math.random() * availablePositions.length)];
+        const candidates = state[position].available;
+        const player = candidates[Math.floor(Math.random() * candidates.length)];
+        currentPick = { position, player };
+        renderCurrentPlayer(currentPick);
+        updateCurrentHighlight();
+        updateControls();
+      }
+
+      function renderCurrentPlayer(pick) {
+        if (!pick) {
+          currentLabelEl.querySelector(".current-label").textContent = "대기 완료";
+          currentNameEl.textContent = "추천할 선수가 더 이상 없어요";
+          currentExtraEl.innerHTML = "";
           return;
         }
 
-        sortNews(items).forEach((item) => {
-          const article = document.createElement("article");
-          article.className = `news-card${item.pinned ? " pinned" : ""}`;
-          article.dataset.id = item.id;
-          const contentHtml = item.content.replace(/\n/g, "<br>");
-          const classLabel = currentClassKey.replace("-", "학년 ");
-          article.innerHTML = `
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;">
-              <h3 style="margin:0;">${item.title}</h3>
-              ${item.pinned ? '<span class="pin-indicator">고정</span>' : ""}
-            </div>
-            <div class="meta">${formatDate(item.createdAt)} · ${classLabel}반</div>
-            <p>${contentHtml}</p>
-            ${renderAttachmentsBlock(item.attachments)}
-            ${
-              isAdmin
-                ? `<div class="news-actions">
-                    <button class="btn-outline btn" data-action="edit-class">수정</button>
-                    <button class="btn-outline btn" data-action="delete-class">삭제</button>
-                    <button class="btn-outline btn" data-action="toggle-pin-class">${item.pinned ? "고정 해제" : "고정"}</button>
-                  </div>`
-                : ""
-            }
-          `;
-          dom.classList.appendChild(article);
+        const { position, player } = pick;
+        const posState = state[position];
+        const remaining = posState.available.length;
+        const skippedCount = posState.skipped.size;
+
+        currentLabelEl.querySelector(".current-label").textContent = position;
+        currentNameEl.textContent = player;
+        currentExtraEl.innerHTML = "";
+
+        const remainPill = document.createElement("span");
+        remainPill.className = "pill";
+        remainPill.textContent = `남은 후보 ${remaining}`;
+
+        const skippedPill = document.createElement("span");
+        skippedPill.className = "pill";
+        skippedPill.textContent = `스킵 ${skippedCount}`;
+
+        currentExtraEl.append(remainPill, skippedPill);
+      }
+
+      function updateTierButtonsState() {
+        const buttons = tierButtonsContainer.querySelectorAll(".tier-btn");
+        buttons.forEach((btn) => {
+          if (!currentPick) {
+            btn.disabled = true;
+            return;
+          }
+          const tier = btn.dataset.tier;
+          const posState = state[currentPick.position];
+          const limit = tierLimits[tier];
+          const isFull = limit !== undefined && posState.tiers[tier].length >= limit;
+          btn.disabled = Boolean(isFull);
         });
       }
 
-      function setClassPill(text) {
-        dom.classPill.textContent = text;
+      function updateControls() {
+        updateTierButtonsState();
+        const hasAvailable = getAvailablePositions().length > 0;
+        nextPlayerBtn.disabled = !hasAvailable;
+        skipPlayerBtn.disabled = !currentPick;
       }
 
-      function updateAdminUI() {
-        if (isAdmin) {
-          dom.adminStatus.textContent = "관리자 모드 활성화";
-          dom.adminStatus.style.background = "rgba(34, 197, 94, 0.28)";
-          dom.adminStatus.style.color = "#bbf7d0";
-          dom.adminTools.classList.remove("hidden");
-          dom.adminLoginForm.classList.add("hidden");
+      function assignCurrentPlayer(tier) {
+        if (!currentPick) return;
+        const { position, player } = currentPick;
+        const posState = state[position];
+        const targetTier = posState.tiers[tier];
+        const limit = tierLimits[tier];
+        if (limit !== undefined && targetTier.length >= limit) {
+          setStatus(`${tier} 티어는 이미 가득 찼어요!`, "warn");
+          updateTierButtonsState();
+          return;
+        }
+        const index = posState.available.indexOf(player);
+        if (index !== -1) {
+          posState.available.splice(index, 1);
+        }
+        targetTier.push(player);
+        setStatus(`${player} 선수를 ${position}의 ${tier} 티어에 배치했어요.`, "success");
+        currentPick = null;
+        updateBoard(position);
+        pickNextPlayer();
+      }
+
+      function skipCurrentPlayer() {
+        if (!currentPick) return;
+        const { position, player } = currentPick;
+        const posState = state[position];
+        const index = posState.available.indexOf(player);
+        if (index !== -1) {
+          posState.available.splice(index, 1);
+        }
+        posState.skipped.add(player);
+        setStatus(`${player} 선수는 앞으로 추천하지 않을게요.`, "warn");
+        currentPick = null;
+        pickNextPlayer();
+      }
+
+      function updateCurrentHighlight() {
+        positionCards.forEach((card, position) => {
+          if (currentPick && currentPick.position === position) {
+            card.classList.add("active");
+          } else {
+            card.classList.remove("active");
+          }
+        });
+      }
+
+      function setStatus(message, type = "info") {
+        statusLineEl.textContent = message;
+        if (type === "warn") {
+          statusLineEl.style.color = "#c2410c";
+        } else if (type === "success") {
+          statusLineEl.style.color = "#0f766e";
         } else {
-          dom.adminStatus.textContent = "비로그인 상태";
-          dom.adminStatus.style.background = "rgba(56, 189, 248, 0.15)";
-          dom.adminStatus.style.color = "rgba(226, 232, 240, 0.85)";
-          dom.adminTools.classList.add("hidden");
-          dom.adminLoginForm.classList.remove("hidden");
+          statusLineEl.style.color = "var(--muted)";
         }
-        renderGeneralNews();
-        renderClassNews();
       }
 
-      dom.classForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const id = dom.studentIdInput.value.trim();
-        if (!/^\d{4}$/.test(id)) {
-          dom.studentIdMessage.textContent = "학번은 4자리 숫자로 입력해주세요.";
-          dom.studentIdMessage.classList.remove("hidden");
-          return;
-        }
-        dom.studentIdMessage.classList.add("hidden");
-        const grade = id.slice(0, 1);
-        const clazz = id.slice(1, 2);
-        currentClassKey = `${grade}-${clazz}`;
-        ensureClassKey(currentClassKey);
-        setClassPill(`${grade}학년 ${clazz}반 소식`);
-        renderClassNews();
-      });
-
-      dom.adminLoginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const password = dom.adminPassword.value.trim();
-        if (password === ADMIN_PASSWORD) {
-          isAdmin = true;
-          sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
-          dom.adminLoginMessage.textContent = "관리자 인증이 완료되었습니다.";
-          dom.adminLoginMessage.classList.remove("hidden");
-          dom.adminLoginMessage.style.background = "rgba(34, 197, 94, 0.18)";
-          dom.adminLoginMessage.style.borderColor = "rgba(74, 222, 128, 0.35)";
-          dom.adminPassword.value = "";
-          updateAdminUI();
-          setSyncStatus("GitHub 토큰을 입력하면 변경 사항을 저장할 수 있습니다.");
-        } else {
-          dom.adminLoginMessage.textContent = "비밀번호가 일치하지 않습니다.";
-          dom.adminLoginMessage.classList.remove("hidden");
-          dom.adminLoginMessage.style.background = "rgba(248, 113, 113, 0.12)";
-          dom.adminLoginMessage.style.borderColor = "rgba(248, 113, 113, 0.32)";
-          dom.adminPassword.focus();
-        }
-      });
-
-      dom.generalForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        if (!isAdmin) return;
-        const title = dom.generalTitle.value.trim();
-        const content = dom.generalContent.value.trim();
-        if (!title || !content) return;
-        const attachments = clone(generalAttachments);
-        const pinned = Boolean(dom.generalPinned?.checked);
-        if (editingGeneralId) {
-          const item = data.general.find((news) => news.id === editingGeneralId);
-          if (!item) {
-            resetGeneralFormState();
-            return;
-          }
-          const originalTitle = item.title;
-          await applyChange(
-            () => {
-              item.title = title;
-              item.content = content;
-              item.attachments = clone(attachments);
-              item.pinned = pinned;
-              item.createdAt = new Date().toISOString();
-            },
-            `학년 공지 수정 - ${originalTitle}`,
-            () => {
-              resetGeneralFormState();
-            }
-          );
-          return;
-        }
-
-        await applyChange(
-          () => {
-            data.general.push({
-              id: uid(),
-              title,
-              content,
-              attachments: clone(attachments),
-              pinned,
-              createdAt: new Date().toISOString()
-            });
-          },
-          `학년 공지 등록 - ${title}`,
-          () => {
-            resetGeneralFormState();
-          }
-        );
-      });
-
-      dom.generalAttachmentsInput?.addEventListener("change", (event) => {
-        addFileAttachments("general", event.target.files);
-        if (dom.generalAttachmentsInput) {
-          dom.generalAttachmentsInput.value = "";
-        }
-      });
-
-      dom.classAttachmentsInput?.addEventListener("change", (event) => {
-        addFileAttachments("class", event.target.files);
-        if (dom.classAttachmentsInput) {
-          dom.classAttachmentsInput.value = "";
-        }
-      });
-
-      dom.generalAddLink?.addEventListener("click", () => {
-        const normalized = normalizeUrl(dom.generalLinkInput?.value || "");
-        if (!normalized) {
-          alert("올바른 링크를 입력해주세요.");
-          return;
-        }
-        const attachment = makeLinkAttachment(normalized);
-        if (!attachment) {
-          alert("링크를 처리할 수 없습니다. 다시 확인해주세요.");
-          return;
-        }
-        generalAttachments.push(attachment);
-        updateAttachmentPreview("general");
-        if (dom.generalLinkInput) {
-          dom.generalLinkInput.value = "";
-        }
-      });
-
-      dom.classAddLink?.addEventListener("click", () => {
-        const normalized = normalizeUrl(dom.classLinkInput?.value || "");
-        if (!normalized) {
-          alert("올바른 링크를 입력해주세요.");
-          return;
-        }
-        const attachment = makeLinkAttachment(normalized);
-        if (!attachment) {
-          alert("링크를 처리할 수 없습니다. 다시 확인해주세요.");
-          return;
-        }
-        classAttachments.push(attachment);
-        updateAttachmentPreview("class");
-        if (dom.classLinkInput) {
-          dom.classLinkInput.value = "";
-        }
-      });
-
-      dom.generalAttachmentsPreview?.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-remove-id]");
-        if (!button) return;
-        const id = button.dataset.removeId;
-        generalAttachments = generalAttachments.filter((attachment) => attachment.id !== id);
-        updateAttachmentPreview("general");
-      });
-
-      dom.classAttachmentsPreview?.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-remove-id]");
-        if (!button) return;
-        const id = button.dataset.removeId;
-        classAttachments = classAttachments.filter((attachment) => attachment.id !== id);
-        updateAttachmentPreview("class");
-      });
-
-      dom.generalCancelEdit?.addEventListener("click", () => {
-        resetGeneralFormState();
-      });
-
-      dom.classCancelEdit?.addEventListener("click", () => {
-        resetClassFormState();
-      });
-
-      dom.classNewsForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        if (!isAdmin) return;
-        const grade = dom.classGrade.value;
-        const clazz = dom.classNumber.value;
-        const title = dom.classTitle.value.trim();
-        const content = dom.classContent.value.trim();
-        if (!grade || !clazz || !title || !content) return;
-        const key = `${grade}-${clazz}`;
-        ensureClassKey(key);
-        const attachments = clone(classAttachments);
-        const pinned = Boolean(dom.classPinned?.checked);
-
-        if (editingClassId) {
-          const originKey = editingClassOriginKey || key;
-          ensureClassKey(originKey);
-          const originItems = data.classes[originKey];
-          const targetItem = originItems.find((news) => news.id === editingClassId);
-          if (!targetItem) {
-            resetClassFormState();
-            return;
-          }
-          const originalTitle = targetItem.title;
-          await applyChange(
-            () => {
-              if (originKey === key) {
-                targetItem.title = title;
-                targetItem.content = content;
-                targetItem.attachments = clone(attachments);
-                targetItem.pinned = pinned;
-                targetItem.createdAt = new Date().toISOString();
-              } else {
-                data.classes[originKey] = originItems.filter((news) => news.id !== editingClassId);
-                ensureClassKey(key);
-                data.classes[key].push({
-                  id: editingClassId,
-                  title,
-                  content,
-                  attachments: clone(attachments),
-                  pinned,
-                  createdAt: new Date().toISOString()
-                });
-              }
-            },
-            `${grade}학년 ${clazz}반 소식 수정 - ${originalTitle}`,
-            () => {
-              resetClassFormState();
-              if (currentClassKey === key || currentClassKey === originKey) {
-                renderClassNews();
-              }
-            }
-          );
-          return;
-        }
-
-        await applyChange(
-          () => {
-            data.classes[key].push({
-              id: uid(),
-              title,
-              content,
-              attachments: clone(attachments),
-              pinned,
-              createdAt: new Date().toISOString()
-            });
-          },
-          `${grade}학년 ${clazz}반 소식 등록 - ${title}`,
-          () => {
-            resetClassFormState();
-            if (currentClassKey === key) {
-              renderClassNews();
-            }
-          }
-        );
-      });
-
-      dom.generalList.addEventListener("click", async (event) => {
-        const action = event.target.dataset.action;
-        if (!action || !isAdmin) return;
-        const article = event.target.closest(".news-card");
-        if (!article) return;
-        const id = article.dataset.id;
-        const item = data.general.find((news) => news.id === id);
-        if (!item) return;
-
-        if (action === "delete-general") {
-          if (!confirm("이 공지를 삭제할까요?")) return;
-          const title = item.title;
-          await applyChange(
-            () => {
-              data.general = data.general.filter((news) => news.id !== id);
-            },
-            `학년 공지 삭제 - ${title}`,
-            () => {
-              if (editingGeneralId === id) {
-                resetGeneralFormState();
-              }
-            }
-          );
-        }
-        if (action === "edit-general") {
-          startGeneralEdit(item);
-        }
-        if (action === "toggle-pin-general") {
-          const willPin = !item.pinned;
-          await applyChange(
-            () => {
-              item.pinned = willPin;
-              item.createdAt = new Date().toISOString();
-            },
-            `학년 공지 ${willPin ? "고정" : "고정 해제"} - ${item.title}`
-          );
-        }
-      });
-
-      dom.classList.addEventListener("click", async (event) => {
-        const action = event.target.dataset.action;
-        if (!action || !isAdmin || !currentClassKey) return;
-        const article = event.target.closest(".news-card");
-        if (!article) return;
-        const id = article.dataset.id;
-        const items = data.classes[currentClassKey];
-        const item = items.find((news) => news.id === id);
-        if (!item) return;
-
-        if (action === "delete-class") {
-          if (!confirm("이 반 소식을 삭제할까요?")) return;
-          const title = item.title;
-          await applyChange(
-            () => {
-              data.classes[currentClassKey] = items.filter((news) => news.id !== id);
-            },
-            `${currentClassKey.replace("-", "학년 ")}반 소식 삭제 - ${title}`,
-            () => {
-              if (editingClassId === id) {
-                resetClassFormState();
-              }
-            }
-          );
-        }
-        if (action === "edit-class") {
-          startClassEdit(item, currentClassKey);
-        }
-        if (action === "toggle-pin-class") {
-          const willPin = !item.pinned;
-          await applyChange(
-            () => {
-              item.pinned = willPin;
-              item.createdAt = new Date().toISOString();
-            },
-            `${currentClassKey.replace("-", "학년 ")}반 소식 ${willPin ? "고정" : "고정 해제"} - ${item.title}`
-          );
-        }
-      });
-
-      dom.syncRefreshButton?.addEventListener("click", () => {
-        syncFromRemote({ showMessage: true });
-      });
-
-      function initialize() {
-        resetGeneralFormState();
-        resetClassFormState();
-        renderGeneralNews();
-        renderClassNews();
-        if (isAdmin) {
-          updateAdminUI();
-        }
-        syncFromRemote();
+      function handleDragStart(event) {
+        const target = event.currentTarget;
+        target.classList.add("dragging");
+        draggedPlayer = {
+          name: target.dataset.player,
+          position: target.dataset.position,
+          tier: target.dataset.tier,
+          index: Number(target.dataset.index),
+        };
+        event.dataTransfer.effectAllowed = "move";
       }
 
-      initialize();
+      function handleDragEnd(event) {
+        event.currentTarget.classList.remove("dragging");
+        draggedPlayer = null;
+        const lists = document.querySelectorAll(".player-list.drop-target");
+        lists.forEach((list) => list.classList.remove("drop-target"));
+      }
+
+      function handleDragOver(event) {
+        event.preventDefault();
+        const list = event.currentTarget;
+        const { position, tier } = list.dataset;
+        if (!draggedPlayer) return;
+        if (draggedPlayer.position !== position) return;
+        const targetState = state[position].tiers[tier];
+        const limit = tierLimits[tier];
+        const isSameTier = draggedPlayer.tier === tier;
+        if (!isSameTier && limit !== undefined && targetState.length >= limit) {
+          event.dataTransfer.dropEffect = "none";
+          list.classList.remove("drop-target");
+          return;
+        }
+        event.dataTransfer.dropEffect = "move";
+        list.classList.add("drop-target");
+      }
+
+      function handleDragLeave(event) {
+        event.currentTarget.classList.remove("drop-target");
+      }
+
+      function getDragAfterElement(container, x) {
+        const draggableElements = [...container.querySelectorAll(".player-chip:not(.dragging)")];
+        return draggableElements.reduce(
+          (closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = x - (box.left + box.width / 2);
+            if (offset < 0 && offset > closest.offset) {
+              return { offset, element: child };
+            }
+            return closest;
+          },
+          { offset: Number.NEGATIVE_INFINITY, element: null }
+        ).element;
+      }
+
+      function handleDrop(event) {
+        event.preventDefault();
+        const list = event.currentTarget;
+        list.classList.remove("drop-target");
+        if (!draggedPlayer) return;
+        const targetPosition = list.dataset.position;
+        const targetTier = list.dataset.tier;
+        if (draggedPlayer.position !== targetPosition) {
+          setStatus("다른 포지션으로는 이동할 수 없어요.", "warn");
+          return;
+        }
+        const posState = state[targetPosition];
+        const targetArray = posState.tiers[targetTier];
+        const limit = tierLimits[targetTier];
+        const isSameTier = draggedPlayer.tier === targetTier;
+        if (!isSameTier && limit !== undefined && targetArray.length >= limit) {
+          setStatus(`${targetTier} 티어는 더 이상 자리가 없어요!`, "warn");
+          return;
+        }
+
+        const sourceArray = posState.tiers[draggedPlayer.tier];
+        const [playerName] = sourceArray.splice(draggedPlayer.index, 1);
+
+        const afterElement = getDragAfterElement(list, event.clientX);
+        let insertIndex = targetArray.length;
+        if (afterElement) {
+          const afterName = afterElement.dataset.player;
+          insertIndex = targetArray.indexOf(afterName);
+        }
+
+        if (isSameTier && insertIndex > draggedPlayer.index) {
+          insertIndex -= 1;
+        }
+
+        targetArray.splice(insertIndex, 0, playerName);
+        draggedPlayer = null;
+        updateBoard(targetPosition);
+        setStatus(`${playerName} 선수의 위치를 조정했어요.`, "success");
+      }
+
+      nextPlayerBtn.addEventListener("click", () => {
+        setStatus("다른 선수를 찾아볼게요.");
+        pickNextPlayer();
+      });
+
+      skipPlayerBtn.addEventListener("click", () => {
+        skipCurrentPlayer();
+      });
+
+      initState();
+      buildTierButtons();
+      buildBoards();
+      updateAllBoards();
+      pickNextPlayer();
     </script>
   </body>
 </html>
