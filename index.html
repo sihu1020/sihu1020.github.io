@@ -12,19 +12,19 @@
     />
     <style>
       :root {
-        color-scheme: dark;
-        --bg: #05080e;
-        --bg-soft: #0c1421;
-        --panel: rgba(10, 18, 32, 0.92);
-        --panel-border: rgba(125, 145, 188, 0.45);
-        --accent: #ffbf55;
-        --accent-strong: #ff9f1c;
-        --grid-line: rgba(255, 255, 255, 0.07);
-        --card-face: rgba(10, 16, 25, 0.95);
-        --hud-text: #f6f8ff;
-        --danger: #fb7185;
-        --success: #34d399;
-        --info: #38bdf8;
+        color-scheme: light;
+        --bg: #f7fff9;
+        --bg-soft: #e5ffe7;
+        --panel: rgba(255, 255, 255, 0.9);
+        --panel-border: rgba(110, 170, 130, 0.4);
+        --accent: #74da72;
+        --accent-strong: #9ef199;
+        --grid-line: rgba(105, 190, 130, 0.15);
+        --card-face: rgba(255, 255, 255, 0.95);
+        --hud-text: #134b2b;
+        --danger: #e74c3c;
+        --success: #2f9e44;
+        --info: #0f9c9c;
       }
 
       * {
@@ -36,11 +36,11 @@
         min-height: 100vh;
         font-family: "Pretendard", system-ui, sans-serif;
         background:
-          radial-gradient(circle at 20% 15%, rgba(46, 115, 255, 0.25), transparent 55%),
-          radial-gradient(circle at 80% 0%, rgba(255, 90, 90, 0.2), transparent 45%),
-          radial-gradient(circle at 50% 80%, rgba(18, 219, 149, 0.18), transparent 50%),
+          radial-gradient(circle at 15% 10%, rgba(190, 255, 210, 0.8), transparent 55%),
+          radial-gradient(circle at 75% 0%, rgba(255, 255, 255, 0.9), transparent 45%),
+          radial-gradient(circle at 50% 85%, rgba(216, 255, 228, 0.85), transparent 50%),
           var(--bg);
-        color: #e3e8ff;
+        color: #1c2f1d;
       }
 
       #app {
@@ -58,14 +58,14 @@
         font-family: "Orbitron", "Pretendard", sans-serif;
         letter-spacing: 0.12em;
         font-size: clamp(1.4rem, 3.5vw, 2.6rem);
-        color: #f8f9ff;
+        color: #0f5132;
         margin: 0.5rem 0 0;
         text-transform: uppercase;
       }
 
       .logo-title p {
         margin: 0;
-        color: rgba(255, 255, 255, 0.7);
+        color: rgba(19, 66, 38, 0.7);
       }
 
       .logo-actions {
@@ -92,7 +92,7 @@
         border-radius: 18px;
         border: 1px solid var(--panel-border);
         padding: 1.5rem;
-        box-shadow: 0 25px 55px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 25px 55px rgba(91, 140, 106, 0.2);
         display: flex;
         flex-direction: column;
         gap: 0.9rem;
@@ -107,7 +107,7 @@
         display: flex;
         justify-content: space-between;
         font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(19, 66, 38, 0.75);
       }
 
       .btn {
@@ -121,13 +121,13 @@
 
       .btn-primary {
         background: linear-gradient(120deg, var(--accent), var(--accent-strong));
-        color: #1f1204;
+        color: #0f2f1b;
         font-weight: 600;
       }
 
       .btn-primary:hover:enabled {
         transform: translateY(-2px);
-        box-shadow: 0 12px 28px rgba(255, 165, 52, 0.35);
+        box-shadow: 0 12px 28px rgba(116, 218, 114, 0.45);
       }
 
       button:disabled {
@@ -137,15 +137,15 @@
 
       .btn-ghost {
         background: transparent;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(19, 66, 38, 0.25);
+        color: rgba(19, 66, 38, 0.9);
       }
 
       .room-info-chip {
         font-size: 0.78rem;
         letter-spacing: 0.08em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(19, 66, 38, 0.65);
       }
 
       .game-layout {
@@ -164,7 +164,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+        box-shadow: 0 18px 40px rgba(108, 185, 138, 0.25);
       }
 
       .hud-panel.active {
@@ -177,7 +177,7 @@
         font-size: 0.95rem;
         letter-spacing: 0.04em;
         text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(19, 66, 38, 0.85);
       }
 
       .hud-panel strong {
@@ -196,13 +196,13 @@
         width: 0.85rem;
         height: 0.85rem;
         border-radius: 50%;
-        border: 2px solid rgba(255, 255, 255, 0.4);
+        border: 2px solid rgba(19, 66, 38, 0.25);
       }
 
       .progress {
         width: 100%;
         height: 6px;
-        background: rgba(255, 255, 255, 0.08);
+        background: rgba(19, 66, 38, 0.1);
         border-radius: 999px;
         overflow: hidden;
       }
@@ -215,19 +215,19 @@
 
       .hud-panel .meta {
         font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.75);
+        color: rgba(19, 66, 38, 0.75);
       }
 
       .status-line {
         padding: 0.45rem 0.55rem;
         border-radius: 10px;
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(116, 218, 114, 0.12);
         font-size: 0.85rem;
       }
 
       .locked-info {
         font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(19, 66, 38, 0.7);
       }
 
       .hearts {
@@ -238,7 +238,7 @@
       .heart {
         width: 16px;
         height: 14px;
-        background: rgba(255, 255, 255, 0.18);
+        background: rgba(19, 66, 38, 0.12);
         clip-path: path("M8 14s-6-3.9-6-8.1C2 3 3.8 1 6 1c1.4 0 2.3 0.9 2 1.5C8.7 1.9 9.6 1 11 1c2.2 0 4 2 4 4.9C15 10.1 8 14 8 14z");
       }
 
@@ -251,9 +251,9 @@
         grid-column: 2 / span 1;
         background: var(--card-face);
         border-radius: 28px;
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(19, 66, 38, 0.08);
         padding: clamp(1rem, 3vw, 1.75rem);
-        box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.75), 0 30px 60px rgba(0, 0, 0, 0.55);
+        box-shadow: inset 0 0 40px rgba(116, 218, 114, 0.15), 0 30px 40px rgba(109, 174, 128, 0.25);
         position: relative;
         overflow: hidden;
         display: flex;
@@ -267,7 +267,7 @@
         gap: 0.35rem;
         font-size: 0.65rem;
         letter-spacing: 0.08em;
-        opacity: 0.65;
+        opacity: 0.75;
         font-family: "Orbitron", sans-serif;
       }
 
@@ -297,18 +297,18 @@
         grid-template-rows: repeat(20, 1fr);
         gap: 1px;
         background: var(--grid-line);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(19, 66, 38, 0.12);
         position: relative;
       }
 
       .cell {
-        background: rgba(15, 20, 28, 0.9);
+        background: rgba(255, 255, 255, 0.95);
         position: relative;
         cursor: pointer;
       }
 
       .cell:nth-child(odd) {
-        background: rgba(17, 25, 35, 0.92);
+        background: rgba(231, 255, 238, 0.9);
       }
 
       .token {
@@ -320,9 +320,9 @@
         justify-content: center;
         font-size: 0.65rem;
         font-weight: 600;
-        background: rgba(255, 255, 255, 0.12);
-        border: 2px solid rgba(255, 255, 255, 0.25);
-        color: #fff;
+        background: rgba(116, 218, 114, 0.2);
+        border: 2px solid rgba(116, 218, 114, 0.35);
+        color: #0d3a1f;
       }
 
       .token::after {
@@ -334,15 +334,15 @@
         width: 8px;
         height: 8px;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(19, 66, 38, 0.4);
         background: currentColor;
         bottom: 4px;
         right: 4px;
       }
 
       .control-panel {
-        background: rgba(3, 6, 13, 0.75);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(19, 66, 38, 0.1);
         border-radius: 20px;
         padding: 1rem;
         display: flex;
@@ -362,9 +362,9 @@
         width: 120px;
         height: 150px;
         border-radius: 14px;
-        background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.25));
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        background: linear-gradient(145deg, rgba(255, 255, 255, 0.85), rgba(167, 243, 208, 0.7));
+        border: 1px solid rgba(19, 66, 38, 0.15);
+        box-shadow: 0 15px 30px rgba(111, 176, 134, 0.35);
         padding: 0.9rem;
         text-align: center;
         display: flex;
@@ -398,7 +398,7 @@
       .draw-result div {
         padding: 0.6rem;
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.04);
+        background: rgba(116, 218, 114, 0.12);
       }
 
       .action-buttons {
@@ -420,24 +420,25 @@
       .origin-options button {
         padding: 0.35rem 0.7rem;
         border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.18);
-        background: transparent;
+        border: 1px solid rgba(19, 66, 38, 0.2);
+        background: rgba(255, 255, 255, 0.65);
         color: inherit;
         cursor: pointer;
       }
 
       .origin-options button.active {
         border-color: var(--accent);
-        color: var(--accent);
+        color: #0f5132;
+        background: rgba(116, 218, 114, 0.35);
       }
 
       .feedback {
         font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.72);
+        color: rgba(19, 66, 38, 0.8);
       }
 
       .log-panel {
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-top: 1px solid rgba(19, 66, 38, 0.12);
         padding-top: 0.6rem;
         font-size: 0.85rem;
         max-height: 110px;
@@ -448,13 +449,13 @@
       }
 
       .log-panel span {
-        color: rgba(255, 255, 255, 0.65);
+        color: rgba(19, 66, 38, 0.7);
       }
 
       .rules-panel {
         font-size: 0.78rem;
         line-height: 1.5;
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(19, 66, 38, 0.65);
       }
 
       .hud-north {
@@ -495,7 +496,7 @@
       footer {
         text-align: center;
         margin-top: 2rem;
-        color: rgba(255, 255, 255, 0.4);
+        color: rgba(19, 66, 38, 0.45);
         font-size: 0.85rem;
       }
     </style>
@@ -503,20 +504,11 @@
   <body>
     <div id="app"></div>
 
-    <template id="lobby-template">
-      <div class="logo-title">
-        <p>은밀 작전 시스템 접속</p>
-        <h1>수학 서바이벌 로비</h1>
-      </div>
-      <section class="lobby-grid" data-rooms></section>
-    </template>
-
     <template id="game-template">
       <div class="logo-title">
-        <p>선택한 작전 방 <span data-room-name></span></p>
+        <p>메인 작전 구역 · <span data-room-name></span></p>
         <h1>전장 제어 콘솔</h1>
         <div class="logo-actions">
-          <button class="btn btn-ghost" data-back>로비로 돌아가기</button>
           <button class="btn btn-primary" data-randomize>캐릭터 선택</button>
         </div>
       </div>
@@ -524,38 +516,11 @@
     </template>
 
     <script>
-      const rooms = [
-        {
-          id: 1,
-          title: "001 · 진홍의 전략실",
-          desc: "직감형 지휘관을 위한 전투 기록실.",
-          players: "3/5",
-        },
-        {
-          id: 2,
-          title: "002 · 황혼 교차점",
-          desc: "일몰과 함께 열리는 비밀 전장.",
-          players: "4/6",
-        },
-        {
-          id: 3,
-          title: "003 · 블루 아웃포스트",
-          desc: "파란 보초들이 잠들지 않는 초소.",
-          players: "2/4",
-        },
-        {
-          id: 4,
-          title: "004 · 에메랄드 정비고",
-          desc: "회복과 연구가 동시에 이루어지는 곳.",
-          players: "5/6",
-        },
-        {
-          id: 5,
-          title: "005 · 흑야 봉쇄선",
-          desc: "도시 최전선의 봉쇄 구역.",
-          players: "1/4",
-        },
-      ];
+      const mainRoom = {
+        id: 1,
+        title: "메인 전장",
+        desc: "도시 전체가 주시하는 본 작전 구역.",
+      };
 
       const characterDeck = [
         {
@@ -634,8 +599,7 @@
       ];
 
       const state = {
-        rooms,
-        selectedRoom: null,
+        selectedRoom: mainRoom,
         players: [],
         piles: { number: 60, angle: 30 },
         turn: {},
@@ -645,7 +609,6 @@
       };
 
       const app = document.getElementById("app");
-      const lobbyTemplate = document.getElementById("lobby-template");
       const gameTemplate = document.getElementById("game-template");
 
       function resetGameState() {
@@ -677,50 +640,14 @@
         };
         state.logs = [];
         state.charactersAssigned = false;
+        state.selectedRoom = mainRoom;
       }
 
       resetGameState();
 
-      function renderLobby() {
-        const view = lobbyTemplate.content.cloneNode(true);
-        const list = view.querySelector("[data-rooms]");
-        list.innerHTML = state.rooms
-          .map(
-            (room) => `
-              <article class="room-card">
-                <div>
-                  <h2>${room.title}</h2>
-                  <p>${room.desc}</p>
-                </div>
-                <div class="room-meta">
-                  <span>참가자: ${room.players}</span>
-                  <span>#${room.id.toString().padStart(3, "0")}</span>
-                </div>
-                <button class="btn btn-primary" data-join="${room.id}">입장</button>
-              </article>
-            `
-          )
-          .join("");
-
-        list.querySelectorAll("[data-join]").forEach((btn) => {
-          btn.addEventListener("click", () => {
-            const roomId = Number(btn.dataset.join);
-            state.selectedRoom = state.rooms.find((room) => room.id === roomId);
-            resetGameState();
-            render();
-          });
-        });
-        app.replaceChildren(view);
-      }
-
       function renderGame() {
         const view = gameTemplate.content.cloneNode(true);
         view.querySelector("[data-room-name]").textContent = state.selectedRoom?.title ?? "";
-
-        view.querySelector("[data-back]").addEventListener("click", () => {
-          state.selectedRoom = null;
-          render();
-        });
 
         view.querySelector("[data-randomize]").addEventListener("click", () => {
           assignCharacters();
@@ -1207,10 +1134,6 @@
       }
 
       function render() {
-        if (!state.selectedRoom) {
-          renderLobby();
-          return;
-        }
         renderGame();
       }
 
