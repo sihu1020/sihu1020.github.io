@@ -1,5 +1,14 @@
 {
-  "general": [],
+  "general": [
+    {
+      "id": "dce1f0f2-f95f-41e0-b9a1-bbab41135f2f",
+      "title": "2학기 기말고사",
+      "content": "12월 2일 ~ 12월 5일",
+      "attachments": [],
+      "pinned": true,
+      "createdAt": "2025-11-19T07:41:42.505Z"
+    }
+  ],
   "classes": {
     "1-1": [],
     "1-2": [
@@ -24,17 +33,17 @@
         "id": "1461c535-ddf6-4b72-8587-ede9dd159dac",
         "title": "물리 자유탐구 수행평가",
         "content": "11월 21일 금요일 1교시",
+        "createdAt": "2025-11-19T07:39:27.153Z",
         "attachments": [],
-        "pinned": false,
-        "createdAt": "2025-11-19T07:39:27.153Z"
+        "pinned": false
       },
       {
         "id": "54b234d9-0e4c-4e74-8404-57070a83ba48",
         "title": "화학 중화반응 실험",
         "content": "11월 24일 월요일 5,6교시",
+        "createdAt": "2025-11-19T07:40:06.707Z",
         "attachments": [],
-        "pinned": false,
-        "createdAt": "2025-11-19T07:40:06.707Z"
+        "pinned": false
       }
     ],
     "1-3": [],
