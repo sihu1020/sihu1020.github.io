@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>유령도시 작전 로비</title>
+    <title>수학 서바이벌 전장</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,15 +13,18 @@
     <style>
       :root {
         color-scheme: dark;
-        --bg: #070a0f;
-        --bg-soft: #101722;
-        --panel: rgba(19, 28, 43, 0.9);
-        --panel-border: rgba(108, 128, 168, 0.45);
+        --bg: #05080e;
+        --bg-soft: #0c1421;
+        --panel: rgba(10, 18, 32, 0.92);
+        --panel-border: rgba(125, 145, 188, 0.45);
         --accent: #ffbf55;
         --accent-strong: #ff9f1c;
         --grid-line: rgba(255, 255, 255, 0.07);
-        --card-face: rgba(14, 18, 27, 0.95);
+        --card-face: rgba(10, 16, 25, 0.95);
         --hud-text: #f6f8ff;
+        --danger: #fb7185;
+        --success: #34d399;
+        --info: #38bdf8;
       }
 
       * {
@@ -41,7 +44,7 @@
       }
 
       #app {
-        width: min(1200px, 100%);
+        width: min(1280px, 100%);
         margin: 0 auto;
         padding: 2rem clamp(1rem, 4vw, 2.5rem) 4rem;
       }
@@ -63,6 +66,14 @@
       .logo-title p {
         margin: 0;
         color: rgba(255, 255, 255, 0.7);
+      }
+
+      .logo-actions {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: center;
+        gap: 0.75rem;
+        flex-wrap: wrap;
       }
 
       .lobby-grid {
@@ -114,15 +125,27 @@
         font-weight: 600;
       }
 
-      .btn-primary:hover {
+      .btn-primary:hover:enabled {
         transform: translateY(-2px);
         box-shadow: 0 12px 28px rgba(255, 165, 52, 0.35);
+      }
+
+      button:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
       }
 
       .btn-ghost {
         background: transparent;
         border: 1px solid rgba(255, 255, 255, 0.25);
         color: rgba(255, 255, 255, 0.9);
+      }
+
+      .room-info-chip {
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .game-layout {
@@ -140,8 +163,13 @@
         padding: 1rem 1.25rem;
         display: flex;
         flex-direction: column;
-        gap: 0.45rem;
+        gap: 0.5rem;
         box-shadow: 0 18px 40px rgba(0, 0, 0, 0.55);
+      }
+
+      .hud-panel.active {
+        border-color: var(--accent);
+        box-shadow: 0 0 25px rgba(255, 191, 85, 0.25);
       }
 
       .hud-panel h3 {
@@ -190,6 +218,18 @@
         color: rgba(255, 255, 255, 0.75);
       }
 
+      .status-line {
+        padding: 0.45rem 0.55rem;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 0.85rem;
+      }
+
+      .locked-info {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.6);
+      }
+
       .hearts {
         display: flex;
         gap: 0.3rem;
@@ -216,6 +256,9 @@
         box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.75), 0 30px 60px rgba(0, 0, 0, 0.55);
         position: relative;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
       }
 
       .axes-labels {
@@ -255,33 +298,69 @@
         gap: 1px;
         background: var(--grid-line);
         border: 1px solid rgba(255, 255, 255, 0.08);
+        position: relative;
       }
 
       .cell {
         background: rgba(15, 20, 28, 0.9);
         position: relative;
+        cursor: pointer;
       }
 
       .cell:nth-child(odd) {
         background: rgba(17, 25, 35, 0.92);
       }
 
-      .card-piles {
+      .token {
         position: absolute;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        pointer-events: none;
-      }
-
-      .pile-group {
+        inset: 3px;
+        border-radius: 12px;
         display: flex;
-        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.65rem;
+        font-weight: 600;
+        background: rgba(255, 255, 255, 0.12);
+        border: 2px solid rgba(255, 255, 255, 0.25);
+        color: #fff;
       }
 
-      .pile {
+      .token::after {
+        content: attr(data-label);
+      }
+
+      .bullet-marker {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        background: currentColor;
+        bottom: 4px;
+        right: 4px;
+      }
+
+      .control-panel {
+        background: rgba(3, 6, 13, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .card-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .card-pile {
         width: 120px;
-        height: 170px;
+        height: 150px;
         border-radius: 14px;
         background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(0, 0, 0, 0.25));
         border: 1px solid rgba(255, 255, 255, 0.2);
@@ -292,17 +371,90 @@
         flex-direction: column;
         justify-content: center;
         gap: 0.4rem;
-      }
-
-      .pile span {
         font-size: 0.85rem;
-        letter-spacing: 0.08em;
-        opacity: 0.7;
       }
 
-      .pile strong {
+      .card-pile strong {
         font-size: 1.3rem;
         color: var(--accent);
+      }
+
+      .card-options {
+        display: flex;
+        gap: 0.6rem;
+      }
+
+      .card-options button {
+        flex: 1;
+      }
+
+      .draw-result {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 0.6rem;
+        font-size: 0.9rem;
+      }
+
+      .draw-result div {
+        padding: 0.6rem;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 0.6rem;
+      }
+
+      .action-buttons button {
+        flex: 1;
+      }
+
+      .origin-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        font-size: 0.8rem;
+      }
+
+      .origin-options button {
+        padding: 0.35rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      .origin-options button.active {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+
+      .feedback {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.72);
+      }
+
+      .log-panel {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 0.6rem;
+        font-size: 0.85rem;
+        max-height: 110px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .log-panel span {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .rules-panel {
+        font-size: 0.78rem;
+        line-height: 1.5;
+        color: rgba(255, 255, 255, 0.6);
       }
 
       .hud-north {
@@ -340,13 +492,6 @@
         }
       }
 
-      .room-info-chip {
-        font-size: 0.8rem;
-        letter-spacing: 0.06em;
-        text-transform: uppercase;
-        color: rgba(255, 255, 255, 0.6);
-      }
-
       footer {
         text-align: center;
         margin-top: 2rem;
@@ -361,7 +506,7 @@
     <template id="lobby-template">
       <div class="logo-title">
         <p>은밀 작전 시스템 접속</p>
-        <h1>유령도시 방어 로비</h1>
+        <h1>수학 서바이벌 로비</h1>
       </div>
       <section class="lobby-grid" data-rooms></section>
     </template>
@@ -370,93 +515,171 @@
       <div class="logo-title">
         <p>선택한 작전 방 <span data-room-name></span></p>
         <h1>전장 제어 콘솔</h1>
-        <button class="btn btn-ghost" data-back>로비로 돌아가기</button>
+        <div class="logo-actions">
+          <button class="btn btn-ghost" data-back>로비로 돌아가기</button>
+          <button class="btn btn-primary" data-randomize>캐릭터 선택</button>
+        </div>
       </div>
       <section class="game-layout" data-game></section>
     </template>
 
     <script>
+      const rooms = [
+        {
+          id: 1,
+          title: "001 · 진홍의 전략실",
+          desc: "직감형 지휘관을 위한 전투 기록실.",
+          players: "3/5",
+        },
+        {
+          id: 2,
+          title: "002 · 황혼 교차점",
+          desc: "일몰과 함께 열리는 비밀 전장.",
+          players: "4/6",
+        },
+        {
+          id: 3,
+          title: "003 · 블루 아웃포스트",
+          desc: "파란 보초들이 잠들지 않는 초소.",
+          players: "2/4",
+        },
+        {
+          id: 4,
+          title: "004 · 에메랄드 정비고",
+          desc: "회복과 연구가 동시에 이루어지는 곳.",
+          players: "5/6",
+        },
+        {
+          id: 5,
+          title: "005 · 흑야 봉쇄선",
+          desc: "도시 최전선의 봉쇄 구역.",
+          players: "1/4",
+        },
+      ];
+
+      const characterDeck = [
+        {
+          name: "플라즈마 러너",
+          ability: "연속 질주 : 이동 거리 계산 시 1칸 무료",
+          lives: 3,
+          detail: "각 턴 첫 이동에서 1칸의 소모치를 자동으로 절약한다.",
+          power: { moveDiscount: 1 },
+        },
+        {
+          name: "천상 사수",
+          ability: "고각 정밀 : 숫자+각도 계산값 +2",
+          lives: 3,
+          detail: "각도 연산을 즐기는 조준수. 코사인 계산 이후 안정적인 2포인트를 획득한다.",
+          power: { angleBonus: 2 },
+        },
+        {
+          name: "철벽 방패",
+          ability: "강화 장갑 : 기본 하트 4개",
+          lives: 4,
+          detail: "생존력을 높이는 방벽 전문가. 추가 하트로 버틴다.",
+          power: {},
+        },
+        {
+          name: "루멘 스나이퍼",
+          ability: "잠금 사격 : 고정 거점에서 사격 시 1칸 절약",
+          lives: 3,
+          detail: "고정된 총열을 활용해 장거리 사격 비용을 낮춘다.",
+          power: { anchorDiscount: 1 },
+        },
+        {
+          name: "코발트 엔지니어",
+          ability: "증식 포탑 : 고정 탄환 최대 4개 유지",
+          lives: 3,
+          detail: "좌표마다 고정 사격을 배치해 광역 제어를 한다.",
+          power: { anchorCapacity: 4 },
+        },
+        {
+          name: "태풍 조종사",
+          ability: "출력 폭증 : 숫자 2장 합산에 +2",
+          lives: 3,
+          detail: "순수 수치 전투를 즐기며 합산 연산에 추가 출력을 부여한다.",
+          power: { numberBonus: 2 },
+        },
+      ];
+
+      const basePlayers = [
+        {
+          id: "red",
+          slot: "south",
+          colorLabel: "빨",
+          colorCode: "#f87171",
+          start: { x: 2, y: 18 },
+        },
+        {
+          id: "yellow",
+          slot: "east",
+          colorLabel: "노",
+          colorCode: "#facc15",
+          start: { x: 17, y: 10 },
+        },
+        {
+          id: "blue",
+          slot: "north",
+          colorLabel: "파",
+          colorCode: "#38bdf8",
+          start: { x: 10, y: 1 },
+        },
+        {
+          id: "green",
+          slot: "west",
+          colorLabel: "초",
+          colorCode: "#34d399",
+          start: { x: 1, y: 9 },
+        },
+      ];
+
       const state = {
-        rooms: [
-          {
-            id: 1,
-            title: "001 · 진홍의 전략실",
-            desc: "직감형 지휘관을 위한 전투 기록실.",
-            players: "3/5",
-          },
-          {
-            id: 2,
-            title: "002 · 황혼 교차점",
-            desc: "일몰과 함께 열리는 비밀 전장.",
-            players: "4/6",
-          },
-          {
-            id: 3,
-            title: "003 · 블루 아웃포스트",
-            desc: "파란 보초들이 잠들지 않는 초소.",
-            players: "2/4",
-          },
-          {
-            id: 4,
-            title: "004 · 에메랄드 정비고",
-            desc: "회복과 연구가 동시에 이루어지는 곳.",
-            players: "5/6",
-          },
-          {
-            id: 5,
-            title: "005 · 흑야 봉쇄선",
-            desc: "도시 최전선의 봉쇄 구역.",
-            players: "1/4",
-          },
-        ],
-        players: [
-          {
-            slot: "south",
-            colorLabel: "빨",
-            colorCode: "#f87171",
-            character: "서광의 검사",
-            ability: "초고속 반격",
-            progress: 72,
-            lives: 3,
-          },
-          {
-            slot: "east",
-            colorLabel: "노",
-            colorCode: "#facc15",
-            character: "황혼 수호자",
-            ability: "성역 방벽",
-            progress: 40,
-            lives: 2,
-          },
-          {
-            slot: "north",
-            colorLabel: "파",
-            colorCode: "#38bdf8",
-            character: "청해의 추적자",
-            ability: "심연 추격",
-            progress: 55,
-            lives: 4,
-          },
-          {
-            slot: "west",
-            colorLabel: "초",
-            colorCode: "#34d399",
-            character: "비취 도약가",
-            ability: "연속 대쉬",
-            progress: 33,
-            lives: 3,
-          },
-        ],
-        piles: [
-          { label: "전술 카드", count: 32 },
-          { label: "사건 카드", count: 18 },
-        ],
+        rooms,
         selectedRoom: null,
+        players: [],
+        piles: { number: 60, angle: 30 },
+        turn: {},
+        logs: [],
+        charactersAssigned: false,
+        boardSize: 20,
       };
 
       const app = document.getElementById("app");
       const lobbyTemplate = document.getElementById("lobby-template");
       const gameTemplate = document.getElementById("game-template");
+
+      function resetGameState() {
+        state.players = basePlayers.map((p) => ({
+          ...p,
+          position: { ...p.start },
+          character: "-",
+          ability: "능력 대기중",
+          detail: "",
+          maxLives: 3,
+          lives: 3,
+          progress: 0,
+          statusText: "캐릭터 선택 대기",
+          lockedShots: [],
+          power: {},
+        }));
+        state.piles = { number: 60, angle: 30 };
+        state.turn = {
+          currentPlayerIndex: 0,
+          phase: "pre-character",
+          drawnCards: [],
+          result: 0,
+          remainingValue: 0,
+          pendingAction: null,
+          selectedOrigin: "self",
+          feedback: "캐릭터 선택 버튼을 눌러 무작위로 배치하세요.",
+          drawSummary: "-",
+          mode: null,
+        };
+        state.logs = [];
+        state.charactersAssigned = false;
+      }
+
+      resetGameState();
 
       function renderLobby() {
         const view = lobbyTemplate.content.cloneNode(true);
@@ -483,6 +706,7 @@
           btn.addEventListener("click", () => {
             const roomId = Number(btn.dataset.join);
             state.selectedRoom = state.rooms.find((room) => room.id === roomId);
+            resetGameState();
             render();
           });
         });
@@ -498,26 +722,29 @@
           render();
         });
 
+        view.querySelector("[data-randomize]").addEventListener("click", () => {
+          assignCharacters();
+          render();
+        });
+
         const layout = view.querySelector("[data-game]");
         layout.innerHTML = `
-          ${state.players
-            .map((player) => createHud(player))
-            .join("")}
+          ${state.players.map((player, index) => createHud(player, index)).join("")}
           ${createBoard()}
         `;
 
+        bindGameEvents(view);
         app.replaceChildren(view);
       }
 
-      function createHud(player) {
+      function createHud(player, index) {
         const positionClass = `hud-${player.slot}`;
-        const heartIcons = Array.from({ length: 4 }, (_, idx) => {
-          const filled = idx < player.lives ? "full" : "";
-          return `<span class="heart ${filled}"></span>`;
-        }).join("");
-
+        const hearts = Array.from({ length: player.maxLives }, (_, idx) =>
+          `<span class="heart ${idx < player.lives ? "full" : ""}"></span>`
+        ).join("");
+        const isActive = index === state.turn.currentPlayerIndex && player.lives > 0;
         return `
-          <article class="hud-panel ${positionClass}">
+          <article class="hud-panel ${positionClass} ${isActive ? "active" : ""}">
             <div class="room-info-chip">ROOM ${state.selectedRoom?.id ?? "-"}</div>
             <h3>${player.slot.toUpperCase()} · ${player.colorLabel}</h3>
             <div class="player-color">
@@ -525,48 +752,458 @@
               <strong>${player.character}</strong>
             </div>
             <div class="meta">능력: ${player.ability}</div>
+            <div class="meta">설명: ${player.detail || "-"}</div>
             <div class="meta">진행률 ${player.progress}%</div>
             <div class="progress">
               <span style="background:${player.colorCode}; width:${player.progress}%"></span>
             </div>
+            <div class="status-line">${player.statusText}</div>
+            <div class="locked-info">고정 탄환: ${player.lockedShots
+              .map((shot) => formatCoord(shot))
+              .join(", ") || "없음"}</div>
             <div class="meta">생존 상태</div>
-            <div class="hearts">${heartIcons}</div>
+            <div class="hearts">${hearts}</div>
           </article>
         `;
       }
 
       function createBoard() {
-        const gridCells = Array.from({ length: 400 }, () => '<div class="cell"></div>').join("");
-        const axisX = Array.from({ length: 20 }, (_, idx) => idx + 1)
+        const axisX = Array.from({ length: state.boardSize }, (_, idx) => idx + 1)
           .map((num) => `<span>${String(num).padStart(2, "0")}</span>`)
           .join("");
-        const axisY = Array.from({ length: 20 }, (_, idx) => String.fromCharCode(65 + idx))
+        const axisY = Array.from({ length: state.boardSize }, (_, idx) =>
+          String.fromCharCode(65 + idx)
+        )
           .map((letter) => `<span>${letter}</span>`)
           .join("");
+
+        const cells = Array.from({ length: state.boardSize * state.boardSize }, (_, idx) => {
+          const x = idx % state.boardSize;
+          const y = Math.floor(idx / state.boardSize);
+          const playerHere = state.players.find(
+            (p) => p.lives > 0 && p.position.x === x && p.position.y === y
+          );
+          const bullets = state.players
+            .filter((p) =>
+              p.lockedShots.some((shot) => shot.x === x && shot.y === y)
+            )
+            .map((p) => ({ color: p.colorCode }));
+
+          let content = "";
+          if (playerHere) {
+            const tokenStyle = `background:${hexToRgba(playerHere.colorCode, 0.4)}; border-color:${playerHere.colorCode};`;
+            content += `<span class="token" style="${tokenStyle}" data-label="${playerHere.colorLabel}"></span>`;
+          }
+          bullets.forEach((bullet, idx2) => {
+            content += `<span class="bullet-marker" style="color:${bullet.color}; bottom:${4 + idx2 * 10}px"></span>`;
+          });
+
+          return `<div class="cell" data-cell data-x="${x}" data-y="${y}">${content}</div>`;
+        }).join("");
+        const logs = state.logs.length
+          ? state.logs.map((log) => `<span>• ${log}</span>`).join("")
+          : '<span>• 로그 없음</span>';
 
         return `
           <section class="board-wrapper">
             <div class="axes-labels">${axisX}</div>
             <div class="axes-labels vertical">${axisY}</div>
             <div class="axes-labels vertical right">${axisY}</div>
-            <div class="board-grid">${gridCells}</div>
+            <div class="board-grid" data-board>${cells}</div>
             <div class="axes-labels" style="margin-top: 0.3rem">${axisX}</div>
-            <div class="card-piles">
-              <div class="pile-group">
-                ${state.piles
-                  .map(
-                    (pile) => `
-                      <div class="pile">
-                        <span>${pile.label}</span>
-                        <strong>${pile.count}</strong>
-                      </div>
-                    `
-                  )
-                  .join("")}
+            <div class="control-panel">
+              <div class="card-row">
+                <div class="card-pile">
+                  <span>숫자 카드</span>
+                  <strong>${state.piles.number}</strong>
+                </div>
+                <div class="card-pile">
+                  <span>각도 카드</span>
+                  <strong>${state.piles.angle}</strong>
+                </div>
+                <div class="card-options">
+                  <button class="btn btn-primary" data-draw="double">숫자 2장</button>
+                  <button class="btn btn-primary" data-draw="mix">숫자 + 각도</button>
+                </div>
+              </div>
+              <div class="draw-result">
+                <div>결과: ${state.turn.drawSummary}</div>
+                <div>잔여 포인트: ${state.turn.remainingValue}</div>
+                <div>현재 턴: ${state.players[state.turn.currentPlayerIndex]?.colorLabel ?? "-"}</div>
+              </div>
+              <div class="action-buttons">
+                <button class="btn btn-ghost" data-action="move">이동</button>
+                <button class="btn btn-ghost" data-action="shoot">사격</button>
+                <button class="btn btn-primary" data-end-turn>턴 종료</button>
+              </div>
+              <div class="origin-options" data-origins></div>
+              <div class="feedback">${state.turn.feedback}</div>
+              <div class="log-panel">${logs}</div>
+              <div class="rules-panel">
+                <strong>플레이 가이드</strong><br />
+                숫자 2장 또는 숫자+각도를 뽑아 최종 숫자를 만든 뒤 이동/사격으로 배분하세요. 사격이 빗나가면 그 좌표에 총알이 고정되어 다음 턴부터 내 자리와 고정 지점에서 모두 사격할 수 있습니다. 캐릭터 능력은 계산값, 이동/사격 비용, 고정 탄환 수 등에 보너스를 줍니다.
               </div>
             </div>
           </section>
         `;
+      }
+
+      function bindGameEvents(view) {
+        const board = view.querySelector("[data-board]");
+        board?.addEventListener("click", handleBoardClick);
+
+        view.querySelectorAll("[data-draw]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            handleDraw(btn.dataset.draw);
+          });
+        });
+
+        view.querySelectorAll("[data-action]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            handleAction(btn.dataset.action);
+          });
+        });
+
+        view.querySelector("[data-end-turn]")?.addEventListener("click", endTurn);
+
+        const originWrap = view.querySelector("[data-origins]");
+        if (originWrap) {
+          originWrap.innerHTML = createOriginButtons();
+          originWrap.querySelectorAll("button").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              state.turn.selectedOrigin = btn.dataset.origin;
+              render();
+            });
+          });
+        }
+      }
+
+      function createOriginButtons() {
+        const player = state.players[state.turn.currentPlayerIndex];
+        if (!player) return "";
+        if (player.lockedShots.length === 0 && state.turn.selectedOrigin !== "self") {
+          state.turn.selectedOrigin = "self";
+        }
+        if (state.turn.selectedOrigin?.startsWith("lock-")) {
+          const idx = Number(state.turn.selectedOrigin.replace("lock-", ""));
+          if (!player.lockedShots[idx]) {
+            state.turn.selectedOrigin = "self";
+          }
+        }
+        const buttons = [`<button data-origin="self" class="${state.turn.selectedOrigin === "self" ? "active" : ""}">내 위치 ${formatCoord(player.position)}</button>`];
+        player.lockedShots.forEach((shot, idx) => {
+          const id = `lock-${idx}`;
+          buttons.push(
+            `<button data-origin="${id}" class="${state.turn.selectedOrigin === id ? "active" : ""}">고정 ${idx + 1} ${formatCoord(shot)}</button>`
+          );
+        });
+        return buttons.join("");
+      }
+
+      function assignCharacters() {
+        const deck = [...characterDeck];
+        state.players.forEach((player) => {
+          const idx = Math.floor(Math.random() * deck.length);
+          const pick = deck.splice(idx, 1)[0];
+          player.character = pick.name;
+          player.ability = pick.ability;
+          player.detail = pick.detail;
+          player.maxLives = pick.lives;
+          player.lives = pick.lives;
+          player.power = pick.power;
+          player.statusText = "능력 장착 완료";
+          player.lockedShots = [];
+          player.position = { ...player.start };
+          player.progress = 0;
+        });
+        state.charactersAssigned = true;
+        state.turn.currentPlayerIndex = 0;
+        state.turn.phase = "await-draw";
+        state.turn.remainingValue = 0;
+        state.turn.drawSummary = "-";
+        state.turn.pendingAction = null;
+        state.turn.selectedOrigin = "self";
+        state.turn.mode = null;
+        state.turn.drawnCards = [];
+        state.turn.result = 0;
+        const current = state.players[state.turn.currentPlayerIndex];
+        state.turn.feedback = `${current.character}의 차례입니다. 카드를 뽑으세요.`;
+        logEvent("모든 플레이어에게 무작위 캐릭터가 배정되었습니다.");
+      }
+
+      function handleDraw(mode) {
+        if (!state.charactersAssigned) {
+          state.turn.feedback = "먼저 캐릭터를 선택하세요.";
+          render();
+          return;
+        }
+        if (state.turn.phase === "complete") {
+          state.turn.feedback = "게임이 종료되었습니다.";
+          render();
+          return;
+        }
+        if (state.turn.phase !== "await-draw") {
+          state.turn.feedback = "현재 턴에서 이미 카드를 뽑았습니다.";
+          render();
+          return;
+        }
+        const player = state.players[state.turn.currentPlayerIndex];
+        if (!player || player.lives <= 0) {
+          endTurn();
+          return;
+        }
+
+        let summary = "";
+        let result = 0;
+        if (mode === "double") {
+          const first = drawNumber();
+          const second = drawNumber();
+          const bonus = player.power.numberBonus ?? 0;
+          result = first + second + bonus;
+          summary = `숫자 ${first} + ${second}${bonus ? ` + 보너스 ${bonus}` : ""} ⇒ ${result}`;
+          state.piles.number = Math.max(0, state.piles.number - 2);
+          state.turn.drawnCards = [first, second];
+        } else {
+          const numberCard = drawNumber();
+          const angleCard = drawAngle();
+          const cosValue = Math.cos((angleCard * Math.PI) / 180);
+          let calc = cosValue === 0 ? numberCard : numberCard % cosValue;
+          calc = Number(calc.toFixed(2));
+          const bonus = player.power.angleBonus ?? 0;
+          result = calc + bonus;
+          summary = `숫자 ${numberCard} % cos(${angleCard}°) = ${calc}${
+            bonus ? ` + 보너스 ${bonus}` : ""
+          } ⇒ ${result}`;
+          state.piles.number = Math.max(0, state.piles.number - 1);
+          state.piles.angle = Math.max(0, state.piles.angle - 1);
+          state.turn.drawnCards = [numberCard, angleCard];
+        }
+
+        result = Math.max(1, Math.round(Math.abs(result)));
+        state.turn.drawSummary = summary;
+        state.turn.result = result;
+        state.turn.remainingValue = result;
+        state.turn.mode = mode;
+        state.turn.phase = "action";
+        state.turn.pendingAction = null;
+        state.turn.selectedOrigin = "self";
+        state.turn.feedback = "이동 또는 사격 버튼을 눌러 좌표를 선택하세요.";
+        render();
+      }
+
+      function drawNumber() {
+        return Math.floor(Math.random() * 10) + 1;
+      }
+
+      function drawAngle() {
+        const angles = [0, 30, 45, 60, 90];
+        return angles[Math.floor(Math.random() * angles.length)];
+      }
+
+      function handleAction(action) {
+        if (!state.charactersAssigned) {
+          state.turn.feedback = "캐릭터 선택 후에 진행할 수 있습니다.";
+          render();
+          return;
+        }
+        if (state.turn.phase === "await-draw") {
+          state.turn.feedback = "카드를 먼저 뽑으세요.";
+          render();
+          return;
+        }
+        if (state.turn.phase === "complete") {
+          state.turn.feedback = "게임이 종료되었습니다.";
+          render();
+          return;
+        }
+        if (state.turn.remainingValue <= 0) {
+          state.turn.feedback = "잔여 포인트가 없습니다. 턴을 종료하세요.";
+          render();
+          return;
+        }
+        state.turn.pendingAction = action;
+        state.turn.feedback =
+          action === "move"
+            ? "이동할 칸을 선택하세요."
+            : "사격할 목표 칸을 선택하세요.";
+        render();
+      }
+
+      function handleBoardClick(event) {
+        const cell = event.target.closest("[data-cell]");
+        if (!cell) return;
+        if (state.turn.pendingAction === null) {
+          state.turn.feedback = "이동 또는 사격 버튼을 눌러주세요.";
+          render();
+          return;
+        }
+        const player = state.players[state.turn.currentPlayerIndex];
+        if (!player || player.lives <= 0) {
+          endTurn();
+          return;
+        }
+        const target = { x: Number(cell.dataset.x), y: Number(cell.dataset.y) };
+        const origin = getOriginCoordinate(player, state.turn.selectedOrigin);
+        const rawDistance = Math.abs(target.x - origin.x) + Math.abs(target.y - origin.y);
+        if (rawDistance === 0) {
+          state.turn.feedback = "같은 칸을 선택할 수 없습니다.";
+          render();
+          return;
+        }
+        let cost = rawDistance;
+        if (state.turn.pendingAction === "move" && player.power.moveDiscount) {
+          cost = Math.max(1, cost - player.power.moveDiscount);
+        }
+        if (
+          state.turn.pendingAction === "shoot" &&
+          state.turn.selectedOrigin !== "self" &&
+          player.power.anchorDiscount
+        ) {
+          cost = Math.max(1, cost - player.power.anchorDiscount);
+        }
+        if (cost > state.turn.remainingValue) {
+          state.turn.feedback = `잔여 포인트 ${state.turn.remainingValue}로는 부족합니다.`;
+          render();
+          return;
+        }
+
+        if (state.turn.pendingAction === "move") {
+          const blocked = state.players.some(
+            (p) => p.id !== player.id && p.lives > 0 && p.position.x === target.x && p.position.y === target.y
+          );
+          if (blocked) {
+            state.turn.feedback = "그 칸에는 이미 플레이어가 있습니다.";
+            render();
+            return;
+          }
+          player.position = target;
+          player.statusText = `이동 완료 ${formatCoord(target)} (소모 ${cost})`;
+          logEvent(`${player.character}가 ${formatCoord(target)}로 이동했습니다.`);
+        } else {
+          const victim = state.players.find(
+            (p) => p.id !== player.id && p.lives > 0 && p.position.x === target.x && p.position.y === target.y
+          );
+          if (victim) {
+            victim.lives = Math.max(0, victim.lives - 1);
+            victim.statusText = `피격! 남은 하트 ${victim.lives}`;
+            player.statusText = `사격 성공 ${victim.colorLabel}`;
+            logEvent(`${player.character}의 사격이 ${victim.character}에게 적중했습니다.`);
+            if (victim.lives === 0) {
+              logEvent(`${victim.character} 탈락!`);
+              checkForWinner();
+            }
+          } else {
+            const capacity = player.power.anchorCapacity ?? 2;
+            if (!player.lockedShots.some((shot) => shot.x === target.x && shot.y === target.y)) {
+              player.lockedShots.push({ ...target });
+              if (player.lockedShots.length > capacity) {
+                player.lockedShots.shift();
+              }
+            }
+            player.statusText = `사격 고정 ${formatCoord(target)}`;
+            logEvent(`${player.character}가 ${formatCoord(target)}에 총알을 고정했습니다.`);
+          }
+        }
+
+        state.turn.remainingValue -= cost;
+        state.turn.pendingAction = null;
+        if (state.turn.remainingValue <= 0) {
+          state.turn.remainingValue = 0;
+          state.turn.phase = "await-end";
+          state.turn.feedback = "잔여 포인트가 없습니다. 턴을 종료하세요.";
+        } else {
+          state.turn.phase = "action";
+          state.turn.feedback = `잔여 포인트 ${state.turn.remainingValue}. 추가 행동을 선택하세요.`;
+        }
+        player.progress = Math.min(100, player.progress + cost);
+        render();
+      }
+
+      function getOriginCoordinate(player, originId) {
+        if (originId === "self") return player.position;
+        const index = Number(originId.replace("lock-", ""));
+        return player.lockedShots[index] ?? player.position;
+      }
+
+      function endTurn() {
+        if (!state.charactersAssigned) {
+          state.turn.feedback = "캐릭터를 먼저 선택하세요.";
+          render();
+          return;
+        }
+        if (state.turn.phase === "complete") {
+          render();
+          return;
+        }
+        const player = state.players[state.turn.currentPlayerIndex];
+        if (player) {
+          const cleaned = player.statusText.replace(/\s*\|\s*턴 종료/g, "").trim();
+          player.statusText = `${cleaned} | 턴 종료`;
+        }
+        advanceTurn();
+        render();
+      }
+
+      function advanceTurn() {
+        if (state.turn.phase === "complete") return;
+        let nextIndex = state.turn.currentPlayerIndex;
+        let attempts = 0;
+        do {
+          nextIndex = (nextIndex + 1) % state.players.length;
+          attempts += 1;
+          const candidate = state.players[nextIndex];
+          if (candidate && candidate.lives > 0) {
+            state.turn.currentPlayerIndex = nextIndex;
+            state.turn.phase = "await-draw";
+            state.turn.remainingValue = 0;
+            state.turn.drawSummary = "-";
+            state.turn.pendingAction = null;
+            state.turn.feedback = `${candidate.character}의 차례입니다. 카드를 뽑으세요.`;
+            state.turn.selectedOrigin = "self";
+            state.turn.mode = null;
+            state.turn.drawnCards = [];
+            state.turn.result = 0;
+            return;
+          }
+        } while (attempts <= state.players.length);
+        state.turn.phase = "complete";
+        state.turn.feedback = "생존자가 없습니다.";
+      }
+
+      function checkForWinner() {
+        const alive = state.players.filter((p) => p.lives > 0);
+        if (alive.length === 1) {
+          const winner = alive[0];
+          state.turn.phase = "complete";
+          state.turn.remainingValue = 0;
+          state.turn.pendingAction = null;
+          state.turn.feedback = `${winner.character}가 최후의 생존자가 되었습니다!`;
+          logEvent(`${winner.character} 우승!`);
+        }
+      }
+
+      function logEvent(text) {
+        state.logs.unshift(text);
+        if (state.logs.length > 6) {
+          state.logs.pop();
+        }
+      }
+
+      function hexToRgba(hex, alpha = 0.35) {
+        if (!hex) return `rgba(255,255,255,${alpha})`;
+        const sanitized = hex.replace("#", "");
+        const bigint = parseInt(sanitized, 16);
+        const r = (bigint >> 16) & 255;
+        const g = (bigint >> 8) & 255;
+        const b = bigint & 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+
+      function formatCoord(point) {
+        if (!point) return "(--)";
+        const x = String(point.x + 1).padStart(2, "0");
+        const y = String(state.boardSize - point.y).padStart(2, "0");
+        return `(${x},${y})`;
       }
 
       function render() {
