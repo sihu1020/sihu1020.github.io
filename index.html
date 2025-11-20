@@ -388,6 +388,20 @@
         flex: 1;
       }
 
+      .card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.5rem;
+      }
+
+      .card-actions .btn {
+        flex: 1;
+        min-width: 120px;
+        background: rgba(19, 66, 38, 0.05);
+        border: 1px solid rgba(19, 66, 38, 0.15);
+      }
+
       .draw-result {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -720,6 +734,8 @@
           holdMode: false,
           selectedTarget: null,
           gravityTarget: null,
+          cardPickMode: null,
+          gravityValue: null,
         };
         state.logs = [];
         state.charactersAssigned = false;
@@ -844,6 +860,7 @@
                 <div>현재 턴: ${state.players[state.turn.currentPlayerIndex]?.colorLabel ?? "-"}</div>
               </div>
               <div class="card-visuals">${renderCardSlots()}</div>
+              ${renderCardActions()}
               ${createHoldDisplay()}
               ${createAbilityButtons()}
               <div class="action-buttons">
@@ -874,6 +891,30 @@
             return `<div class="card-slot ${badge}"><span>${label} ${idx + 1}</span><strong>${card.value}</strong></div>`;
           })
           .join("");
+      }
+
+      function renderCardActions() {
+        if (!state.turn.cardPickMode) return "";
+        const selectable = state.turn.drawnCards
+          .map((card, idx) => ({ ...card, idx }))
+          .filter((card) => card.type === "number" && !card.held);
+
+        if (!selectable.length) return "";
+
+        const labelMap = {
+          gravity: "중력에 사용할 카드 선택",
+          hold: "보류에 추가할 카드 선택",
+          circle: "원 반지름으로 쓸 카드 선택",
+        };
+        const label = labelMap[state.turn.cardPickMode] ?? "카드 선택";
+        const buttons = selectable
+          .map(
+            (card, idx) =>
+              `<button class="btn" data-card-pick="${card.idx}">${label} #${idx + 1}: ${card.value}</button>`
+          )
+          .join("");
+
+        return `<div><div style="font-size:0.85rem; margin-bottom:0.25rem; color:rgba(19,66,38,0.75);">${label}</div><div class="card-actions">${buttons}</div></div>`;
       }
 
       function createHoldDisplay() {
@@ -954,19 +995,12 @@
         }
 
         if (player.character === "갈릴레이") {
-          const numberCards = state.turn.drawnCards.filter((c) => c.type === "number" && !c.held);
           const hasLock = player.lockedShots.length > 0;
-          const cardButtons = numberCards
-            .map(
-              (card, idx) =>
-                `<button class="btn btn-ghost" data-ability="circle" data-circle-value="${card.value}" ${
-                  state.turn.phase === "await-draw" || !hasLock ? "disabled" : ""
-                }>원 생성: 카드 ${idx + 1}(${card.value})</button>`
-            )
-            .join("");
-          if (cardButtons) {
-            buttons.push(cardButtons);
-          }
+          buttons.push(
+            `<button class="btn btn-ghost" data-ability="circle" ${
+              state.turn.phase === "await-draw" || !hasLock ? "disabled" : ""
+            }>원 생성</button>`
+          );
         }
 
         if (!buttons.length) return "";
@@ -1007,6 +1041,13 @@
         view.querySelectorAll("[data-ability]").forEach((btn) => {
           btn.addEventListener("click", () => {
             handleAbility(btn.dataset.ability, btn.dataset.circleValue);
+          });
+        });
+
+        view.querySelectorAll("[data-card-pick]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const idx = Number(btn.dataset.cardPick);
+            handleCardPick(idx);
           });
         });
 
@@ -1088,6 +1129,8 @@
         state.turn.extraNumberThisTurn = 0;
         state.turn.holdMode = false;
         state.turn.selectedTarget = null;
+        state.turn.cardPickMode = null;
+        state.turn.gravityValue = null;
         state.hazards = [];
         state.turnCount = 0;
         state.turn.drawnCards = [];
@@ -1123,6 +1166,9 @@
           endTurn();
           return;
         }
+
+        state.turn.cardPickMode = state.turn.holdMode ? "hold" : null;
+        state.turn.gravityValue = null;
 
         let numberCardsToDraw = mode === "double" ? 2 : 1;
         let angleCardsToDraw = mode === "mix" ? 1 : 0;
@@ -1191,10 +1237,10 @@
         } else {
           const baseNumber = usableNumbers[0] ?? 0;
           const cosValue = Math.cos((angleValue * Math.PI) / 180);
-          let calc = cosValue === 0 ? baseNumber : baseNumber % cosValue;
+          let calc = cosValue === 0 ? baseNumber : baseNumber / cosValue;
           calc = Number(calc.toFixed(2));
           result = calc;
-          summary = `숫자 ${summaryParts.join(" % ")} = ${calc}`;
+          summary = `숫자 ${baseNumber} / cos(${angleValue}°) = ${calc}`;
         }
 
         result = Math.max(1, Math.round(Math.abs(result)));
@@ -1261,16 +1307,27 @@
             render();
             return;
           }
+          const hasNumberCard = state.turn.drawnCards.some((c) => c.type === "number" && !c.held);
+          if (!hasNumberCard) {
+            state.turn.feedback = "사용할 수 있는 숫자 카드가 없습니다.";
+            render();
+            return;
+          }
           state.turn.pendingAction = "gravity";
           state.turn.gravityTarget = target.id;
-          state.turn.feedback = `${target.character}을(를) 일직선으로 이동시킬 칸을 고르세요.`;
+          state.turn.cardPickMode = "gravity";
+          state.turn.gravityValue = null;
+          state.turn.feedback = `${target.character}을(를) 이동시킬 카드를 고른 뒤 칸을 선택하세요.`;
           render();
           return;
         }
 
         if (type === "toggle-hold") {
           state.turn.holdMode = !state.turn.holdMode;
-          state.turn.feedback = state.turn.holdMode ? "보류 모드: 1·7·2·8은 저장" : "보류 모드 해제";
+          state.turn.cardPickMode = state.turn.holdMode ? "hold" : null;
+          state.turn.feedback = state.turn.holdMode
+            ? "보류할 카드를 눌러 저장하세요."
+            : "보류 모드 해제";
           render();
           return;
         }
@@ -1313,6 +1370,18 @@
             render();
             return;
           }
+          if (value === undefined || value === null) {
+            const hasNumberCard = state.turn.drawnCards.some((c) => c.type === "number" && !c.held);
+            if (!hasNumberCard) {
+              state.turn.feedback = "반지름으로 쓸 숫자 카드가 없습니다.";
+              render();
+              return;
+            }
+            state.turn.cardPickMode = "circle";
+            state.turn.feedback = "반지름으로 사용할 카드를 선택하세요.";
+            render();
+            return;
+          }
           const radius = Number(value ?? 0);
           if (!radius || Number.isNaN(radius)) return;
           state.hazards.push({
@@ -1321,9 +1390,48 @@
             owner: player.id,
             expiresAfter: state.turnCount + 2,
           });
+          state.turn.cardPickMode = null;
           state.turn.feedback = `반지름 ${radius} 원이 생성되었습니다.`;
           logEvent(`갈릴레이가 ${formatCoord(center)}을 중심으로 반지름 ${radius} 원을 전개했습니다.`);
           render();
+        }
+      }
+
+      function handleCardPick(idx) {
+        const player = state.players[state.turn.currentPlayerIndex];
+        if (!player) return;
+        const card = state.turn.drawnCards[idx];
+        if (!card || card.type !== "number" || card.held) return;
+
+        if (state.turn.cardPickMode === "hold" && player.character === "라마누잔") {
+          if (![1, 2, 7, 8].includes(card.value)) {
+            state.turn.feedback = "1·7·2·8만 보류할 수 있습니다.";
+            render();
+            return;
+          }
+          player.stashedNumbers.push(card.value);
+          card.held = true;
+          state.turn.remainingValue = Math.max(0, state.turn.remainingValue - card.value);
+          state.turn.feedback = `${card.value}을(를) 보류했습니다.`;
+          if (state.turn.remainingValue === 0) {
+            state.turn.phase = "await-end";
+            state.turn.feedback = "잔여 포인트가 없습니다. 턴을 종료하세요.";
+          }
+          render();
+          return;
+        }
+
+        if (state.turn.cardPickMode === "gravity" && player.character === "뉴턴") {
+          state.turn.gravityValue = card.value;
+          state.turn.cardPickMode = null;
+          state.turn.feedback = `중력 이동 한도를 ${card.value}로 설정했습니다. 이동시킬 칸을 선택하세요.`;
+          render();
+          return;
+        }
+
+        if (state.turn.cardPickMode === "circle" && player.character === "갈릴레이") {
+          state.turn.cardPickMode = null;
+          handleAbility("circle", card.value);
         }
       }
 
@@ -1421,6 +1529,11 @@
             render();
             return;
           }
+          if (state.turn.gravityValue === null) {
+            state.turn.feedback = "중력에 사용할 카드를 먼저 선택하세요.";
+            render();
+            return;
+          }
           const straightLine = pushed.position.x === target.x || pushed.position.y === target.y;
           if (!straightLine) {
             state.turn.feedback = "한 방향 직선으로만 이동시킬 수 있습니다.";
@@ -1434,8 +1547,9 @@
             render();
             return;
           }
-          if (distance > state.turn.remainingValue) {
-            state.turn.feedback = `잔여 포인트 ${state.turn.remainingValue}로는 부족합니다.`;
+          const maxPush = state.turn.gravityValue ?? state.turn.remainingValue;
+          if (distance > maxPush) {
+            state.turn.feedback = `선택한 카드 값 ${maxPush}로는 부족합니다.`;
             render();
             return;
           }
@@ -1451,6 +1565,7 @@
           player.statusText = `${pushed.character}을(를) 중력으로 이동`;
           logEvent(`뉴턴이 ${pushed.character}을(를) ${formatCoord(target)}로 밀어냈습니다.`);
           state.turn.remainingValue -= distance;
+          state.turn.gravityValue = null;
           state.turn.pendingAction = null;
           if (state.turn.remainingValue <= 0) {
             state.turn.remainingValue = 0;
@@ -1554,6 +1669,8 @@
         state.turn.holdMode = false;
         state.turn.pendingAction = null;
         state.turn.gravityTarget = null;
+        state.turn.cardPickMode = null;
+        state.turn.gravityValue = null;
         state.turnCount += 1;
         state.hazards = state.hazards.filter((h) => h.expiresAfter > state.turnCount);
         advanceTurn();
@@ -1582,6 +1699,8 @@
             state.turn.selectedTarget = null;
             state.turn.gravityTarget = null;
             state.turn.holdMode = false;
+            state.turn.cardPickMode = null;
+            state.turn.gravityValue = null;
             candidate.turnsTaken += 1;
             candidate.shieldActive = candidate.character === "갈루아" && candidate.turnsTaken % 3 === 0;
             if (candidate.shieldActive) {
