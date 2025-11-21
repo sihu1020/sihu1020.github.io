@@ -44,9 +44,9 @@
       }
 
       #app {
-        width: min(1280px, 100%);
+        width: min(1150px, 100%);
         margin: 0 auto;
-        padding: 2rem clamp(1rem, 4vw, 2.5rem) 4rem;
+        padding: 1.75rem clamp(1rem, 3.5vw, 2.25rem) 3.5rem;
       }
 
       .logo-title {
@@ -251,10 +251,10 @@
           "north north north"
           "west board east"
           "south south south";
-        grid-template-columns: minmax(220px, 1fr) minmax(520px, 760px) minmax(220px, 1fr);
-        grid-template-rows: auto minmax(500px, 1fr) auto;
+        grid-template-columns: minmax(200px, 1fr) minmax(480px, 680px) minmax(200px, 1fr);
+        grid-template-rows: auto minmax(440px, 1fr) auto;
         gap: 0.75rem;
-        width: min(1100px, 100%);
+        width: min(1000px, 100%);
       }
 
       @media (max-width: 960px) {
@@ -478,7 +478,7 @@
 
       .board-shell {
         position: relative;
-        width: min(92vw, 720px);
+        width: min(88vw, 620px);
         margin: 0 auto;
       }
 
@@ -936,10 +936,18 @@
       const app = document.getElementById("app");
       const gameTemplate = document.getElementById("game-template");
 
+      function placePiecesAtCorners(players) {
+        players.forEach((player) => {
+          const base = basePlayers.find((p) => p.id === player.id);
+          if (base) {
+            player.position = { ...base.start };
+          }
+        });
+      }
+
       function resetGameState() {
         state.players = basePlayers.map((p) => ({
           ...p,
-          position: { ...p.start },
           character: "-",
           ability: "능력 대기중",
           detail: "",
@@ -959,6 +967,7 @@
           hazardHitTurn: -1,
           shootCooldown: 0,
         }));
+        placePiecesAtCorners(state.players);
         state.piles = { number: 60, angle: 30 };
         state.turn = {
           currentPlayerIndex: 0,
@@ -1428,7 +1437,6 @@
           player.power = pick.power;
           player.statusText = "능력 장착 완료";
           player.lockedShots = [];
-          player.position = { ...player.start };
           player.progress = 0;
           player.turnsTaken = 0;
           player.shieldActive = false;
@@ -1440,6 +1448,7 @@
           player.hazardHitTurn = -1;
           player.shootCooldown = 0;
         });
+        placePiecesAtCorners(state.players);
         state.charactersAssigned = true;
         state.turn.currentPlayerIndex = 0;
         state.turn.phase = "await-draw";
