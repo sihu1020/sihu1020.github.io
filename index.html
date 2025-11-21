@@ -248,27 +248,84 @@
 
       .board-stage {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-areas:
+          "top"
+          "center"
+          "bottom";
         gap: 1rem;
         width: 100%;
-        align-items: stretch;
+        align-items: center;
+        justify-items: center;
+      }
+
+      .board-center {
+        grid-area: center;
+        display: grid;
+        grid-template-areas: "left board right";
+        grid-template-columns: auto minmax(360px, min(94vw, 780px)) auto;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
       }
 
       .side-stack {
-        display: grid;
+        display: flex;
         gap: 0.75rem;
-        grid-template-rows: repeat(2, minmax(0, 1fr));
-        align-content: start;
+      }
+
+      .side-stack-top,
+      .side-stack-bottom {
+        grid-area: top;
+        justify-content: center;
+        width: min(94vw, 780px);
+      }
+
+      .side-stack-bottom {
+        grid-area: bottom;
+      }
+
+      .side-stack-left,
+      .side-stack-right {
+        align-items: stretch;
+        height: min(94vw, 780px);
+        flex-direction: column;
+      }
+
+      .side-stack-left {
+        grid-area: left;
+      }
+
+      .side-stack-right {
+        grid-area: right;
       }
 
       @media (max-width: 960px) {
         .board-stage {
-          grid-template-columns: 1fr;
+          grid-template-areas:
+            "top"
+            "center"
+            "bottom";
         }
 
-        .side-stack {
-          grid-template-rows: none;
-          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        .board-center {
+          grid-template-areas:
+            "board"
+            "left"
+            "right";
+          grid-template-columns: 1fr;
+          justify-items: center;
+        }
+
+        .side-stack-top,
+        .side-stack-bottom {
+          flex-direction: column;
+        }
+
+        .side-stack-left,
+        .side-stack-right {
+          height: auto;
+          width: min(94vw, 780px);
         }
       }
 
@@ -998,15 +1055,13 @@
 
         layout.innerHTML = `
           <div class="board-stage">
-            <div class="side-stack side-stack-left">
-              ${hudBySlot.north ?? ""}
-              ${hudBySlot.west ?? ""}
+            <div class="side-stack side-stack-top">${hudBySlot.north ?? ""}</div>
+            <div class="board-center">
+              <div class="side-stack side-stack-left">${hudBySlot.west ?? ""}</div>
+              ${createBoard()}
+              <div class="side-stack side-stack-right">${hudBySlot.east ?? ""}</div>
             </div>
-            ${createBoard()}
-            <div class="side-stack side-stack-right">
-              ${hudBySlot.east ?? ""}
-              ${hudBySlot.south ?? ""}
-            </div>
+            <div class="side-stack side-stack-bottom">${hudBySlot.south ?? ""}</div>
           </div>
         `;
 
