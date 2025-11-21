@@ -105,11 +105,6 @@
         flex-wrap: wrap;
       }
 
-      .collapse-buttons {
-        display: flex;
-        gap: 0.35rem;
-      }
-
       [data-collapsible-content][hidden] {
         display: none;
       }
@@ -362,52 +357,8 @@
         gap: 1rem;
       }
 
-      .log-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
+      .action-panel {
         height: 100%;
-      }
-
-      .side-panel {
-        background: rgba(255, 255, 255, 0.92);
-        border: 1px solid rgba(19, 66, 38, 0.12);
-        border-radius: 18px;
-        padding: 0.85rem 1rem;
-        box-shadow: 0 12px 26px rgba(109, 174, 128, 0.2);
-      }
-
-      .side-title {
-        margin: 0 0 0.4rem;
-        font-size: 0.95rem;
-        color: rgba(19, 66, 38, 0.8);
-      }
-
-      .axes-labels {
-        display: flex;
-        justify-content: space-between;
-        gap: 0.35rem;
-        font-size: 0.65rem;
-        letter-spacing: 0.08em;
-        opacity: 0.75;
-        font-family: "Orbitron", sans-serif;
-      }
-
-      .axes-labels.vertical {
-        position: absolute;
-        top: clamp(1.3rem, 3.2vw, 1.7rem);
-        bottom: clamp(1.3rem, 3.2vw, 1.7rem);
-        left: 0.5rem;
-        flex-direction: column;
-        width: auto;
-        justify-content: space-between;
-      }
-
-      .axes-labels.vertical.right {
-        left: auto;
-        right: 0.5rem;
-        text-align: right;
-        align-items: flex-end;
       }
 
       .board-grid {
@@ -696,6 +647,10 @@
         .board-wrapper {
           grid-template-columns: 1fr;
         }
+
+        .action-panel {
+          width: 100%;
+        }
       }
 
       footer {
@@ -720,10 +675,7 @@
       <section class="guide-gallery collapsible">
         <div class="collapse-actions">
           <h2>게임 방법 안내</h2>
-          <div class="collapse-buttons">
-            <button class="btn btn-ghost" data-collapse-target="rules" data-collapse="hide">접어두기</button>
-            <button class="btn btn-ghost" data-collapse-target="rules" data-collapse="show">펴두기</button>
-          </div>
+          <button class="btn btn-ghost" data-collapse-toggle="rules">접어두기</button>
         </div>
         <div class="guide-grid" data-collapsible-content="rules">
           <article class="guide-card">
@@ -785,10 +737,7 @@
       <section class="guide-gallery collapsible">
         <div class="collapse-actions">
           <h2>캐릭터 능력 안내</h2>
-          <div class="collapse-buttons">
-            <button class="btn btn-ghost" data-collapse-target="characters" data-collapse="hide">접어두기</button>
-            <button class="btn btn-ghost" data-collapse-target="characters" data-collapse="show">펴두기</button>
-          </div>
+          <button class="btn btn-ghost" data-collapse-toggle="characters">접어두기</button>
         </div>
         <div class="guide-grid" data-character-grid data-collapsible-content="characters"></div>
       </section>
@@ -891,6 +840,7 @@
         logs: [],
         charactersAssigned: false,
         boardSize: BOARD_SIZE,
+        collapsedSections: { rules: false, characters: false },
       };
 
       const app = document.getElementById("app");
@@ -1020,15 +970,6 @@
       }
 
       function createBoard() {
-        const axisX = Array.from({ length: state.boardSize }, (_, idx) => idx + 1)
-          .map((num) => `<span>${String(num).padStart(2, "0")}</span>`)
-          .join("");
-        const axisY = Array.from({ length: state.boardSize }, (_, idx) =>
-          String.fromCharCode(65 + idx)
-        )
-          .map((letter) => `<span>${letter}</span>`)
-          .join("");
-
         const cells = Array.from({ length: state.boardSize * state.boardSize }, (_, idx) => {
           const x = idx % state.boardSize;
           const y = Math.floor(idx / state.boardSize);
@@ -1059,12 +1000,10 @@
         return `
           <section class="board-wrapper">
             <div class="board-area">
-              <div class="axes-labels">${axisX}</div>
-              <div class="axes-labels vertical">${axisY}</div>
-              <div class="axes-labels vertical right">${axisY}</div>
               <div class="board-grid" data-board>${cells}</div>
               ${renderHazards()}
-              <div class="axes-labels" style="margin-top: 0.3rem">${axisX}</div>
+            </div>
+            <aside class="action-panel">
               <div class="control-panel">
                 <div class="card-row">
                   <div class="card-pile">
@@ -1096,16 +1035,7 @@
                 </div>
                 <div class="origin-options" data-origins></div>
                 <div class="feedback">${state.turn.feedback}</div>
-              </div>
-            </div>
-            <aside class="log-wrapper">
-              <div class="side-panel">
-                <h4 class="side-title">진행 로그</h4>
                 <div class="log-panel">${logs}</div>
-              </div>
-              <div class="side-panel rules-panel">
-                <strong>플레이 가이드</strong><br />
-                숫자 2장 또는 숫자+각도를 뽑아 최종 숫자를 만든 뒤 이동/사격으로 배분하세요. 사격이 빗나가면 그 좌표에 총알이 고정되어 다음 턴부터 내 자리와 고정 지점에서 모두 사격할 수 있습니다. 캐릭터 능력은 계산값과 이동/사격 비용 등에 보너스를 줍니다.
               </div>
             </aside>
           </section>
@@ -1305,19 +1235,37 @@
       }
 
       function bindCollapsibles(view) {
-        view.querySelectorAll("[data-collapse]").forEach((btn) => {
+        state.collapsedSections ??= {};
+        view.querySelectorAll("[data-collapse-toggle]").forEach((btn) => {
+          const target = btn.dataset.collapseToggle;
+          const content = view.querySelector(
+            `[data-collapsible-content="${target}"]`
+          );
+          if (!content) return;
+
+          if (state.collapsedSections[target]) {
+            content.setAttribute("hidden", "true");
+          }
+
+          const updateLabel = () => {
+            btn.textContent = content.hasAttribute("hidden")
+              ? "펴두기"
+              : "접어두기";
+          };
+
           btn.addEventListener("click", () => {
-            const target = btn.dataset.collapseTarget;
-            const content = view.querySelector(
-              `[data-collapsible-content="${target}"]`
-            );
-            if (!content) return;
-            if (btn.dataset.collapse === "hide") {
-              content.setAttribute("hidden", "true");
-            } else {
+            const isHidden = content.hasAttribute("hidden");
+            if (isHidden) {
               content.removeAttribute("hidden");
+              state.collapsedSections[target] = false;
+            } else {
+              content.setAttribute("hidden", "true");
+              state.collapsedSections[target] = true;
             }
+            updateLabel();
           });
+
+          updateLabel();
         });
       }
 
