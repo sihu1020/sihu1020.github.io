@@ -242,23 +242,44 @@
         flex-direction: column;
         gap: 1.25rem;
         position: relative;
+        align-items: center;
       }
 
-      .hud-collection {
+      .board-stage {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-        gap: 1rem;
+        grid-template-areas:
+          "north north north"
+          "west board east"
+          "south south south";
+        grid-template-columns: minmax(220px, 1fr) minmax(520px, 760px) minmax(220px, 1fr);
+        grid-template-rows: auto minmax(500px, 1fr) auto;
+        gap: 0.75rem;
+        width: min(1100px, 100%);
+      }
+
+      @media (max-width: 960px) {
+        .board-stage {
+          grid-template-areas:
+            "north"
+            "board"
+            "east"
+            "west"
+            "south";
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+        }
       }
 
       .hud-panel {
         background: var(--panel);
-        border-radius: 18px;
+        border-radius: 16px;
         border: 1px solid var(--panel-border);
-        padding: 1rem 1.25rem;
+        padding: 0.85rem 1rem;
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
-        box-shadow: 0 18px 40px rgba(108, 185, 138, 0.25);
+        gap: 0.6rem;
+        box-shadow: 0 12px 28px rgba(108, 185, 138, 0.18);
+        height: 100%;
       }
 
       .hud-panel.active {
@@ -268,15 +289,74 @@
 
       .hud-panel h3 {
         margin: 0;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         letter-spacing: 0.04em;
         text-transform: uppercase;
         color: rgba(19, 66, 38, 0.85);
       }
 
       .hud-panel strong {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         color: var(--hud-text);
+      }
+
+      .hud-north {
+        grid-area: north;
+        justify-self: center;
+        width: min(760px, 100%);
+      }
+
+      .hud-south {
+        grid-area: south;
+        justify-self: center;
+        width: min(760px, 100%);
+      }
+
+      .hud-west {
+        grid-area: west;
+        align-self: stretch;
+      }
+
+      .hud-east {
+        grid-area: east;
+        align-self: stretch;
+      }
+
+      .hud-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.4rem;
+      }
+
+      .player-meta {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.65rem;
+      }
+
+      .ability-text {
+        font-size: 0.85rem;
+        color: rgba(19, 66, 38, 0.72);
+        line-height: 1.45;
+      }
+
+      .turn-tools {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+        background: rgba(116, 218, 114, 0.06);
+        border: 1px solid rgba(116, 218, 114, 0.16);
+        border-radius: 12px;
+        padding: 0.65rem 0.75rem;
+      }
+
+      .turn-meta-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
       }
 
       .player-color {
@@ -284,6 +364,17 @@
         gap: 0.4rem;
         align-items: center;
         font-size: 0.9rem;
+      }
+
+      .player-name {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+      }
+
+      .player-name span {
+        font-size: 0.8rem;
+        color: rgba(19, 66, 38, 0.7);
       }
 
       .swatch {
@@ -324,6 +415,29 @@
         color: rgba(19, 66, 38, 0.7);
       }
 
+      .calc-panel {
+        display: grid;
+        gap: 0.35rem;
+        background: rgba(15, 156, 156, 0.06);
+        border: 1px dashed rgba(15, 156, 156, 0.2);
+        border-radius: 10px;
+        padding: 0.55rem 0.65rem;
+      }
+
+      .calc-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.6rem;
+        font-size: 0.88rem;
+        color: rgba(19, 66, 38, 0.82);
+      }
+
+      .calc-row.muted {
+        color: rgba(19, 66, 38, 0.7);
+        font-weight: 600;
+      }
+
       .hearts {
         display: flex;
         gap: 0.3rem;
@@ -341,29 +455,31 @@
       }
 
       .board-wrapper {
+        grid-area: board;
         background: var(--card-face);
-        border-radius: 28px;
+        border-radius: 24px;
         border: 1px solid rgba(19, 66, 38, 0.08);
-        padding: clamp(1rem, 3vw, 1.75rem);
-        box-shadow: inset 0 0 40px rgba(116, 218, 114, 0.15), 0 30px 40px rgba(109, 174, 128, 0.25);
+        padding: clamp(0.85rem, 2.4vw, 1.25rem);
+        box-shadow: inset 0 0 32px rgba(116, 218, 114, 0.14), 0 20px 30px rgba(109, 174, 128, 0.22);
         position: relative;
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.9rem;
         align-items: stretch;
       }
 
       .board-area {
         display: flex;
         flex-direction: column;
-        gap: 1rem;
+        gap: 0.75rem;
         align-items: center;
       }
 
       .board-shell {
         position: relative;
-        width: min(100%, 1080px);
+        width: min(92vw, 720px);
+        margin: 0 auto;
       }
 
       .board-grid {
@@ -885,11 +1001,18 @@
         }
 
         const layout = view.querySelector("[data-game]");
+        const hudBySlot = Object.fromEntries(
+          state.players.map((player, index) => [player.slot, createHud(player, index)])
+        );
+
         layout.innerHTML = `
-          <div class="hud-collection">
-            ${state.players.map((player, index) => createHud(player, index)).join("")}
+          <div class="board-stage">
+            ${hudBySlot.north ?? ""}
+            ${hudBySlot.west ?? ""}
+            ${createBoard()}
+            ${hudBySlot.east ?? ""}
+            ${hudBySlot.south ?? ""}
           </div>
-          ${createBoard()}
         `;
 
         bindGameEvents(view);
@@ -924,24 +1047,23 @@
         const activeTools = isActive ? renderActiveTools(player) : "";
         return `
           <article class="hud-panel ${positionClass} ${isActive ? "active" : ""}">
-            <div class="room-info-chip">ROOM ${state.selectedRoom?.id ?? "-"}</div>
-            <h3>${player.slot.toUpperCase()} · ${player.colorLabel}</h3>
-            <div class="player-color">
-              <span class="swatch" style="background:${player.colorCode}"></span>
-              <strong>${player.character}</strong>
+            <div class="hud-header">
+              <div>
+                <div class="room-info-chip">ROOM ${state.selectedRoom?.id ?? "-"}</div>
+                <h3>${player.slot.toUpperCase()} · ${player.colorLabel}</h3>
+              </div>
+              <div class="player-color">
+                <span class="swatch" style="background:${player.colorCode}"></span>
+                <div class="player-name">
+                  <strong>${player.character}</strong>
+                  <span>${player.ability}</span>
+                </div>
+              </div>
             </div>
-            <div class="meta">능력: ${player.ability}</div>
-            <div class="meta">설명: ${player.detail || "-"}</div>
-            <div class="meta">진행률 ${player.progress}%</div>
-            <div class="progress">
-              <span style="background:${player.colorCode}; width:${player.progress}%"></span>
+            <div class="player-meta">
+              <div class="ability-text">${player.detail || "-"}</div>
+              <div class="hearts">${hearts}</div>
             </div>
-            <div class="status-line">${player.statusText}</div>
-            <div class="locked-info">고정 탄환: ${player.lockedShots
-              .map((shot) => formatCoord(shot))
-              .join(", ") || "없음"}</div>
-            <div class="meta">생존 상태</div>
-            <div class="hearts">${hearts}</div>
             ${activeTools}
           </article>
         `;
@@ -951,12 +1073,16 @@
         return `
           <div class="turn-tools">
             <div class="turn-meta-row">
-              <span class="meta-pill">내 위치 ${formatCoord(player.position)}</span>
-              <span class="meta-pill">잔여 포인트 ${state.turn.remainingValue}</span>
-            </div>
-            <div class="turn-meta-row">
               <span class="meta-pill">최근 뽑은 카드</span>
               <div class="card-visuals compact">${renderCardSlots()}</div>
+            </div>
+            <div class="calc-panel">
+              <div class="calc-row"><span>포인트 계산</span><strong>${
+                state.turn.drawSummary || "-"
+              }</strong></div>
+              <div class="calc-row muted"><span>잔여 포인트</span><strong>${
+                state.turn.remainingValue
+              }</strong></div>
             </div>
             ${renderCardActions()}
             ${createHoldDisplay()}
@@ -972,7 +1098,6 @@
             </div>
             <div class="origin-options" data-origins></div>
             <div class="feedback">${state.turn.feedback}</div>
-            <div class="log-panel">${renderLogs()}</div>
           </div>
         `;
       }
@@ -1282,12 +1407,10 @@
             state.turn.selectedOrigin = "self";
           }
         }
-        const buttons = [`<button data-origin="self" class="${state.turn.selectedOrigin === "self" ? "active" : ""}">내 위치 ${formatCoord(player.position)}</button>`];
+        const buttons = [`<button data-origin="self" class="${state.turn.selectedOrigin === "self" ? "active" : ""}">기본 원점</button>`];
         player.lockedShots.forEach((shot, idx) => {
           const id = `lock-${idx}`;
-          buttons.push(
-            `<button data-origin="${id}" class="${state.turn.selectedOrigin === id ? "active" : ""}">고정 ${idx + 1} ${formatCoord(shot)}</button>`
-          );
+          buttons.push(`<button data-origin="${id}" class="${state.turn.selectedOrigin === id ? "active" : ""}">고정 ${idx + 1}</button>`);
         });
         return buttons.join("");
       }
