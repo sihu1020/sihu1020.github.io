@@ -252,7 +252,7 @@
           "top"
           "center"
           "bottom";
-        gap: 1rem;
+        gap: 0.85rem;
         width: 100%;
         align-items: center;
         justify-items: center;
@@ -262,9 +262,12 @@
         grid-area: center;
         display: grid;
         grid-template-areas: "left board right";
-        grid-template-columns: auto minmax(360px, min(94vw, 780px)) auto;
-        gap: 1rem;
-        align-items: center;
+        grid-template-columns:
+          minmax(0, clamp(120px, 16vw, 220px))
+          minmax(420px, min(96vw, 880px))
+          minmax(0, clamp(120px, 16vw, 220px));
+        gap: 0.85rem;
+        align-items: stretch;
         justify-content: center;
         width: 100%;
       }
@@ -278,7 +281,7 @@
       .side-stack-bottom {
         grid-area: top;
         justify-content: center;
-        width: min(94vw, 780px);
+        width: min(96vw, 880px);
       }
 
       .side-stack-bottom {
@@ -288,8 +291,10 @@
       .side-stack-left,
       .side-stack-right {
         align-items: stretch;
-        height: min(94vw, 780px);
+        height: min(96vw, 880px);
         flex-direction: column;
+        max-width: clamp(140px, 16vw, 240px);
+        width: 100%;
       }
 
       .side-stack-left {
@@ -325,7 +330,8 @@
         .side-stack-left,
         .side-stack-right {
           height: auto;
-          width: min(94vw, 780px);
+          width: min(96vw, 880px);
+          max-width: none;
         }
       }
 
@@ -517,7 +523,7 @@
 
       .board-shell {
         position: relative;
-        width: min(94vw, 780px);
+        width: min(96vw, 880px);
         margin: 0 auto;
       }
 
@@ -582,26 +588,27 @@
 
       .card-actions {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
+        flex-wrap: nowrap;
+        gap: 0.35rem;
         margin-top: 0.35rem;
+        overflow-x: auto;
       }
 
       .card-actions .btn {
         flex: 1;
-        min-width: 120px;
+        min-width: 110px;
         background: rgba(19, 66, 38, 0.05);
         border: 1px solid rgba(19, 66, 38, 0.15);
       }
 
       .card-visuals.compact .card-slot {
-        min-width: 80px;
-        min-height: 66px;
+        min-width: 70px;
+        min-height: 60px;
       }
 
       .card-slot {
-        min-width: 60px;
-        min-height: 72px;
+        min-width: 56px;
+        min-height: 64px;
         border-radius: 12px;
         border: 1px dashed rgba(19, 66, 38, 0.2);
         background: rgba(255, 255, 255, 0.75);
@@ -616,7 +623,7 @@
       }
 
       .card-slot strong {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
       .card-slot.badge::after {
@@ -760,20 +767,21 @@
 
       .turn-tools .card-row {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.8rem;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
         align-items: center;
+        overflow-x: auto;
       }
 
       .action-buttons {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.4rem;
+        flex-wrap: nowrap;
+        gap: 0.35rem;
       }
 
       .action-buttons .btn {
         flex: 1;
-        min-width: 120px;
+        min-width: 110px;
       }
 
       @media (max-width: 960px) {
