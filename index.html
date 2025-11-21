@@ -247,91 +247,25 @@
       }
 
       .board-stage {
-        display: grid;
-        grid-template-areas:
-          "top"
-          "center"
-          "bottom";
-        gap: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
         width: 100%;
         align-items: center;
-        justify-items: center;
       }
 
-      .board-center {
-        grid-area: center;
+      .hud-grid {
         display: grid;
-        grid-template-areas: "left board right";
-        grid-template-columns:
-          minmax(0, clamp(120px, 16vw, 220px))
-          minmax(420px, min(96vw, 880px))
-          minmax(0, clamp(120px, 16vw, 220px));
+        grid-template-columns: repeat(2, minmax(260px, 1fr));
         gap: 0.85rem;
-        align-items: stretch;
-        justify-content: center;
         width: 100%;
-      }
-
-      .side-stack {
-        display: flex;
-        gap: 0.75rem;
-      }
-
-      .side-stack-top,
-      .side-stack-bottom {
-        grid-area: top;
-        justify-content: center;
-        width: min(96vw, 880px);
-      }
-
-      .side-stack-bottom {
-        grid-area: bottom;
-      }
-
-      .side-stack-left,
-      .side-stack-right {
-        align-items: stretch;
-        height: min(96vw, 880px);
-        flex-direction: column;
-        max-width: clamp(140px, 16vw, 240px);
-        width: 100%;
-      }
-
-      .side-stack-left {
-        grid-area: left;
-      }
-
-      .side-stack-right {
-        grid-area: right;
+        max-width: 1100px;
       }
 
       @media (max-width: 960px) {
-        .board-stage {
-          grid-template-areas:
-            "top"
-            "center"
-            "bottom";
-        }
-
-        .board-center {
-          grid-template-areas:
-            "board"
-            "left"
-            "right";
+        .hud-grid {
           grid-template-columns: 1fr;
-          justify-items: center;
-        }
-
-        .side-stack-top,
-        .side-stack-bottom {
-          flex-direction: column;
-        }
-
-        .side-stack-left,
-        .side-stack-right {
-          height: auto;
-          width: min(96vw, 880px);
-          max-width: none;
+          max-width: 800px;
         }
       }
 
@@ -512,6 +446,8 @@
         flex-direction: column;
         gap: 0.9rem;
         align-items: stretch;
+        width: min(100%, 1100px);
+        margin: 0 auto;
       }
 
       .board-area {
@@ -523,7 +459,8 @@
 
       .board-shell {
         position: relative;
-        width: min(96vw, 880px);
+        width: min(100%, 1100px);
+        max-width: 1100px;
         margin: 0 auto;
       }
 
@@ -1060,16 +997,19 @@
         const hudBySlot = Object.fromEntries(
           state.players.map((player, index) => [player.slot, createHud(player, index)])
         );
+        const hudPanels = [
+          hudBySlot.north,
+          hudBySlot.east,
+          hudBySlot.south,
+          hudBySlot.west,
+        ]
+          .filter(Boolean)
+          .join("");
 
         layout.innerHTML = `
           <div class="board-stage">
-            <div class="side-stack side-stack-top">${hudBySlot.north ?? ""}</div>
-            <div class="board-center">
-              <div class="side-stack side-stack-left">${hudBySlot.west ?? ""}</div>
-              ${createBoard()}
-              <div class="side-stack side-stack-right">${hudBySlot.east ?? ""}</div>
-            </div>
-            <div class="side-stack side-stack-bottom">${hudBySlot.south ?? ""}</div>
+            <div class="hud-grid">${hudPanels}</div>
+            ${createBoard()}
           </div>
         `;
 
