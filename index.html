@@ -44,7 +44,7 @@
       }
 
       #app {
-        width: min(1150px, 100%);
+        width: min(1400px, 100%);
         margin: 0 auto;
         padding: 1.75rem clamp(1rem, 3.5vw, 2.25rem) 3.5rem;
       }
@@ -243,30 +243,32 @@
         gap: 1.25rem;
         position: relative;
         align-items: center;
+        width: 100%;
       }
 
       .board-stage {
         display: grid;
-        grid-template-areas:
-          "north north north"
-          "west board east"
-          "south south south";
-        grid-template-columns: minmax(200px, 1fr) minmax(560px, 860px) minmax(200px, 1fr);
-        grid-template-rows: auto minmax(440px, 1fr) auto;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+        width: 100%;
+        align-items: stretch;
+      }
+
+      .side-stack {
+        display: grid;
         gap: 0.75rem;
-        width: min(1180px, 100%);
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        align-content: start;
       }
 
       @media (max-width: 960px) {
         .board-stage {
-          grid-template-areas:
-            "north"
-            "board"
-            "east"
-            "west"
-            "south";
           grid-template-columns: 1fr;
-          grid-template-rows: auto;
+        }
+
+        .side-stack {
+          grid-template-rows: none;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
         }
       }
 
@@ -300,27 +302,7 @@
         color: var(--hud-text);
       }
 
-      .hud-north {
-        grid-area: north;
-        justify-self: center;
-        width: min(760px, 100%);
-      }
 
-      .hud-south {
-        grid-area: south;
-        justify-self: center;
-        width: min(760px, 100%);
-      }
-
-      .hud-west {
-        grid-area: west;
-        align-self: stretch;
-      }
-
-      .hud-east {
-        grid-area: east;
-        align-self: stretch;
-      }
 
       .hud-header {
         display: flex;
@@ -1016,11 +998,15 @@
 
         layout.innerHTML = `
           <div class="board-stage">
-            ${hudBySlot.north ?? ""}
-            ${hudBySlot.west ?? ""}
+            <div class="side-stack side-stack-left">
+              ${hudBySlot.north ?? ""}
+              ${hudBySlot.west ?? ""}
+            </div>
             ${createBoard()}
-            ${hudBySlot.east ?? ""}
-            ${hudBySlot.south ?? ""}
+            <div class="side-stack side-stack-right">
+              ${hudBySlot.east ?? ""}
+              ${hudBySlot.south ?? ""}
+            </div>
           </div>
         `;
 
@@ -1810,6 +1796,12 @@
         if (!state.charactersAssigned) {
           state.turn.feedback = "캐릭터 선택 후에 진행할 수 있습니다.";
           render();
+          return;
+        }
+        const player = state.players[state.turn.currentPlayerIndex];
+        if (!player || player.lives <= 0) {
+          state.turn.feedback = "활동할 수 있는 플레이어가 없습니다.";
+          endTurn();
           return;
         }
         if (state.turn.phase === "await-draw") {
