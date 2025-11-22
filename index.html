@@ -777,6 +777,7 @@
             <ul>
               <li>숫자 두 개: 숫자1 + 숫자2</li>
               <li>숫자 + 각도: 숫자 / cos(각도)</li>
+              <li>cos(90°)이 나오면 한 방향 직선으로 자유 이동 가능</li>
             </ul>
           </article>
           <article class="guide-card">
@@ -795,6 +796,7 @@
             <ul>
               <li>빈 칸에만 고정 가능</li>
               <li>고정된 총알 방향으로만 상대 사격 허용</li>
+              <li>고정된 총알을 발사하면 해당 고정은 소멸</li>
             </ul>
           </article>
           <article class="guide-card highlight">
@@ -844,16 +846,17 @@
         },
         {
           name: "피타고라스",
-          ability: "특정 조합 보너스",
+          ability: "직각 삼각형 제압",
           lives: 5,
-          detail: "숫자 3과 4를 뽑으면 10칸, 6과 8을 뽑으면 20칸 이동력이 생긴다.",
+          detail:
+            "자신과 다른 두 말을 이은 변이 6·8·10 또는 5·12·13인 직각삼각형을 만들면, 삼각형 밖에 있는 말의 목숨을 1 깎는다.",
           power: { key: "pythagoras" },
         },
         {
           name: "갈루아",
           ability: "주기 보호막",
           lives: 3,
-          detail: "자신의 차례마다 3턴 주기로 보호막을 전개해 총알 피해를 무효화한다.",
+          detail: "자신의 차례마다 2턴 주기로 보호막을 전개해 총알 피해를 무효화한다.",
           power: { key: "galois" },
         },
         {
@@ -868,7 +871,7 @@
           name: "갈릴레이",
           ability: "원형 위협",
           lives: 4,
-          detail: "고정 탄환을 중심으로 뽑은 숫자만큼의 반지름 점선 원을 한 턴간 펼친다.",
+          detail: "고정 탄환을 중심으로 뽑은 숫자만큼의 반지름 점선 원을 자신의 다음 턴까지 펼친다.",
           power: { key: "galileo" },
         },
       ];
@@ -910,7 +913,7 @@
         selectedRoom: mainRoom,
         players: [],
         piles: { number: 60, angle: 30 },
-        turn: {},
+        turn: { freeMoveMode: false, freeMoveDirection: null },
         logs: [],
         charactersAssigned: false,
         boardSize: BOARD_SIZE,
@@ -1297,7 +1300,6 @@
         if (!state.hazards?.length) return "";
         const size = 100 / state.boardSize;
         return state.hazards
-          .filter((h) => h.expiresAfter > state.turnCount)
           .map((h) => {
             const left = (h.center.x + 0.5) * size;
             const top = (h.center.y + 0.5) * size;
@@ -1436,6 +1438,7 @@
           player.pascalMulUsed = 0;
           player.hazardHitTurn = -1;
           player.shootCooldown = 0;
+          player.lastTriangleTurn = -1;
         });
         placePiecesAtCorners(state.players);
         state.charactersAssigned = true;
@@ -1455,9 +1458,11 @@
         state.turnCount = 0;
         state.turn.drawnCards = [];
         state.turn.result = 0;
+        state.turn.freeMoveMode = false;
+        state.turn.freeMoveDirection = null;
         const current = state.players[state.turn.currentPlayerIndex];
         current.turnsTaken = 1;
-        current.shieldActive = current.character === "갈루아" && current.turnsTaken % 3 === 0;
+        current.shieldActive = current.character === "갈루아" && current.turnsTaken % 2 === 0;
         if (current.shieldActive) {
           logEvent(`${current.character}가 보호막을 전개했습니다.`);
         }
@@ -1543,17 +1548,6 @@
           const total = usableNumbers.reduce((a, b) => a + b, 0);
           result = total;
           summary = `숫자 ${summaryParts.join(" + ")} ⇒ ${result}`;
-          const combo = usableNumbers.slice(0, 2).sort((a, b) => a - b).join(",");
-          if (player.character === "피타고라스") {
-            if (combo === "3,4") {
-              result += 10;
-              summary += " (3·4 보너스 +10)";
-            }
-            if (combo === "6,8") {
-              result += 20;
-              summary += " (6·8 보너스 +20)";
-            }
-          }
         } else {
           const baseNumber = usableNumbers[0] ?? 0;
           const cosValue = Math.cos((angleValue * Math.PI) / 180);
@@ -1564,6 +1558,11 @@
         }
 
         result = Math.max(1, Math.round(Math.abs(result)));
+        state.turn.freeMoveMode = angleValue === 90 && mode === "single";
+        state.turn.freeMoveDirection = null;
+        if (state.turn.freeMoveMode) {
+          summary = `숫자 ${baseNumber} / cos(90°) → 한 방향 자유 이동`;
+        }
         state.turn.drawSummary = summary;
         state.turn.result = result;
         state.turn.remainingValue = result;
@@ -1708,7 +1707,7 @@
             center: { ...center },
             radius,
             owner: player.id,
-            expiresAfter: state.turnCount + 2,
+            expiresOnOwnerTurn: true,
           });
           state.turn.cardPickMode = null;
           state.turn.feedback = `반지름 ${radius} 원이 생성되었습니다.`;
@@ -1778,7 +1777,7 @@
 
       function isInsideHazard(point, playerId) {
         return state.hazards
-          .filter((h) => h.expiresAfter > state.turnCount && h.owner !== playerId)
+          .filter((h) => h.owner !== playerId)
           .some((h) => {
             const dx = point.x - h.center.x;
             const dy = point.y - h.center.y;
@@ -1792,6 +1791,52 @@
         if (isInsideHazard(player.position, player.id)) {
           applyDamage(player, 1, "원형 위협");
           player.hazardHitTurn = state.turnCount;
+        }
+      }
+
+      function evaluatePythagorasTriangle() {
+        const pyth = state.players.find((p) => p.character === "피타고라스" && p.lives > 0);
+        if (!pyth) return;
+        if (pyth.lastTriangleTurn === state.turnCount) return;
+        const others = state.players.filter((p) => p.id !== pyth.id && p.lives > 0);
+        if (others.length < 2) return;
+
+        const patterns = [
+          { legs: [36, 64], hyp: 100, label: "6-8-10" },
+          { legs: [25, 144], hyp: 169, label: "5-12-13" },
+        ];
+
+        const distSq = (a, b) => {
+          const dx = a.position.x - b.position.x;
+          const dy = a.position.y - b.position.y;
+          return dx * dx + dy * dy;
+        };
+
+        for (let i = 0; i < others.length - 1; i += 1) {
+          for (let j = i + 1; j < others.length; j += 1) {
+            const a = others[i];
+            const b = others[j];
+            const legSquares = [distSq(pyth, a), distSq(pyth, b)].sort((x, y) => x - y);
+            const hypSquare = distSq(a, b);
+            const matched = patterns.find(
+              (p) =>
+                p.hyp === hypSquare &&
+                p.legs[0] === legSquares[0] &&
+                p.legs[1] === legSquares[1]
+            );
+            if (matched) {
+              const involved = new Set([pyth.id, a.id, b.id]);
+              const victims = state.players.filter((p) => p.lives > 0 && !involved.has(p.id));
+              if (!victims.length) return;
+              victims.forEach((v) => applyDamage(v, 1, "피타고라스 직각삼각형"));
+              pyth.lastTriangleTurn = state.turnCount;
+              pyth.statusText = `${matched.label} 직각삼각형 발동`;
+              logEvent(
+                `${pyth.character}가 ${matched.label} 직각삼각형을 만들어 나머지 말에 피해를 입혔습니다.`
+              );
+              return;
+            }
+          }
         }
       }
 
@@ -1850,7 +1895,10 @@
         }
         const target = { x: Number(cell.dataset.x), y: Number(cell.dataset.y) };
         const origin = getOriginCoordinate(player, state.turn.selectedOrigin);
-        const rawDistance = Math.abs(target.x - origin.x) + Math.abs(target.y - origin.y);
+        const usedLockedOrigin =
+          state.turn.pendingAction === "shoot" && state.turn.selectedOrigin?.startsWith("lock-");
+        const moveStart = state.turn.pendingAction === "move" && state.turn.freeMoveMode ? player.position : origin;
+        const rawDistance = Math.abs(target.x - moveStart.x) + Math.abs(target.y - moveStart.y);
         if (rawDistance === 0) {
           state.turn.feedback = "같은 칸을 선택할 수 없습니다.";
           render();
@@ -1899,6 +1947,7 @@
           pushed.position = target;
           player.statusText = `${pushed.character}을(를) 중력으로 이동`;
           logEvent(`뉴턴이 ${pushed.character}을(를) ${formatCoord(target)}로 밀어냈습니다.`);
+          evaluatePythagorasTriangle();
           state.turn.remainingValue -= distance;
           state.turn.gravityValue = null;
           state.turn.pendingAction = null;
@@ -1914,6 +1963,26 @@
           return;
         }
         let cost = rawDistance;
+        let usedFreeMove = false;
+        if (state.turn.pendingAction === "move" && state.turn.freeMoveMode) {
+          const dx = target.x - player.position.x;
+          const dy = target.y - player.position.y;
+          const isStraight = dx === 0 || dy === 0;
+          if (!isStraight) {
+            state.turn.feedback = "cos(90°) 효과로는 직선 방향만 이동할 수 있습니다.";
+            render();
+            return;
+          }
+          const direction = dx !== 0 ? "x" : "y";
+          if (state.turn.freeMoveDirection && state.turn.freeMoveDirection !== direction) {
+            state.turn.feedback = "선택한 이동 방향을 유지해야 합니다.";
+            render();
+            return;
+          }
+          state.turn.freeMoveDirection = direction;
+          cost = 0;
+          usedFreeMove = true;
+        }
         if (state.turn.pendingAction === "move" && player.power.moveDiscount) {
           cost = Math.max(1, cost - player.power.moveDiscount);
         }
@@ -1940,10 +2009,16 @@
             return;
           }
           player.position = target;
-          player.statusText = `이동 완료 ${formatCoord(target)} (소모 ${cost})`;
+          const moveLabel = usedFreeMove ? "무료 이동" : `소모 ${cost}`;
+          player.statusText = `이동 완료 ${formatCoord(target)} (${moveLabel})`;
           logEvent(`${player.character}가 ${formatCoord(target)}로 이동했습니다.`);
           applyHazardIfNeeded(player);
+          evaluatePythagorasTriangle();
         } else {
+          if (usedLockedOrigin) {
+            const idx = Number(state.turn.selectedOrigin.replace("lock-", ""));
+            player.lockedShots.splice(idx, 1);
+          }
           const victim = state.players.find(
             (p) => p.id !== player.id && p.lives > 0 && p.position.x === target.x && p.position.y === target.y
           );
@@ -2015,7 +2090,6 @@
         state.turn.cardPickMode = null;
         state.turn.gravityValue = null;
         state.turnCount += 1;
-        state.hazards = state.hazards.filter((h) => h.expiresAfter > state.turnCount);
         advanceTurn();
         render();
       }
@@ -2029,6 +2103,9 @@
           attempts += 1;
           const candidate = state.players[nextIndex];
           if (candidate && candidate.lives > 0) {
+            state.hazards = state.hazards.filter(
+              (h) => !(h.expiresOnOwnerTurn && h.owner === candidate.id)
+            );
             state.turn.currentPlayerIndex = nextIndex;
             state.turn.phase = "await-draw";
             state.turn.remainingValue = 0;
@@ -2046,8 +2123,10 @@
             state.turn.holdMode = false;
             state.turn.cardPickMode = null;
             state.turn.gravityValue = null;
+            state.turn.freeMoveMode = false;
+            state.turn.freeMoveDirection = null;
             candidate.turnsTaken += 1;
-            candidate.shieldActive = candidate.character === "갈루아" && candidate.turnsTaken % 3 === 0;
+            candidate.shieldActive = candidate.character === "갈루아" && candidate.turnsTaken % 2 === 0;
             if (candidate.shieldActive) {
               candidate.statusText = "보호막 전개";
               logEvent(`${candidate.character}가 보호막을 전개했습니다.`);
