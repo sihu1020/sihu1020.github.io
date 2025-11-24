@@ -1120,7 +1120,10 @@
             </div>
             <div class="action-buttons">
               <button class="btn btn-ghost" data-action="move">이동</button>
-              <button class="btn btn-ghost" data-action="shoot">사격</button>
+              <button class="btn btn-ghost" data-action="shoot-self">사격(본인)</button>
+              <button class="btn btn-ghost" data-action="shoot-locked" ${
+                player.lockedShots.length ? "" : "disabled"
+              }>사격(고정)</button>
               <button class="btn btn-primary" data-end-turn>턴 종료</button>
             </div>
             <div class="origin-options" data-origins></div>
@@ -1902,6 +1905,7 @@
           endTurn();
           return;
         }
+        const isShootAction = action === "shoot-self" || action === "shoot-locked";
         if (state.turn.phase === "await-draw") {
           state.turn.feedback = "카드를 먼저 뽑으세요.";
           render();
@@ -1912,12 +1916,12 @@
           render();
           return;
         }
-        if (action === "shoot" && player.shootCooldown > 0) {
+        if (isShootAction && player.shootCooldown > 0) {
           state.turn.feedback = "지난 턴 사격 피해로 이번 턴에는 사격할 수 없습니다.";
           render();
           return;
         }
-        if (action === "shoot" && player.shootSilenced) {
+        if (isShootAction && player.shootSilenced) {
           state.turn.feedback = "갈릴레이 원 안에서는 이번 턴 사격할 수 없습니다.";
           render();
           return;
@@ -1927,11 +1931,29 @@
           render();
           return;
         }
+        if (action === "shoot-locked") {
+          if (!player.lockedShots.length) {
+            state.turn.feedback = "고정된 총알이 없습니다.";
+            render();
+            return;
+          }
+          const lockIndex = state.turn.selectedOrigin?.startsWith("lock-")
+            ? Number(state.turn.selectedOrigin.replace("lock-", ""))
+            : 0;
+          state.turn.selectedOrigin = player.lockedShots[lockIndex]
+            ? `lock-${lockIndex}`
+            : "lock-0";
+        }
+        if (action === "shoot-self") {
+          state.turn.selectedOrigin = "self";
+        }
         state.turn.pendingAction = action;
         state.turn.feedback =
           action === "move"
             ? "이동할 칸을 선택하세요."
-            : "사격할 목표 칸을 선택하세요.";
+            : action === "shoot-locked"
+              ? "고정된 총알에서 사격할 대상을 선택하세요."
+              : "사격할 목표 칸을 선택하세요.";
         render();
       }
 
@@ -1948,10 +1970,15 @@
           endTurn();
           return;
         }
+        const isShootAction = state.turn.pendingAction?.startsWith("shoot");
+        const isLockedShot = state.turn.pendingAction === "shoot-locked";
         const target = { x: Number(cell.dataset.x), y: Number(cell.dataset.y) };
         const origin = getOriginCoordinate(player, state.turn.selectedOrigin);
+        const selectedLockIndex = state.turn.selectedOrigin?.startsWith("lock-")
+          ? Number(state.turn.selectedOrigin.replace("lock-", ""))
+          : null;
         const usedLockedOrigin =
-          state.turn.pendingAction === "shoot" && state.turn.selectedOrigin?.startsWith("lock-");
+          isShootAction && (isLockedShot || state.turn.selectedOrigin?.startsWith("lock-"));
         const moveStart = state.turn.pendingAction === "move" && state.turn.freeMoveMode ? player.position : origin;
         const rawDistance = Math.abs(target.x - moveStart.x) + Math.abs(target.y - moveStart.y);
         if (rawDistance === 0) {
@@ -2042,7 +2069,7 @@
           cost = Math.max(1, cost - player.power.moveDiscount);
         }
         if (
-          state.turn.pendingAction === "shoot" &&
+          isShootAction &&
           state.turn.selectedOrigin !== "self" &&
           player.power.anchorDiscount
         ) {
@@ -2070,13 +2097,14 @@
           applyHazardIfNeeded(player);
           evaluatePythagorasTriangle();
         } else {
-          if (usedLockedOrigin) {
-            const idx = Number(state.turn.selectedOrigin.replace("lock-", ""));
-            player.lockedShots.splice(idx, 1);
-          }
           const victim = state.players.find(
             (p) => p.id !== player.id && p.lives > 0 && p.position.x === target.x && p.position.y === target.y
           );
+          if (isLockedShot && !victim) {
+            state.turn.feedback = "고정된 총알에서는 상대를 맞춰야 합니다.";
+            render();
+            return;
+          }
           if (victim) {
             const damaged = applyDamage(victim, 1, "사격");
             player.statusText = damaged
@@ -2089,6 +2117,13 @@
             }
             player.statusText = `사격 고정 ${formatCoord(target)}`;
             logEvent(`${player.character}가 ${formatCoord(target)}에 총알을 고정했습니다.`);
+          }
+          if (usedLockedOrigin) {
+            const idx = selectedLockIndex ?? 0;
+            player.lockedShots.splice(idx, 1);
+            if (state.turn.selectedOrigin?.startsWith("lock-")) {
+              state.turn.selectedOrigin = player.lockedShots[idx] ? `lock-${idx}` : "self";
+            }
           }
         }
 
