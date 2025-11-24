@@ -869,7 +869,7 @@
           ability: "숫자 보류",
           lives: 4,
           detail:
-            "1·7·2·8을 보류해 합산(≤20)으로 쓰거나 4장을 모두 모으면 모두의 체력을 1씩 감소시킨다.",
+            "1·7·2·8을 각 1장씩만 보류해 합산(≤20)으로 쓰거나 4장을 모두 모으면 모두의 체력을 1씩 감소시킨다.",
           power: { key: "ramanujan" },
         },
         {
@@ -988,6 +988,7 @@
           hazardHitTurn: -1,
           shootCooldown: 0,
           shootSilenced: false,
+          shootBlockedOwners: [],
         }));
         placePiecesAtCorners(state.players);
         state.numberDeck = cloneDeck(numberCardWeights);
@@ -1488,6 +1489,7 @@
           player.hazardHitTurn = -1;
           player.shootCooldown = 0;
           player.shootSilenced = false;
+          player.shootBlockedOwners = [];
         });
         placePiecesAtCorners(state.players);
         state.charactersAssigned = true;
@@ -1571,10 +1573,12 @@
         const drawnCards = [];
         const usableNumbers = [];
         let summaryParts = [];
+        let blockedHold = false;
 
         for (let i = 0; i < numberCardsToDraw; i += 1) {
           const num = drawNumber();
-          const isHoldable = player.character === "라마누잔" && [1, 2, 7, 8].includes(num) && state.turn.holdMode;
+          const wantsHold = player.character === "라마누잔" && [1, 2, 7, 8].includes(num) && state.turn.holdMode;
+          const isHoldable = wantsHold && !player.stashedNumbers.includes(num);
           if (isHoldable) {
             player.stashedNumbers.push(num);
             drawnCards.push({ type: "number", value: num, held: true });
@@ -1583,6 +1587,9 @@
             usableNumbers.push(num);
             drawnCards.push({ type: "number", value: num, held: false });
             summaryParts.push(`${num}`);
+            if (wantsHold) {
+              blockedHold = true;
+            }
           }
         }
         state.piles.number = remainingInDeck(state.numberDeck);
@@ -1640,7 +1647,9 @@
         state.turn.pendingAction = null;
         state.turn.selectedOrigin = "self";
         state.turn.drawnCards = drawnCards;
-        state.turn.feedback = "이동 또는 사격 버튼을 눌러 좌표를 선택하세요.";
+        state.turn.feedback = blockedHold
+          ? "라마누잔은 같은 숫자를 두 장 보류할 수 없습니다."
+          : "이동 또는 사격 버튼을 눌러 좌표를 선택하세요.";
         render();
       }
 
@@ -1827,6 +1836,11 @@
             render();
             return;
           }
+          if (player.stashedNumbers.includes(card.value)) {
+            state.turn.feedback = "같은 숫자를 두 장 보류할 수 없습니다.";
+            render();
+            return;
+          }
           player.stashedNumbers.push(card.value);
           card.held = true;
           state.turn.remainingValue = Math.max(0, state.turn.remainingValue - card.value);
@@ -1874,21 +1888,28 @@
         return true;
       }
 
-      function isInsideHazard(point, playerId) {
+      function getHazardOwners(point, playerId) {
         return state.hazards
           .filter((h) => h.owner !== playerId)
-          .some((h) => {
+          .filter((h) => {
             const dx = point.x - h.center.x;
             const dy = point.y - h.center.y;
             return Math.sqrt(dx * dx + dy * dy) <= h.radius;
-          });
+          })
+          .map((h) => h.owner);
+      }
+
+      function updateShootRestriction(player) {
+        const owners = getHazardOwners(player.position, player.id);
+        player.shootBlockedOwners = owners;
+        player.shootSilenced = owners.length > 0;
       }
 
       function applyHazardIfNeeded(player) {
         if (!player || player.lives <= 0) return;
-        if (player.hazardHitTurn === state.turnCount) return;
-        if (isInsideHazard(player.position, player.id)) {
-          player.shootSilenced = true;
+        const alreadyHitThisTurn = player.hazardHitTurn === state.turnCount;
+        updateShootRestriction(player);
+        if (!alreadyHitThisTurn && player.shootBlockedOwners.length) {
           applyDamage(player, 1, "원형 위협");
           player.hazardHitTurn = state.turnCount;
         }
@@ -1919,11 +1940,6 @@
         }
         if (isShootAction && player.shootCooldown > 0) {
           state.turn.feedback = "지난 턴 사격 피해로 이번 턴에는 사격할 수 없습니다.";
-          render();
-          return;
-        }
-        if (isShootAction && player.shootSilenced) {
-          state.turn.feedback = "갈릴레이 원 안에서는 이번 턴 사격할 수 없습니다.";
           render();
           return;
         }
@@ -2104,6 +2120,11 @@
             render();
             return;
           }
+          if (victim && (player.shootBlockedOwners ?? []).includes(victim.id)) {
+            state.turn.feedback = "갈릴레이 원 안에서는 그 갈릴레이를 목표로 사격할 수 없습니다.";
+            render();
+            return;
+          }
           if (victim) {
             const damaged = applyDamage(victim, 1, "사격");
             player.statusText = damaged
@@ -2169,9 +2190,6 @@
           }
           player.statusText = `${cleaned}${statusSuffix}`;
           applyHazardIfNeeded(player);
-          if (player.character === "갈루아") {
-            player.shieldActive = false;
-          }
         }
         state.turn.holdMode = false;
         state.turn.pendingAction = null;
@@ -2195,15 +2213,19 @@
             state.hazards = state.hazards.filter(
               (h) => !(h.expiresOnOwnerTurn && h.owner === candidate.id)
             );
-            candidate.shootSilenced = isInsideHazard(candidate.position, candidate.id);
+            updateShootRestriction(candidate);
             state.turn.currentPlayerIndex = nextIndex;
             state.turn.phase = "await-draw";
             state.turn.remainingValue = 0;
             state.turn.drawSummary = "-";
             state.turn.pendingAction = null;
+            const blockedGalileos = (candidate.shootBlockedOwners ?? [])
+              .map((id) => state.players.find((p) => p.id === id)?.character ?? "")
+              .filter(Boolean)
+              .join(", ");
             const shootNote = [
               candidate.shootCooldown > 0 ? "이번 턴은 사격할 수 없습니다." : "",
-              candidate.shootSilenced ? "원형 위협 범위로 사격 불가." : "",
+              blockedGalileos ? `${blockedGalileos} 원 안: 해당 갈릴레이에게 사격 불가.` : "",
             ]
               .filter(Boolean)
               .join(" ");
@@ -2220,7 +2242,13 @@
             state.turn.freeMoveMode = false;
             state.turn.freeMoveDirection = null;
             candidate.turnsTaken += 1;
-            candidate.shieldActive = candidate.character === "갈루아" && candidate.turnsTaken % 2 === 0;
+            const hadShield = candidate.shieldActive;
+            const shouldActivateShield = candidate.character === "갈루아" && candidate.turnsTaken % 2 === 0;
+            candidate.shieldActive = shouldActivateShield;
+            if (hadShield && !shouldActivateShield) {
+              candidate.statusText = "보호막 종료";
+              logEvent(`${candidate.character}의 보호막이 해제되었습니다.`);
+            }
             if (candidate.shieldActive) {
               candidate.statusText = "보호막 전개";
               logEvent(`${candidate.character}가 보호막을 전개했습니다.`);
