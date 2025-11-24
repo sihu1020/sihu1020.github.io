@@ -849,7 +849,7 @@
           ability: "직각 삼각형 제압",
           lives: 5,
           detail:
-            "자신과 다른 두 말을 이은 변이 6·8·10 또는 5·12·13인 직각삼각형을 만들면, 삼각형 밖에 있는 말의 목숨을 1 깎는다.",
+            "자신과 다른 두 말을 이은 변이 6·8·10 또는 5·12·13인 직각삼각형을 만들면, 삼각형 밖에 있는 말의 목숨을 1 깎는다. 숫자 2장을 뽑아 3·4·5 또는 6·8·10 세트 중 두 장이 나오면 각각 15칸, 20칸 이동한다.",
           power: { key: "pythagoras" },
         },
         {
@@ -1579,6 +1579,22 @@
           const total = usableNumbers.reduce((a, b) => a + b, 0);
           result = total;
           summary = `숫자 ${summaryParts.join(" + ")} ⇒ ${result}`;
+          if (player.character === "피타고라스") {
+            const drawnNumbers = drawnCards
+              .filter((c) => c.type === "number" && !c.held)
+              .map((c) => c.value);
+            if (drawnNumbers.length === 2) {
+              const pythSets = [
+                { label: "3·4·5", numbers: new Set([3, 4, 5]), move: 15 },
+                { label: "6·8·10", numbers: new Set([6, 8, 10]), move: 20 },
+              ];
+              const matched = pythSets.find((set) => drawnNumbers.every((n) => set.numbers.has(n)));
+              if (matched) {
+                result = matched.move;
+                summary = `피타고라스 세트(${matched.label}) 적중! ${matched.move}칸 이동`;
+              }
+            }
+          }
         } else {
           const baseNumber = usableNumbers[0] ?? 0;
           const cosValue = Math.cos((angleValue * Math.PI) / 180);
