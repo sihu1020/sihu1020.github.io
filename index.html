@@ -315,6 +315,24 @@
         gap: 0.65rem;
       }
 
+      .meta-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0.35rem;
+      }
+
+      .shoot-chance-note {
+        font-size: 0.82rem;
+        background: rgba(15, 156, 156, 0.08);
+        border: 1px dashed rgba(15, 156, 156, 0.25);
+        color: #0f665e;
+        padding: 0.35rem 0.55rem;
+        border-radius: 10px;
+        min-width: 120px;
+        text-align: center;
+      }
+
       .ability-text {
         font-size: 0.85rem;
         color: rgba(19, 66, 38, 0.72);
@@ -935,9 +953,12 @@
         { value: 90, count: 3 },
       ];
 
+      const shootChanceWeights = [{ value: "chance", count: 15 }];
+
       const getDeckTotal = (weights) => weights.reduce((sum, card) => sum + card.count, 0);
       const NUMBER_DECK_TOTAL = getDeckTotal(numberCardWeights);
       const ANGLE_DECK_TOTAL = getDeckTotal(angleCardWeights);
+      const SHOOT_CHANCE_TOTAL = getDeckTotal(shootChanceWeights);
 
       const cloneDeck = (weights) => weights.map((card) => ({ ...card }));
       const remainingInDeck = (deck) => deck.reduce((sum, card) => sum + card.count, 0);
@@ -945,7 +966,7 @@
       const state = {
         selectedRoom: mainRoom,
         players: [],
-        piles: { number: NUMBER_DECK_TOTAL, angle: ANGLE_DECK_TOTAL },
+        piles: { number: NUMBER_DECK_TOTAL, angle: ANGLE_DECK_TOTAL, chance: SHOOT_CHANCE_TOTAL },
         turn: { freeMoveMode: false, freeMoveDirection: null, shootSilenced: false },
         logs: [],
         charactersAssigned: false,
@@ -989,13 +1010,16 @@
           shootCooldown: 0,
           shootSilenced: false,
           shootBlockedOwners: [],
+          shootChances: 0,
         }));
         placePiecesAtCorners(state.players);
         state.numberDeck = cloneDeck(numberCardWeights);
         state.angleDeck = cloneDeck(angleCardWeights);
+        state.shootChanceDeck = cloneDeck(shootChanceWeights);
         state.piles = {
           number: remainingInDeck(state.numberDeck),
           angle: remainingInDeck(state.angleDeck),
+          chance: remainingInDeck(state.shootChanceDeck),
         };
         state.turn = {
           currentPlayerIndex: 0,
@@ -1086,6 +1110,7 @@
         const hearts = Array.from({ length: player.maxLives }, (_, idx) =>
           `<span class="heart ${idx < player.lives ? "full" : ""}"></span>`
         ).join("");
+        const shootChances = player.shootChances ?? 0;
         const isActive = index === state.turn.currentPlayerIndex && player.lives > 0;
         const activeTools = isActive ? renderActiveTools(player) : "";
         return `
@@ -1105,7 +1130,10 @@
             </div>
             <div class="player-meta">
               <div class="ability-text">${player.detail || "-"}</div>
-              <div class="hearts">${hearts}</div>
+              <div class="meta-right">
+                <div class="hearts">${hearts}</div>
+                <div class="shoot-chance-note">사격 기회 ${shootChances}회</div>
+              </div>
             </div>
             ${activeTools}
           </article>
@@ -1119,6 +1147,7 @@
         const remainingLabel = state.turn.freeMoveMode
           ? "한 방향으로 마음껏"
           : state.turn.remainingValue;
+        const shootChances = player.shootChances ?? 0;
         return `
           <div class="turn-tools">
             <div class="turn-meta-row">
@@ -1128,6 +1157,7 @@
             <div class="calc-panel">
               <div class="calc-row"><span>포인트 계산</span><strong>${calcSummary}</strong></div>
               <div class="calc-row muted"><span>잔여 포인트</span><strong>${remainingLabel}</strong></div>
+              <div class="calc-row muted"><span>사격 기회</span><strong>${shootChances}회</strong></div>
             </div>
             ${renderCardActions()}
             ${createHoldDisplay()}
@@ -1135,6 +1165,7 @@
             <div class="card-row">
               <button class="btn btn-primary" data-draw="double">숫자 2장</button>
               <button class="btn btn-primary" data-draw="mix">숫자 + 각도</button>
+              <button class="btn btn-ghost" data-draw="chance">사격 찬스 카드</button>
             </div>
             <div class="action-buttons">
               <button class="btn btn-ghost" data-action="move">이동</button>
@@ -1199,6 +1230,10 @@
                 <strong>${state.piles.angle}</strong>
               </div>
               <div class="summary-card">
+                <span>사격 찬스</span>
+                <strong>${state.piles.chance}</strong>
+              </div>
+              <div class="summary-card">
                 <span>결과</span>
                 <strong>${state.turn.drawSummary}</strong>
               </div>
@@ -1225,7 +1260,12 @@
         return state.turn.drawnCards
           .map((card, idx) => {
             const badge = card.held ? "badge" : "";
-            const label = card.type === "angle" ? "각도" : "숫자";
+            const labelMap = {
+              angle: "각도",
+              number: "숫자",
+              "shoot-chance": "사격 찬스",
+            };
+            const label = labelMap[card.type] ?? "카드";
             return `<div class="card-slot ${badge}"><span>${label} ${idx + 1}</span><strong>${card.value}</strong></div>`;
           })
           .join("");
@@ -1490,6 +1530,7 @@
           player.shootCooldown = 0;
           player.shootSilenced = false;
           player.shootBlockedOwners = [];
+          player.shootChances = 0;
         });
         placePiecesAtCorners(state.players);
         state.charactersAssigned = true;
@@ -1546,6 +1587,39 @@
 
         state.turn.cardPickMode = state.turn.holdMode ? "hold" : null;
         state.turn.gravityValue = null;
+
+        if (mode === "chance") {
+          const remainingChance = remainingInDeck(state.shootChanceDeck);
+          if (remainingChance <= 0) {
+            state.turn.feedback = "사격 찬스 카드가 모두 소진되었습니다.";
+            render();
+            return;
+          }
+          drawShootChance();
+          state.piles.chance = remainingInDeck(state.shootChanceDeck);
+          const success = Math.random() < 0.6;
+          state.turn.drawnCards = [
+            { type: "shoot-chance", value: success ? "성공" : "실패", success },
+          ];
+          state.turn.drawSummary = "사격 찬스 카드";
+          state.turn.result = 0;
+          state.turn.remainingValue = 0;
+          state.turn.mode = "chance";
+          state.turn.pendingAction = null;
+          state.turn.freeMoveMode = false;
+          state.turn.freeMoveDirection = null;
+          state.turn.phase = "await-end";
+          if (success) {
+            player.shootChances = Math.max(0, (player.shootChances ?? 0) + 1);
+            state.turn.feedback = `사격 기회 확보! 현재 ${player.shootChances}회 보유.`;
+            logEvent(`${player.character}가 사격 찬스 카드를 뽑아 기회를 획득했습니다.`);
+          } else {
+            state.turn.feedback = "사격 기회를 얻지 못했습니다. 턴을 종료하세요.";
+            logEvent(`${player.character}의 사격 찬스 카드 시도 실패.`);
+          }
+          render();
+          return;
+        }
 
         let numberCardsToDraw = mode === "double" ? 2 : 1;
         let angleCardsToDraw = mode === "mix" ? 1 : 0;
@@ -1676,6 +1750,10 @@
 
       function drawAngle() {
         return drawFromDeck(state.angleDeck) ?? 0;
+      }
+
+      function drawShootChance() {
+        return drawFromDeck(state.shootChanceDeck);
       }
 
       function handleAbility(type, value) {
@@ -1943,6 +2021,11 @@
           render();
           return;
         }
+        if (isShootAction && (player.shootChances ?? 0) <= 0) {
+          state.turn.feedback = "사격 찬스 카드로 얻은 기회가 없어 사격할 수 없습니다.";
+          render();
+          return;
+        }
         if (state.turn.remainingValue <= 0) {
           state.turn.feedback = "잔여 포인트가 없습니다. 턴을 종료하세요.";
           render();
@@ -2138,6 +2221,8 @@
             player.statusText = `사격 고정 ${formatCoord(target)}`;
             logEvent(`${player.character}가 ${formatCoord(target)}에 총알을 고정했습니다.`);
           }
+          player.shootChances = Math.max(0, (player.shootChances ?? 0) - 1);
+          logEvent(`${player.character}가 사격 기회를 사용했습니다. 남은 ${player.shootChances}회.`);
           if (usedLockedOrigin) {
             const idx = selectedLockIndex ?? 0;
             player.lockedShots.splice(idx, 1);
