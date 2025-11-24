@@ -501,6 +501,11 @@
         color: #0d3a1f;
       }
 
+      .token.shielded {
+        border-color: #5ef0ff;
+        box-shadow: 0 0 0 2px rgba(94, 240, 255, 0.6), 0 0 18px rgba(94, 240, 255, 0.7);
+      }
+
       .token::after {
         content: attr(data-label);
       }
@@ -846,10 +851,10 @@
         },
         {
           name: "피타고라스",
-          ability: "직각 삼각형 제압",
+          ability: "피타고라스 세트 질주",
           lives: 5,
           detail:
-            "자신과 다른 두 말을 이은 변이 6·8·10 또는 5·12·13인 직각삼각형을 만들면, 삼각형 밖에 있는 말의 목숨을 1 깎는다. 숫자 2장을 뽑아 3·4·5 또는 6·8·10 세트 중 두 장이 나오면 각각 15칸, 20칸 이동한다.",
+            "숫자 2장을 뽑아 3·4·5 또는 6·8·10 세트 중 두 장이 나오면 각각 15칸, 20칸 이동한다.",
           power: { key: "pythagoras" },
         },
         {
@@ -972,6 +977,7 @@
           shieldActive: false,
           stashedNumbers: [],
           nextDrawPenalty: 0,
+          penaltyAppliesOnTurn: 0,
           forcedSingleDraw: false,
           pascalSubUsed: 0,
           pascalMulUsed: 0,
@@ -1148,7 +1154,9 @@
           let content = "";
           if (playerHere) {
             const tokenStyle = `background:${hexToRgba(playerHere.colorCode, 0.4)}; border-color:${playerHere.colorCode};`;
-            content += `<span class="token" style="${tokenStyle}" data-label="${playerHere.colorLabel}"></span>`;
+            const shieldClass =
+              playerHere.character === "갈루아" && playerHere.shieldActive ? " shielded" : "";
+            content += `<span class="token${shieldClass}" style="${tokenStyle}" data-label="${playerHere.colorLabel}"></span>`;
           }
           bullets.forEach((bullet, idx2) => {
             content += `<span class="bullet-marker" style="color:${bullet.color}; bottom:${4 + idx2 * 10}px"></span>`;
@@ -1462,12 +1470,12 @@
           player.shieldActive = false;
           player.stashedNumbers = [];
           player.nextDrawPenalty = 0;
+          player.penaltyAppliesOnTurn = 0;
           player.forcedSingleDraw = false;
           player.pascalSubUsed = 0;
           player.pascalMulUsed = 0;
           player.hazardHitTurn = -1;
           player.shootCooldown = 0;
-          player.lastTriangleTurn = -1;
           player.shootSilenced = false;
         });
         placePiecesAtCorners(state.players);
@@ -1536,9 +1544,12 @@
           player.forcedSingleDraw = false;
         }
 
-        if (player.nextDrawPenalty !== 0) {
+        const penaltyReady = (player.penaltyAppliesOnTurn ?? 0) <= state.turnCount;
+
+        if (player.nextDrawPenalty !== 0 && penaltyReady) {
           numberCardsToDraw = Math.max(1, numberCardsToDraw + player.nextDrawPenalty);
           player.nextDrawPenalty = 0;
+          player.penaltyAppliesOnTurn = state.turnCount;
         }
 
         if (state.turn.extraNumberThisTurn > 0) {
@@ -1654,6 +1665,7 @@
           }
           target.forcedSingleDraw = true;
           player.nextDrawPenalty -= 1;
+          player.penaltyAppliesOnTurn = state.turnCount + 1;
           player.pascalSubUsed += 1;
           player.statusText = `${target.character} 다음 드로우 1장 제한`;
           state.turn.feedback = "다음 턴 제한을 걸었습니다.";
@@ -1667,6 +1679,7 @@
           player.pascalMulUsed += 1;
           state.turn.extraNumberThisTurn += 1;
           player.nextDrawPenalty -= 1;
+          player.penaltyAppliesOnTurn = state.turnCount + 1;
           player.statusText = "이번 턴 숫자 +1, 다음 턴 -1";
           state.turn.feedback = "추가 숫자 카드가 적용됩니다.";
           logEvent("파스칼이 곱셈 능력을 사용해 숫자를 추가합니다.");
@@ -1863,52 +1876,6 @@
         }
       }
 
-      function evaluatePythagorasTriangle() {
-        const pyth = state.players.find((p) => p.character === "피타고라스" && p.lives > 0);
-        if (!pyth) return;
-        if (pyth.lastTriangleTurn === state.turnCount) return;
-        const others = state.players.filter((p) => p.id !== pyth.id && p.lives > 0);
-        if (others.length < 2) return;
-
-        const patterns = [
-          { legs: [36, 64], hyp: 100, label: "6-8-10" },
-          { legs: [25, 144], hyp: 169, label: "5-12-13" },
-        ];
-
-        const distSq = (a, b) => {
-          const dx = a.position.x - b.position.x;
-          const dy = a.position.y - b.position.y;
-          return dx * dx + dy * dy;
-        };
-
-        for (let i = 0; i < others.length - 1; i += 1) {
-          for (let j = i + 1; j < others.length; j += 1) {
-            const a = others[i];
-            const b = others[j];
-            const legSquares = [distSq(pyth, a), distSq(pyth, b)].sort((x, y) => x - y);
-            const hypSquare = distSq(a, b);
-            const matched = patterns.find(
-              (p) =>
-                p.hyp === hypSquare &&
-                p.legs[0] === legSquares[0] &&
-                p.legs[1] === legSquares[1]
-            );
-            if (matched) {
-              const involved = new Set([pyth.id, a.id, b.id]);
-              const victims = state.players.filter((p) => p.lives > 0 && !involved.has(p.id));
-              if (!victims.length) return;
-              victims.forEach((v) => applyDamage(v, 1, "피타고라스 직각삼각형"));
-              pyth.lastTriangleTurn = state.turnCount;
-              pyth.statusText = `${matched.label} 직각삼각형 발동`;
-              logEvent(
-                `${pyth.character}가 ${matched.label} 직각삼각형을 만들어 나머지 말에 피해를 입혔습니다.`
-              );
-              return;
-            }
-          }
-        }
-      }
-
       function handleAction(action) {
         if (!state.charactersAssigned) {
           state.turn.feedback = "캐릭터 선택 후에 진행할 수 있습니다.";
@@ -2045,7 +2012,6 @@
           pushed.position = target;
           player.statusText = `${pushed.character}을(를) 중력으로 이동`;
           logEvent(`뉴턴이 ${pushed.character}을(를) ${formatCoord(target)}로 밀어냈습니다.`);
-          evaluatePythagorasTriangle();
           state.turn.remainingValue -= distance;
           state.turn.gravityValue = null;
           state.turn.pendingAction = null;
@@ -2111,7 +2077,6 @@
           player.statusText = `이동 완료 ${formatCoord(target)} (${moveLabel})`;
           logEvent(`${player.character}가 ${formatCoord(target)}로 이동했습니다.`);
           applyHazardIfNeeded(player);
-          evaluatePythagorasTriangle();
         } else {
           const victim = state.players.find(
             (p) => p.id !== player.id && p.lives > 0 && p.position.x === target.x && p.position.y === target.y
