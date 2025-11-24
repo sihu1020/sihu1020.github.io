@@ -43,225 +43,6 @@
         color: #1c2f1d;
       }
 
-      .news-shell {
-        display: flex;
-        flex-direction: column;
-        gap: 1.25rem;
-      }
-
-      .news-hero {
-        background: linear-gradient(135deg, rgba(116, 218, 114, 0.28), rgba(15, 156, 156, 0.15));
-        border: 1px solid rgba(19, 66, 38, 0.08);
-        border-radius: 20px;
-        padding: 1.6rem clamp(1rem, 3vw, 2.4rem);
-        box-shadow: 0 18px 32px rgba(116, 218, 114, 0.18);
-      }
-
-      .news-hero .eyebrow {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.7);
-        color: #0f5132;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-      }
-
-      .news-hero h1 {
-        margin: 0.35rem 0 0.25rem;
-        font-size: clamp(1.6rem, 4vw, 2.6rem);
-        color: #0f2f1b;
-      }
-
-      .news-hero p {
-        margin: 0;
-        color: rgba(19, 66, 38, 0.7);
-        line-height: 1.6;
-      }
-
-      .news-layout {
-        display: grid;
-        grid-template-columns: 2fr minmax(280px, 420px);
-        gap: 1.25rem;
-        align-items: start;
-      }
-
-      @media (max-width: 960px) {
-        .news-layout {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      .news-column {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .news-section {
-        background: var(--panel);
-        border-radius: 18px;
-        border: 1px solid var(--panel-border);
-        padding: clamp(1rem, 2.8vw, 1.5rem);
-        box-shadow: 0 16px 32px rgba(108, 185, 138, 0.16);
-      }
-
-      .section-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 0.5rem;
-        margin-bottom: 0.75rem;
-      }
-
-      .section-head h2 {
-        margin: 0;
-        color: #0f5132;
-        letter-spacing: 0.05em;
-      }
-
-      .pill.small {
-        font-size: 0.78rem;
-        padding: 0.25rem 0.55rem;
-      }
-
-      .news-list {
-        display: grid;
-        gap: 0.65rem;
-      }
-
-      .news-card {
-        display: grid;
-        grid-template-columns: auto 1fr;
-        gap: 0.5rem 0.75rem;
-        padding: 0.8rem 0.95rem;
-        border-radius: 14px;
-        border: 1px solid rgba(19, 66, 38, 0.1);
-        background: rgba(255, 255, 255, 0.85);
-      }
-
-      .news-card.pinned {
-        border-color: rgba(15, 156, 156, 0.35);
-        box-shadow: 0 10px 20px rgba(15, 156, 156, 0.18);
-      }
-
-      .news-card time {
-        font-size: 0.85rem;
-        color: rgba(19, 66, 38, 0.65);
-        white-space: nowrap;
-      }
-
-      .news-card .meta-row {
-        display: flex;
-        gap: 0.35rem;
-        align-items: center;
-        flex-wrap: wrap;
-        font-size: 0.85rem;
-        color: rgba(19, 66, 38, 0.65);
-      }
-
-      .news-card h3 {
-        margin: 0;
-        font-size: 1rem;
-        color: #0f2f1b;
-      }
-
-      .news-card p {
-        margin: 0.15rem 0 0;
-        color: rgba(19, 66, 38, 0.78);
-      }
-
-      .class-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 0.75rem;
-      }
-
-      .class-card {
-        padding: 0.85rem;
-        border-radius: 14px;
-        border: 1px solid rgba(19, 66, 38, 0.12);
-        background: rgba(255, 255, 255, 0.9);
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-      }
-
-      .class-card h4 {
-        margin: 0;
-        color: #0f5132;
-      }
-
-      .class-card ul {
-        margin: 0;
-        padding-left: 1.1rem;
-        color: rgba(19, 66, 38, 0.75);
-        line-height: 1.4;
-        font-size: 0.9rem;
-      }
-
-      .news-side {
-        display: flex;
-        flex-direction: column;
-        gap: 0.75rem;
-        position: relative;
-      }
-
-      .side-card {
-        background: linear-gradient(135deg, rgba(15, 156, 156, 0.1), rgba(116, 218, 114, 0.1));
-        border: 1px solid rgba(19, 66, 38, 0.12);
-        border-radius: 16px;
-        padding: 1rem;
-        box-shadow: 0 10px 22px rgba(15, 156, 156, 0.2);
-      }
-
-      .side-card h3 {
-        margin: 0 0 0.35rem;
-      }
-
-      .side-card p {
-        margin: 0 0 0.8rem;
-        color: rgba(19, 66, 38, 0.72);
-        line-height: 1.5;
-      }
-
-      .game-panel {
-        background: var(--panel);
-        border: 1px solid var(--panel-border);
-        border-radius: 18px;
-        box-shadow: 0 20px 38px rgba(108, 185, 138, 0.24);
-        overflow: hidden;
-      }
-
-      .game-panel[hidden] {
-        display: none;
-      }
-
-      .game-panel__header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0.9rem 1rem;
-        border-bottom: 1px solid var(--panel-border);
-        background: rgba(116, 218, 114, 0.08);
-      }
-
-      .game-panel__header h3 {
-        margin: 0;
-        color: #0f2f1b;
-        font-size: 1.05rem;
-      }
-
-      .game-panel__body {
-        padding: 1rem;
-      }
-
-      .game-panel__body .logo-title {
-        margin-top: 0;
-      }
-
       #app {
         width: min(1400px, 100%);
         margin: 0 auto;
@@ -955,56 +736,7 @@
     </style>
   </head>
   <body>
-    <div id="app">
-      <div class="news-shell">
-        <header class="news-hero">
-          <span class="eyebrow">동신과학고 12기</span>
-          <h1>뉴스룸</h1>
-          <p>
-            새롭게 정리된 소식과 알림을 한 곳에서 확인하세요. 오른쪽 구석의
-            게임하기 창에서 수학 서바이벌 전장을 바로 실행할 수 있습니다.
-          </p>
-        </header>
-        <section class="news-layout">
-          <div class="news-column">
-            <div class="news-section">
-              <div class="section-head">
-                <h2>일반 공지</h2>
-                <span class="pill small">공지 모음</span>
-              </div>
-              <div class="news-list" data-general-news></div>
-            </div>
-            <div class="news-section">
-              <div class="section-head">
-                <h2>학급 소식</h2>
-                <span class="pill small">각 반 소식</span>
-              </div>
-              <div class="class-grid" data-class-news></div>
-            </div>
-          </div>
-          <aside class="news-side">
-            <div class="side-card">
-              <h3>게임하기</h3>
-              <p>
-                수학 서바이벌 전장을 실행할 수 있는 전용 창입니다. 클릭해서
-                바로 입장하세요.
-              </p>
-              <div class="logo-actions" style="justify-content: flex-start">
-                <button class="btn btn-primary" data-open-game>게임 창 열기</button>
-                <button class="btn btn-ghost" data-close-game disabled>창 닫기</button>
-              </div>
-            </div>
-            <div class="game-panel" data-game-panel hidden>
-              <div class="game-panel__header">
-                <h3>동신과고 12기 · 게임하기</h3>
-                <button class="btn btn-ghost" data-close-game-top>창 닫기</button>
-              </div>
-              <div class="game-panel__body" data-game-container></div>
-            </div>
-          </aside>
-        </section>
-      </div>
-    </div>
+    <div id="app"></div>
 
     <template id="game-template">
       <div class="logo-title">
@@ -1114,10 +846,10 @@
         },
         {
           name: "피타고라스",
-          ability: "카드 세트 대시",
+          ability: "직각 삼각형 제압",
           lives: 5,
           detail:
-            "숫자 카드 두 장을 한 번에 뽑아 3·4·5 또는 6·8·10 세트에서 두 장이 나오면 보너스 이동 거리를 얻는다. (3·4·5: 15칸, 6·8·10: 20칸)",
+            "자신과 다른 두 말을 이은 변이 6·8·10 또는 5·12·13인 직각삼각형을 만들면, 삼각형 밖에 있는 말의 목숨을 1 깎는다. 숫자 2장을 뽑아 3·4·5 또는 6·8·10 세트 중 두 장이 나오면 각각 15칸, 20칸 이동한다.",
           power: { key: "pythagoras" },
         },
         {
@@ -1214,7 +946,6 @@
 
       const app = document.getElementById("app");
       const gameTemplate = document.getElementById("game-template");
-      let gameHost = null;
 
       function placePiecesAtCorners(players) {
         players.forEach((player) => {
@@ -1278,88 +1009,7 @@
 
       resetGameState();
 
-      function formatNewsDate(value) {
-        const date = new Date(value);
-        if (Number.isNaN(date.getTime())) return "-";
-        return new Intl.DateTimeFormat("ko-KR", {
-          month: "short",
-          day: "numeric",
-        }).format(date);
-      }
-
-      function renderNewsroom(data, errorText) {
-        const generalWrap = app.querySelector("[data-general-news]");
-        const classWrap = app.querySelector("[data-class-news]");
-        if (!generalWrap || !classWrap) return;
-
-        if (errorText) {
-          generalWrap.innerHTML = `<div class="news-card"><p>${errorText}</p></div>`;
-          classWrap.innerHTML = `<div class="class-card"><p>${errorText}</p></div>`;
-          return;
-        }
-
-        const generalItems = (data?.general ?? []).slice().sort((a, b) => {
-          return (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0);
-        });
-
-        generalWrap.innerHTML = generalItems.length
-          ? generalItems
-              .map((item) => {
-                const attachments = item.attachments?.length
-                  ? `<span class="pill small">첨부 ${item.attachments.length}</span>`
-                  : "";
-                const pinned = item.pinned ? `<span class="pill small">상단 고정</span>` : "";
-                return `
-                  <article class="news-card ${item.pinned ? "pinned" : ""}">
-                    <time>${formatNewsDate(item.createdAt)}</time>
-                    <div>
-                      <div class="meta-row">${pinned}${attachments}</div>
-                      <h3>${item.title}</h3>
-                      <p>${item.content}</p>
-                    </div>
-                  </article>
-                `;
-              })
-              .join("")
-          : '<div class="news-card"><p>최근 등록된 공지가 없습니다.</p></div>';
-
-        const classEntries = Object.entries(data?.classes ?? {});
-        classWrap.innerHTML = classEntries.length
-          ? classEntries
-              .map(([cls, items]) => {
-                const list = items
-                  .map((item) => {
-                    const attachments = item.attachments?.length
-                      ? ` · 첨부 ${item.attachments.length}`
-                      : "";
-                    return `<li><strong>${item.title}</strong> · ${item.content}${attachments}</li>`;
-                  })
-                  .join("") || "<li>등록된 소식이 없습니다.</li>";
-                return `
-                  <article class="class-card">
-                    <h4>${cls}</h4>
-                    <ul>${list}</ul>
-                  </article>
-                `;
-              })
-              .join("")
-          : '<div class="class-card"><p>학급 소식을 불러오는 중입니다.</p></div>';
-      }
-
-      async function loadNewsroom() {
-        renderNewsroom(null, "뉴스 데이터를 불러오는 중입니다...");
-        try {
-          const response = await fetch("./data/news.json");
-          if (!response.ok) throw new Error("뉴스 데이터를 불러오지 못했습니다.");
-          const data = await response.json();
-          renderNewsroom(data);
-        } catch (error) {
-          renderNewsroom(null, "뉴스 정보를 불러오지 못했습니다.");
-        }
-      }
-
-      function renderGame(host = gameHost) {
-        if (!host) return;
+      function renderGame() {
         const view = gameTemplate.content.cloneNode(true);
 
         view.querySelector("[data-randomize]").addEventListener("click", () => {
@@ -1394,45 +1044,7 @@
 
         bindGameEvents(view);
         bindCollapsibles(view);
-        host.replaceChildren(view);
-        gameHost = host;
-      }
-
-      function setupGamePanel() {
-        const panel = app.querySelector("[data-game-panel]");
-        const gameContainer = app.querySelector("[data-game-container]");
-        const openBtn = app.querySelector("[data-open-game]");
-        const closeBtn = app.querySelector("[data-close-game]");
-        const closeTopBtn = app.querySelector("[data-close-game-top]");
-
-        const updateButtons = (isOpen) => {
-          if (isOpen) {
-            openBtn?.setAttribute("disabled", "true");
-            closeBtn?.removeAttribute("disabled");
-          } else {
-            openBtn?.removeAttribute("disabled");
-            closeBtn?.setAttribute("disabled", "true");
-          }
-        };
-
-        const closePanel = () => {
-          if (!panel) return;
-          panel.setAttribute("hidden", "true");
-          gameContainer?.replaceChildren();
-          gameHost = null;
-          updateButtons(false);
-        };
-
-        const openPanel = () => {
-          if (!panel || !gameContainer) return;
-          panel.removeAttribute("hidden");
-          renderGame(gameContainer);
-          updateButtons(true);
-        };
-
-        openBtn?.addEventListener("click", openPanel);
-        closeBtn?.addEventListener("click", closePanel);
-        closeTopBtn?.addEventListener("click", closePanel);
+        app.replaceChildren(view);
       }
 
       function renderCharacterCards() {
@@ -1855,6 +1467,7 @@
           player.pascalMulUsed = 0;
           player.hazardHitTurn = -1;
           player.shootCooldown = 0;
+          player.lastTriangleTurn = -1;
           player.shootSilenced = false;
         });
         placePiecesAtCorners(state.players);
@@ -2250,6 +1863,52 @@
         }
       }
 
+      function evaluatePythagorasTriangle() {
+        const pyth = state.players.find((p) => p.character === "피타고라스" && p.lives > 0);
+        if (!pyth) return;
+        if (pyth.lastTriangleTurn === state.turnCount) return;
+        const others = state.players.filter((p) => p.id !== pyth.id && p.lives > 0);
+        if (others.length < 2) return;
+
+        const patterns = [
+          { legs: [36, 64], hyp: 100, label: "6-8-10" },
+          { legs: [25, 144], hyp: 169, label: "5-12-13" },
+        ];
+
+        const distSq = (a, b) => {
+          const dx = a.position.x - b.position.x;
+          const dy = a.position.y - b.position.y;
+          return dx * dx + dy * dy;
+        };
+
+        for (let i = 0; i < others.length - 1; i += 1) {
+          for (let j = i + 1; j < others.length; j += 1) {
+            const a = others[i];
+            const b = others[j];
+            const legSquares = [distSq(pyth, a), distSq(pyth, b)].sort((x, y) => x - y);
+            const hypSquare = distSq(a, b);
+            const matched = patterns.find(
+              (p) =>
+                p.hyp === hypSquare &&
+                p.legs[0] === legSquares[0] &&
+                p.legs[1] === legSquares[1]
+            );
+            if (matched) {
+              const involved = new Set([pyth.id, a.id, b.id]);
+              const victims = state.players.filter((p) => p.lives > 0 && !involved.has(p.id));
+              if (!victims.length) return;
+              victims.forEach((v) => applyDamage(v, 1, "피타고라스 직각삼각형"));
+              pyth.lastTriangleTurn = state.turnCount;
+              pyth.statusText = `${matched.label} 직각삼각형 발동`;
+              logEvent(
+                `${pyth.character}가 ${matched.label} 직각삼각형을 만들어 나머지 말에 피해를 입혔습니다.`
+              );
+              return;
+            }
+          }
+        }
+      }
+
       function handleAction(action) {
         if (!state.charactersAssigned) {
           state.turn.feedback = "캐릭터 선택 후에 진행할 수 있습니다.";
@@ -2386,6 +2045,7 @@
           pushed.position = target;
           player.statusText = `${pushed.character}을(를) 중력으로 이동`;
           logEvent(`뉴턴이 ${pushed.character}을(를) ${formatCoord(target)}로 밀어냈습니다.`);
+          evaluatePythagorasTriangle();
           state.turn.remainingValue -= distance;
           state.turn.gravityValue = null;
           state.turn.pendingAction = null;
@@ -2451,6 +2111,7 @@
           player.statusText = `이동 완료 ${formatCoord(target)} (${moveLabel})`;
           logEvent(`${player.character}가 ${formatCoord(target)}로 이동했습니다.`);
           applyHazardIfNeeded(player);
+          evaluatePythagorasTriangle();
         } else {
           const victim = state.players.find(
             (p) => p.id !== player.id && p.lives > 0 && p.position.x === target.x && p.position.y === target.y
@@ -2628,8 +2289,6 @@
         renderGame();
       }
 
-      loadNewsroom();
-      setupGamePanel();
       render();
     </script>
     <footer>도시 규칙서 미학을 본뜬 인터페이스 © 2024</footer>
