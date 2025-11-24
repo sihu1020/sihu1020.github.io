@@ -916,14 +916,14 @@
 
       const numberCardWeights = [
         { value: 1, count: 4 },
-        { value: 2, count: 5 },
-        { value: 3, count: 6 },
-        { value: 4, count: 7 },
+        { value: 2, count: 4 },
+        { value: 3, count: 5 },
+        { value: 4, count: 8 },
         { value: 5, count: 8 },
         { value: 6, count: 8 },
-        { value: 7, count: 7 },
-        { value: 8, count: 6 },
-        { value: 9, count: 5 },
+        { value: 7, count: 8 },
+        { value: 8, count: 5 },
+        { value: 9, count: 4 },
         { value: 10, count: 4 },
       ];
 
@@ -935,8 +935,12 @@
         { value: 90, count: 3 },
       ];
 
-      const NUMBER_DECK_TOTAL = numberCardWeights.reduce((sum, card) => sum + card.count, 0);
-      const ANGLE_DECK_TOTAL = angleCardWeights.reduce((sum, card) => sum + card.count, 0);
+      const getDeckTotal = (weights) => weights.reduce((sum, card) => sum + card.count, 0);
+      const NUMBER_DECK_TOTAL = getDeckTotal(numberCardWeights);
+      const ANGLE_DECK_TOTAL = getDeckTotal(angleCardWeights);
+
+      const cloneDeck = (weights) => weights.map((card) => ({ ...card }));
+      const remainingInDeck = (deck) => deck.reduce((sum, card) => sum + card.count, 0);
 
       const state = {
         selectedRoom: mainRoom,
@@ -986,7 +990,12 @@
           shootSilenced: false,
         }));
         placePiecesAtCorners(state.players);
-        state.piles = { number: NUMBER_DECK_TOTAL, angle: ANGLE_DECK_TOTAL };
+        state.numberDeck = cloneDeck(numberCardWeights);
+        state.angleDeck = cloneDeck(angleCardWeights);
+        state.piles = {
+          number: remainingInDeck(state.numberDeck),
+          angle: remainingInDeck(state.angleDeck),
+        };
         state.turn = {
           currentPlayerIndex: 0,
           phase: "pre-character",
@@ -1103,6 +1112,12 @@
       }
 
       function renderActiveTools(player) {
+        const calcSummary = state.turn.freeMoveMode
+          ? "한 방향으로 마음껏"
+          : state.turn.drawSummary || "-";
+        const remainingLabel = state.turn.freeMoveMode
+          ? "한 방향으로 마음껏"
+          : state.turn.remainingValue;
         return `
           <div class="turn-tools">
             <div class="turn-meta-row">
@@ -1110,12 +1125,8 @@
               <div class="card-visuals compact">${renderCardSlots()}</div>
             </div>
             <div class="calc-panel">
-              <div class="calc-row"><span>포인트 계산</span><strong>${
-                state.turn.drawSummary || "-"
-              }</strong></div>
-              <div class="calc-row muted"><span>잔여 포인트</span><strong>${
-                state.turn.remainingValue
-              }</strong></div>
+              <div class="calc-row"><span>포인트 계산</span><strong>${calcSummary}</strong></div>
+              <div class="calc-row muted"><span>잔여 포인트</span><strong>${remainingLabel}</strong></div>
             </div>
             ${renderCardActions()}
             ${createHoldDisplay()}
@@ -1574,13 +1585,13 @@
             summaryParts.push(`${num}`);
           }
         }
-        state.piles.number = Math.max(0, state.piles.number - numberCardsToDraw);
+        state.piles.number = remainingInDeck(state.numberDeck);
 
         let angleValue = null;
         if (angleCardsToDraw) {
           angleValue = drawAngle();
           drawnCards.push({ type: "angle", value: angleValue, held: false });
-          state.piles.angle = Math.max(0, state.piles.angle - 1);
+          state.piles.angle = remainingInDeck(state.angleDeck);
           summaryParts.push(`cos(${angleValue}°)`);
         }
 
@@ -1619,7 +1630,7 @@
         state.turn.freeMoveMode = angleValue === 90 && mode === "single";
         state.turn.freeMoveDirection = null;
         if (state.turn.freeMoveMode) {
-          summary = `숫자 ${baseNumber} / cos(90°) → 한 방향 자유 이동`;
+          summary = "한 방향으로 마음껏";
         }
         state.turn.drawSummary = summary;
         state.turn.result = result;
@@ -1633,22 +1644,29 @@
         render();
       }
 
-      function weightedDraw(weights) {
-        const total = weights.reduce((sum, card) => sum + card.count, 0);
+      function drawFromDeck(deck) {
+        const total = remainingInDeck(deck);
+        if (total <= 0) return null;
         let pick = Math.random() * total;
-        for (const card of weights) {
+        for (const card of deck) {
+          if (card.count <= 0) continue;
           pick -= card.count;
-          if (pick < 0) return card.value;
+          if (pick < 0) {
+            card.count = Math.max(0, card.count - 1);
+            return card.value;
+          }
         }
-        return weights[weights.length - 1].value;
+        const fallback = deck[deck.length - 1];
+        fallback.count = Math.max(0, fallback.count - 1);
+        return fallback.value;
       }
 
       function drawNumber() {
-        return weightedDraw(numberCardWeights);
+        return drawFromDeck(state.numberDeck) ?? 0;
       }
 
       function drawAngle() {
-        return weightedDraw(angleCardWeights);
+        return drawFromDeck(state.angleDeck) ?? 0;
       }
 
       function handleAbility(type, value) {
