@@ -617,6 +617,19 @@
         padding: 0.4rem 0.6rem;
       }
 
+      .coord-display {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        padding: 0.35rem 0.55rem;
+        background: rgba(15, 156, 156, 0.08);
+        border: 1px solid rgba(15, 156, 156, 0.2);
+        border-radius: 10px;
+        font-size: 0.85rem;
+        color: #0f665e;
+        pointer-events: none;
+      }
+
       .hazard-circle {
         position: absolute;
         border: 2px dotted rgba(15, 156, 156, 0.65);
@@ -1219,6 +1232,7 @@
           <section class="board-wrapper">
             <div class="board-area">
               <div class="board-shell">
+                <div class="coord-display" data-coord-display>좌표: -</div>
                 <div class="board-grid" data-board>${cells}</div>
                 <div class="hazard-layer">${renderHazards()}</div>
               </div>
@@ -1405,6 +1419,24 @@
       function bindGameEvents(view) {
         const board = view.querySelector("[data-board]");
         board?.addEventListener("click", handleBoardClick);
+
+        const coordDisplay = view.querySelector("[data-coord-display]");
+        if (board && coordDisplay) {
+          board.addEventListener("pointermove", (event) => {
+            const cell = event.target.closest("[data-cell]");
+            if (!cell) {
+              coordDisplay.textContent = "좌표: -";
+              return;
+            }
+            const x = Number(cell.dataset.x);
+            const y = Number(cell.dataset.y);
+            coordDisplay.textContent = `좌표: ${formatCoord({ x, y })}`;
+          });
+
+          board.addEventListener("pointerleave", () => {
+            coordDisplay.textContent = "좌표: -";
+          });
+        }
 
         view.querySelectorAll("[data-draw]").forEach((btn) => {
           btn.addEventListener("click", () => {
