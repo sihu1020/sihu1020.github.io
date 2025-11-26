@@ -953,7 +953,10 @@
         { value: 90, count: 3 },
       ];
 
-      const shootChanceWeights = [{ value: "chance", count: 15 }];
+      const shootChanceWeights = [
+        { value: "allow", count: 20 },
+        { value: "deny", count: 30 },
+      ];
 
       const getDeckTotal = (weights) => weights.reduce((sum, card) => sum + card.count, 0);
       const NUMBER_DECK_TOTAL = getDeckTotal(numberCardWeights);
@@ -1595,9 +1598,9 @@
             render();
             return;
           }
-          drawShootChance();
+          const chanceCard = drawShootChance();
           state.piles.chance = remainingInDeck(state.shootChanceDeck);
-          const success = Math.random() < 0.6;
+          const success = chanceCard === "allow";
           state.turn.drawnCards = [
             { type: "shoot-chance", value: success ? "성공" : "실패", success },
           ];
