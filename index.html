@@ -49,6 +49,97 @@
         padding: 1.75rem clamp(1rem, 3.5vw, 2.25rem) 3.5rem;
       }
 
+      .shell {
+        background: var(--panel);
+        border-radius: 18px;
+        border: 1px solid var(--panel-border);
+        padding: clamp(1.5rem, 3vw, 2.2rem);
+        box-shadow: 0 25px 55px rgba(91, 140, 106, 0.2);
+      }
+
+      .top-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .home-hero {
+        text-align: center;
+        display: grid;
+        gap: 0.75rem;
+        padding: clamp(1rem, 3vw, 1.6rem);
+      }
+
+      .home-hero h1 {
+        margin: 0;
+        font-family: "Orbitron", "Pretendard", sans-serif;
+        letter-spacing: 0.1em;
+        color: #0f5132;
+      }
+
+      .home-hero p {
+        margin: 0;
+        color: rgba(19, 66, 38, 0.65);
+      }
+
+      .home-grid {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        margin-top: 1rem;
+      }
+
+      .home-card {
+        padding: 1.25rem;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(167, 243, 208, 0.25));
+        border: 1px solid rgba(19, 66, 38, 0.1);
+        box-shadow: 0 12px 26px rgba(116, 218, 114, 0.25);
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .home-card h2 {
+        margin: 0;
+        color: #0f5132;
+      }
+
+      .home-card p {
+        margin: 0;
+        color: rgba(19, 66, 38, 0.78);
+      }
+
+      .news-layout {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .news-grid {
+        display: grid;
+        gap: 0.8rem;
+      }
+
+      .news-card {
+        padding: 1rem 1.1rem;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(19, 66, 38, 0.1);
+        box-shadow: 0 10px 20px rgba(116, 218, 114, 0.2);
+      }
+
+      .news-card h3 {
+        margin: 0 0 0.35rem;
+      }
+
       .logo-title {
         text-align: center;
         margin-bottom: 1.5rem;
@@ -774,7 +865,68 @@
   <body>
     <div id="app"></div>
 
+    <template id="home-template">
+      <div class="shell">
+        <div class="home-hero">
+          <p>동신과고 12기 친구들을 위한 놀이터</p>
+          <h1>환영합니다!</h1>
+          <p>둘 중 한 공간을 선택해 새 화면에서 모험을 시작하세요.</p>
+          <div class="home-grid">
+            <article class="home-card">
+              <h2>동신과고 12기 뉴스룸</h2>
+              <p>우리 기수의 최신 소식과 이야기를 확인하는 공간입니다.</p>
+              <button class="btn btn-primary" data-open-news>뉴스룸 열기</button>
+            </article>
+            <article class="home-card">
+              <h2>수학 서바이벌 게임</h2>
+              <p>현재의 보드게임 시스템을 완전히 새로운 화면에서 즐겨보세요.</p>
+              <button class="btn btn-primary" data-open-game>게임 시작</button>
+            </article>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="news-template">
+      <div class="shell news-layout">
+        <header class="top-nav">
+          <div>
+            <p class="room-info-chip">DONGSIN 12TH</p>
+            <h2 style="margin: 0">동신과고 12기 뉴스룸</h2>
+          </div>
+          <div class="nav-actions">
+            <button class="btn btn-ghost" data-go-home>홈으로</button>
+            <button class="btn btn-primary" data-open-game>게임으로 이동</button>
+          </div>
+        </header>
+        <div class="news-grid">
+          <article class="news-card">
+            <h3>캠퍼스 소식</h3>
+            <p>기숙사 리모델링이 진행 중입니다. 새롭게 단장한 공간에서 더 편안한 생활을 기대하세요.</p>
+          </article>
+          <article class="news-card">
+            <h3>대회 일정</h3>
+            <p>전국 수학 경시대회 예선이 다가옵니다. 팀별 연습 일정을 확인하고 실력을 뽐내보세요.</p>
+          </article>
+          <article class="news-card">
+            <h3>커뮤니티 이야기</h3>
+            <p>이번 주말 소규모 보드게임 모임이 열립니다. 참여 신청은 학생회 게시판에서 받습니다.</p>
+          </article>
+        </div>
+      </div>
+    </template>
+
     <template id="game-template">
+      <div class="top-nav">
+        <div>
+          <p class="room-info-chip">DONGSIN 12TH</p>
+          <h2 style="margin: 0">동신과고 놀이터</h2>
+        </div>
+        <div class="nav-actions">
+          <button class="btn btn-ghost" data-go-home>홈으로</button>
+          <button class="btn btn-ghost" data-open-news>뉴스룸</button>
+        </div>
+      </div>
       <div class="logo-title">
         <p>수학 원리를 이용한</p>
         <h1>서바이벌 게임</h1>
@@ -862,6 +1014,11 @@
         title: "메인 전장",
         desc: "도시 전체가 주시하는 본 작전 구역.",
       };
+
+      const app = document.getElementById("app");
+      const homeTemplate = document.getElementById("home-template");
+      const newsTemplate = document.getElementById("news-template");
+      const gameTemplate = document.getElementById("game-template");
 
       const characterDeck = [
         {
@@ -988,10 +1145,8 @@
         charactersAssigned: false,
         boardSize: BOARD_SIZE,
         collapsedSections: { rules: true, characters: true },
+        currentView: "home",
       };
-
-      const app = document.getElementById("app");
-      const gameTemplate = document.getElementById("game-template");
 
       function placePiecesAtCorners(players) {
         players.forEach((player) => {
@@ -1065,8 +1220,45 @@
 
       resetGameState();
 
+      function bindNavigation(view) {
+        view.querySelectorAll("[data-go-home]").forEach((btn) =>
+          btn.addEventListener("click", () => {
+            state.currentView = "home";
+            render();
+          })
+        );
+
+        view.querySelectorAll("[data-open-news]").forEach((btn) =>
+          btn.addEventListener("click", () => {
+            state.currentView = "news";
+            render();
+          })
+        );
+
+        view.querySelectorAll("[data-open-game]").forEach((btn) =>
+          btn.addEventListener("click", () => {
+            state.currentView = "game";
+            render();
+          })
+        );
+      }
+
+      function renderHome() {
+        const view = homeTemplate.content.cloneNode(true);
+        bindNavigation(view);
+        app.replaceChildren(view);
+      }
+
+      function renderNewsroom() {
+        const view = newsTemplate.content.cloneNode(true);
+        bindNavigation(view);
+        app.replaceChildren(view);
+      }
+
       function renderGame() {
         const view = gameTemplate.content.cloneNode(true);
+
+        bindNavigation(view);
 
         view.querySelector("[data-randomize]").addEventListener("click", () => {
           assignCharacters();
@@ -2417,7 +2609,13 @@
       }
 
       function render() {
-        renderGame();
+        if (state.currentView === "home") {
+          renderHome();
+        } else if (state.currentView === "news") {
+          renderNewsroom();
+        } else {
+          renderGame();
+        }
       }
 
       render();
