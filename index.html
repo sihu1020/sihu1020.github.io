@@ -329,35 +329,50 @@
       }
 
       .game-layout {
-        display: flex;
-        flex-direction: column;
+        display: grid;
+        grid-template-columns: minmax(300px, 360px) 1fr;
         gap: 1.25rem;
         position: relative;
-        align-items: center;
+        align-items: start;
         width: 100%;
       }
 
-      .board-stage {
+      .game-columns {
+        display: contents;
+      }
+
+      .player-column {
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        width: 100%;
-        align-items: center;
+      }
+
+      .board-column {
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      @media (max-width: 1080px) {
+        .game-layout {
+          grid-template-columns: 1fr;
+        }
+
+        .board-column {
+          justify-content: center;
+        }
       }
 
       .hud-grid {
         display: grid;
-        grid-template-columns: repeat(2, minmax(260px, 1fr));
-        gap: 0.85rem;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
         width: 100%;
-        max-width: 1100px;
+        max-width: 420px;
       }
 
-      @media (max-width: 960px) {
-        .hud-grid {
-          grid-template-columns: 1fr;
-          max-width: 800px;
-        }
+      .hud-grid.compact {
+        transform: scale(0.95);
+        transform-origin: top left;
       }
 
       .hud-panel {
@@ -555,8 +570,7 @@
         flex-direction: column;
         gap: 0.9rem;
         align-items: stretch;
-        width: min(100%, 1100px);
-        margin: 0 auto;
+        width: min(100%, 940px);
       }
 
       .board-area {
@@ -568,13 +582,14 @@
 
       .board-shell {
         position: relative;
-        width: min(100%, 1100px);
-        max-width: 1100px;
+        width: min(100%, 780px);
+        max-width: 780px;
         margin: 0 auto;
       }
 
       .board-grid {
         width: 100%;
+        max-width: 780px;
         aspect-ratio: 1;
         margin: 0 auto;
         display: grid;
@@ -1123,15 +1138,10 @@
         { value: 90, count: 3 },
       ];
 
-      const shootChanceWeights = [
-        { value: "allow", count: 20 },
-        { value: "deny", count: 30 },
-      ];
-
       const getDeckTotal = (weights) => weights.reduce((sum, card) => sum + card.count, 0);
       const NUMBER_DECK_TOTAL = getDeckTotal(numberCardWeights);
       const ANGLE_DECK_TOTAL = getDeckTotal(angleCardWeights);
-      const SHOOT_CHANCE_TOTAL = getDeckTotal(shootChanceWeights);
+      const SHOOT_CHANCE_LABEL = "무제한";
 
       const cloneDeck = (weights) => weights.map((card) => ({ ...card }));
       const remainingInDeck = (deck) => deck.reduce((sum, card) => sum + card.count, 0);
@@ -1139,7 +1149,7 @@
       const state = {
         selectedRoom: mainRoom,
         players: [],
-        piles: { number: NUMBER_DECK_TOTAL, angle: ANGLE_DECK_TOTAL, chance: SHOOT_CHANCE_TOTAL },
+        piles: { number: NUMBER_DECK_TOTAL, angle: ANGLE_DECK_TOTAL, chance: SHOOT_CHANCE_LABEL },
         turn: { freeMoveMode: false, freeMoveDirection: null, shootSilenced: false },
         logs: [],
         charactersAssigned: false,
@@ -1175,8 +1185,6 @@
           nextDrawPenalty: 0,
           penaltyAppliesOnTurn: 0,
           forcedSingleDraw: false,
-          pascalSubUsed: 0,
-          pascalMulUsed: 0,
           hazardHitTurn: -1,
           shootCooldown: 0,
           shootSilenced: false,
@@ -1186,11 +1194,10 @@
         placePiecesAtCorners(state.players);
         state.numberDeck = cloneDeck(numberCardWeights);
         state.angleDeck = cloneDeck(angleCardWeights);
-        state.shootChanceDeck = cloneDeck(shootChanceWeights);
         state.piles = {
           number: remainingInDeck(state.numberDeck),
           angle: remainingInDeck(state.angleDeck),
-          chance: remainingInDeck(state.shootChanceDeck),
+          chance: SHOOT_CHANCE_LABEL,
         };
         state.turn = {
           currentPlayerIndex: 0,
@@ -1284,9 +1291,11 @@
           .join("");
 
         layout.innerHTML = `
-          <div class="board-stage">
-            <div class="hud-grid">${hudPanels}</div>
-            ${createBoard()}
+          <div class="game-columns">
+            <div class="player-column">
+              <div class="hud-grid compact">${hudPanels}</div>
+            </div>
+            <div class="board-column">${createBoard()}</div>
           </div>
         `;
 
@@ -1543,15 +1552,12 @@
 
         if (player.character === "파스칼") {
           const targetPick = targetSelector();
+          const disabled = state.turn.phase !== "await-draw" ? "disabled" : "";
           buttons.push(
-            `<button class="btn btn-ghost" data-ability="pascal-sub" ${
-              player.pascalSubUsed >= 2 || state.turn.phase !== "await-draw" ? "disabled" : ""
-            }>뺄셈(남은 ${2 - player.pascalSubUsed})</button>`
+            `<button class="btn btn-ghost" data-ability="pascal-sub" ${disabled}>뺄셈(무제한)</button>`
           );
           buttons.push(
-            `<button class="btn btn-ghost" data-ability="pascal-mul" ${
-              player.pascalMulUsed >= 2 || state.turn.phase !== "await-draw" ? "disabled" : ""
-            }>곱셈(남은 ${2 - player.pascalMulUsed})</button>`
+            `<button class="btn btn-ghost" data-ability="pascal-mul" ${disabled}>곱셈(무제한)</button>`
           );
           return `<div class="ability-buttons">${targetPick ?? ""}${buttons.join("")}</div>`;
         }
@@ -1751,8 +1757,6 @@
           player.nextDrawPenalty = 0;
           player.penaltyAppliesOnTurn = 0;
           player.forcedSingleDraw = false;
-          player.pascalSubUsed = 0;
-          player.pascalMulUsed = 0;
           player.hazardHitTurn = -1;
           player.shootCooldown = 0;
           player.shootSilenced = false;
@@ -1816,19 +1820,11 @@
         state.turn.gravityValue = null;
 
         if (mode === "chance") {
-          const remainingChance = remainingInDeck(state.shootChanceDeck);
-          if (remainingChance <= 0) {
-            state.turn.feedback = "사격 찬스 카드가 모두 소진되었습니다.";
-            render();
-            return;
-          }
-          const chanceCard = drawShootChance();
-          state.piles.chance = remainingInDeck(state.shootChanceDeck);
-          const success = chanceCard === "allow";
+          player.shootChances = Math.max(0, (player.shootChances ?? 0) + 1);
           state.turn.drawnCards = [
-            { type: "shoot-chance", value: success ? "성공" : "실패", success },
+            { type: "shoot-chance", value: "성공", success: true },
           ];
-          state.turn.drawSummary = "사격 찬스 카드";
+          state.turn.drawSummary = "사격 기회 획득";
           state.turn.result = 0;
           state.turn.remainingValue = 0;
           state.turn.mode = "chance";
@@ -1836,14 +1832,8 @@
           state.turn.freeMoveMode = false;
           state.turn.freeMoveDirection = null;
           state.turn.phase = "await-end";
-          if (success) {
-            player.shootChances = Math.max(0, (player.shootChances ?? 0) + 1);
-            state.turn.feedback = `사격 기회 확보! 현재 ${player.shootChances}회 보유.`;
-            logEvent(`${player.character}가 사격 찬스 카드를 뽑아 기회를 획득했습니다.`);
-          } else {
-            state.turn.feedback = "사격 기회를 얻지 못했습니다. 턴을 종료하세요.";
-            logEvent(`${player.character}의 사격 찬스 카드 시도 실패.`);
-          }
+          state.turn.feedback = `사격 기회 확보! 현재 ${player.shootChances}회 보유.`;
+          logEvent(`${player.character}가 사격 찬스 버튼을 눌러 기회를 획득했습니다.`);
           render();
           return;
         }
@@ -1979,16 +1969,12 @@
         return drawFromDeck(state.angleDeck) ?? 0;
       }
 
-      function drawShootChance() {
-        return drawFromDeck(state.shootChanceDeck);
-      }
-
       function handleAbility(type, value) {
         const player = state.players[state.turn.currentPlayerIndex];
         if (!player || player.lives <= 0) return;
 
         if (type === "pascal-sub") {
-          if (player.pascalSubUsed >= 2 || state.turn.phase !== "await-draw") return;
+          if (state.turn.phase !== "await-draw") return;
           const target = state.players.find((p) => p.id === state.turn.selectedTarget && p.lives > 0);
           if (!target) {
             state.turn.feedback = "지목할 대상이 없습니다.";
@@ -1998,7 +1984,6 @@
           target.forcedSingleDraw = true;
           player.nextDrawPenalty -= 1;
           player.penaltyAppliesOnTurn = state.turnCount + 1;
-          player.pascalSubUsed += 1;
           player.statusText = `${target.character} 다음 드로우 1장 제한`;
           state.turn.feedback = "다음 턴 제한을 걸었습니다.";
           logEvent(`파스칼이 ${target.character}에게 뺄셈 페널티를 부여했습니다.`);
@@ -2007,8 +1992,7 @@
         }
 
         if (type === "pascal-mul") {
-          if (player.pascalMulUsed >= 2 || state.turn.phase !== "await-draw") return;
-          player.pascalMulUsed += 1;
+          if (state.turn.phase !== "await-draw") return;
           state.turn.extraNumberThisTurn += 1;
           player.nextDrawPenalty -= 1;
           player.penaltyAppliesOnTurn = state.turnCount + 1;
