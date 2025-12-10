@@ -569,28 +569,29 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
-        width: min(100%, 880px);
+        width: fit-content;
+        margin: 0 auto;
       }
 
       .board-area {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
-        align-items: flex-end;
+        align-items: center;
       }
 
       .board-shell {
         position: relative;
         width: min(100%, 720px);
         max-width: 720px;
-        margin: 0 0 0 auto;
+        margin: 0 auto;
       }
 
       .board-grid {
         width: 100%;
         max-width: 720px;
         aspect-ratio: 1;
-        margin: 0 0 0 auto;
+        margin: 0 auto;
         display: grid;
         grid-template-columns: repeat(20, 1fr);
         grid-template-rows: repeat(20, 1fr);
