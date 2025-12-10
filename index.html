@@ -568,28 +568,27 @@
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        gap: 0.9rem;
         align-items: stretch;
-        width: min(100%, 940px);
+        width: min(100%, 880px);
       }
 
       .board-area {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 0.5rem;
         align-items: center;
       }
 
       .board-shell {
         position: relative;
-        width: min(100%, 780px);
-        max-width: 780px;
+        width: min(100%, 720px);
+        max-width: 720px;
         margin: 0 auto;
       }
 
       .board-grid {
         width: 100%;
-        max-width: 780px;
+        max-width: 720px;
         aspect-ratio: 1;
         margin: 0 auto;
         display: grid;
@@ -795,28 +794,6 @@
         font-size: 0.85rem;
         line-height: 1.5;
         color: rgba(19, 66, 38, 0.7);
-      }
-
-      .board-summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 0.75rem;
-      }
-
-      .summary-card {
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid rgba(19, 66, 38, 0.12);
-        border-radius: 14px;
-        padding: 0.75rem 0.9rem;
-        display: flex;
-        flex-direction: column;
-        gap: 0.35rem;
-        box-shadow: 0 14px 30px rgba(116, 218, 114, 0.18);
-      }
-
-      .summary-card strong {
-        font-size: 1.2rem;
-        color: #0f5132;
       }
 
       .turn-tools {
@@ -1424,11 +1401,6 @@
 
           return `<div class="cell" data-cell data-x="${x}" data-y="${y}">${content}</div>`;
         }).join("");
-        const current = state.players[state.turn.currentPlayerIndex];
-        const turnLabel = current
-          ? `${current.character} (${current.colorLabel})`
-          : "-";
-
         return `
           <section class="board-wrapper">
             <div class="board-area">
@@ -1436,28 +1408,6 @@
                 <div class="coord-display" data-coord-display>좌표: -</div>
                 <div class="board-grid" data-board>${cells}</div>
                 <div class="hazard-layer">${renderHazards()}</div>
-              </div>
-            </div>
-            <div class="board-summary">
-              <div class="summary-card">
-                <span>숫자 카드</span>
-                <strong>${state.piles.number}</strong>
-              </div>
-              <div class="summary-card">
-                <span>각도 카드</span>
-                <strong>${state.piles.angle}</strong>
-              </div>
-              <div class="summary-card">
-                <span>사격 찬스</span>
-                <strong>${state.piles.chance}</strong>
-              </div>
-              <div class="summary-card">
-                <span>결과</span>
-                <strong>${state.turn.drawSummary}</strong>
-              </div>
-              <div class="summary-card">
-                <span>현재 턴</span>
-                <strong>${turnLabel}</strong>
               </div>
             </div>
           </section>
