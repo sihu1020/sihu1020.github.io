@@ -25,6 +25,7 @@
         --danger: #e74c3c;
         --success: #2f9e44;
         --info: #0f9c9c;
+        --board-size: 15;
       }
 
       * {
@@ -329,16 +330,14 @@
       }
 
       .game-layout {
-        display: grid;
-        grid-template-columns: minmax(340px, 400px) minmax(640px, 1fr);
-        gap: 1.5rem;
-        position: relative;
-        align-items: start;
         width: 100%;
       }
 
       .game-columns {
-        display: contents;
+        display: grid;
+        grid-template-columns: minmax(360px, 420px) minmax(680px, 1fr);
+        gap: 1.75rem;
+        align-items: start;
       }
 
       .player-column {
@@ -353,7 +352,7 @@
       }
 
       @media (max-width: 1080px) {
-        .game-layout {
+        .game-columns {
           grid-template-columns: 1fr;
         }
 
@@ -593,8 +592,8 @@
         aspect-ratio: 1;
         margin: 0 auto;
         display: grid;
-        grid-template-columns: repeat(15, 1fr);
-        grid-template-rows: repeat(15, 1fr);
+        grid-template-columns: repeat(var(--board-size), 1fr);
+        grid-template-rows: repeat(var(--board-size), 1fr);
         gap: 1px;
         background: var(--grid-line);
         position: relative;
@@ -1016,23 +1015,23 @@
         {
           name: "파스칼",
           ability: "뺄셈·곱셈 트릭",
-          lives: 4,
+          lives: 2,
           detail:
-            "상대를 한 장만 뽑게 만들거나, 이번 턴에 숫자 한 장을 추가로 뽑고 다음 턴엔 한 장 덜 뽑는다. 각 능력 2회 사용 가능.",
+            "상대를 한 장만 뽑게 만들거나, 이번 턴에 숫자 한 장을 추가로 뽑고 다음 턴엔 한 장 덜 뽑는다. 각 능력은 횟수 제한 없이 사용할 수 있다.",
           power: { key: "pascal" },
         },
         {
           name: "뉴턴",
           ability: "중력",
-          lives: 4,
+          lives: 2,
           detail:
-            "숫자 카드 하나의 값을 사용해 원하는 말을 일직선으로 밀어낸다. 직접적인 체력 손실은 주지 않는다.",
+            "숫자 카드 하나의 값 절반 거리만큼 원하는 말을 일직선으로 밀어내며, 이동한 칸 수의 2배 포인트를 소모한다. 직접적인 체력 손실은 주지 않는다.",
           power: { key: "newton" },
         },
         {
           name: "피타고라스",
           ability: "피타고라스 세트 질주",
-          lives: 5,
+          lives: 3,
           detail:
             "숫자 2장을 뽑아 3·4·5 또는 6·8·10 세트 중 두 장이 나오면 각각 15칸, 20칸 이동한다.",
           power: { key: "pythagoras" },
@@ -1040,24 +1039,17 @@
         {
           name: "갈루아",
           ability: "주기 보호막",
-          lives: 3,
+          lives: 1,
           detail: "자신의 차례마다 2턴 주기로 보호막을 전개해 총알 피해를 무효화한다.",
           power: { key: "galois" },
         },
         {
           name: "라마누잔",
           ability: "숫자 보류",
-          lives: 4,
+          lives: 2,
           detail:
-            "1·7·2·8을 각 1장씩만 보류해 합산(≤20)으로 쓰거나 4장을 모두 모으면 모두의 체력을 1씩 감소시킨다.",
+            "1·7·2·9를 각 1장씩만 보류해 합산(≤20)으로 쓰거나 4장을 모두 모으면 모두의 체력을 1씩 감소시킨다.",
           power: { key: "ramanujan" },
-        },
-        {
-          name: "갈릴레이",
-          ability: "원형 위협",
-          lives: 4,
-          detail: "고정 탄환을 중심으로 뽑은 숫자만큼의 반지름 점선 원을 자신의 다음 턴까지 펼친다.",
-          power: { key: "galileo" },
         },
       ];
 
@@ -1150,8 +1142,8 @@
           character: "-",
           ability: "능력 대기중",
           detail: "",
-          maxLives: 3,
-          lives: 3,
+          maxLives: 2,
+          lives: 2,
           progress: 0,
           statusText: "캐릭터 선택 대기",
           lockedShots: [],
@@ -1406,7 +1398,7 @@
             <div class="board-area">
               <div class="board-shell">
                 <div class="coord-display" data-coord-display>좌표: -</div>
-                <div class="board-grid" data-board>${cells}</div>
+                <div class="board-grid" data-board style="--board-size:${state.boardSize};">${cells}</div>
                 <div class="hazard-layer">${renderHazards()}</div>
               </div>
             </div>
@@ -1529,21 +1521,12 @@
               `<button class="btn btn-primary" data-ability="use-hold">보류 합산 사용</button>`
             );
           }
-          const hasSet = [1, 2, 7, 8].every((n) => player.stashedNumbers.includes(n));
+          const hasSet = [1, 2, 7, 9].every((n) => player.stashedNumbers.includes(n));
           if (hasSet) {
             buttons.push(
-              `<button class="btn btn-primary" data-ability="collapse">1·7·2·8 발동</button>`
+              `<button class="btn btn-primary" data-ability="collapse">1·7·2·9 발동</button>`
             );
           }
-        }
-
-        if (player.character === "갈릴레이") {
-          const hasLock = player.lockedShots.length > 0;
-          buttons.push(
-            `<button class="btn btn-ghost" data-ability="circle" ${
-              state.turn.phase === "await-draw" || !hasLock ? "disabled" : ""
-            }>원 생성</button>`
-          );
         }
 
         if (!buttons.length) return "";
@@ -1971,7 +1954,7 @@
           state.turn.gravityTarget = target.id;
           state.turn.cardPickMode = "gravity";
           state.turn.gravityValue = null;
-          state.turn.feedback = `${target.character}을(를) 이동시킬 카드를 고른 뒤 칸을 선택하세요.`;
+          state.turn.feedback = `${target.character}을(를) 이동시킬 숫자 카드를 고른 뒤 칸을 선택하세요. 카드 숫자÷2 칸까지 이동 가능하며 2배 포인트를 소모합니다.`;
           render();
           return;
         }
@@ -2002,7 +1985,7 @@
         }
 
         if (type === "collapse") {
-          const hasSet = [1, 2, 7, 8].every((n) => player.stashedNumbers.includes(n));
+          const hasSet = [1, 2, 7, 9].every((n) => player.stashedNumbers.includes(n));
           if (!hasSet) return;
           player.stashedNumbers = [];
           state.players.forEach((p) => {
@@ -2011,55 +1994,9 @@
             }
           });
           state.turn.feedback = "모든 캐릭터의 목숨이 1 감소합니다.";
-          logEvent("라마누잔이 1·7·2·8 세트를 발동했습니다.");
+          logEvent("라마누잔이 1·7·2·9 세트를 발동했습니다.");
           render();
           return;
-        }
-
-        if (type === "circle") {
-          if (state.turn.phase === "await-draw") return;
-          const center = player.lockedShots[0];
-          if (!center) {
-            state.turn.feedback = "고정된 총알이 없습니다.";
-            render();
-            return;
-          }
-          if (value === undefined || value === null) {
-            const hasNumberCard = state.turn.drawnCards.some((c) => c.type === "number" && !c.held);
-            if (!hasNumberCard) {
-              state.turn.feedback = "반지름으로 쓸 숫자 카드가 없습니다.";
-              render();
-              return;
-            }
-            state.turn.cardPickMode = "circle";
-            state.turn.feedback = "반지름으로 사용할 카드를 선택하세요.";
-            render();
-            return;
-          }
-          const radius = Number(value ?? 0);
-          if (!radius || Number.isNaN(radius)) return;
-          if (radius > state.turn.remainingValue) {
-            state.turn.feedback = `잔여 포인트 ${state.turn.remainingValue}로는 반지름 ${radius} 원을 만들 수 없습니다.`;
-            render();
-            return;
-          }
-          state.hazards.push({
-            center: { ...center },
-            radius,
-            owner: player.id,
-            expiresOnOwnerTurn: true,
-          });
-          state.turn.cardPickMode = null;
-          state.turn.remainingValue = Math.max(0, state.turn.remainingValue - radius);
-          if (state.turn.remainingValue === 0) {
-            state.turn.phase = "await-end";
-            state.turn.feedback = `반지름 ${radius} 원이 생성되었습니다. 잔여 포인트가 없습니다.`;
-          } else {
-            state.turn.phase = "action";
-            state.turn.feedback = `반지름 ${radius} 원이 생성되었습니다. 잔여 포인트 ${state.turn.remainingValue}.`;
-          }
-          logEvent(`갈릴레이가 ${formatCoord(center)}을 중심으로 반지름 ${radius} 원을 전개했습니다.`);
-          render();
         }
       }
 
@@ -2070,8 +2007,8 @@
         if (!card || card.type !== "number" || card.held) return;
 
         if (state.turn.cardPickMode === "hold" && player.character === "라마누잔") {
-          if (![1, 2, 7, 8].includes(card.value)) {
-            state.turn.feedback = "1·7·2·8만 보류할 수 있습니다.";
+          if (![1, 2, 7, 9].includes(card.value)) {
+            state.turn.feedback = "1·7·2·9만 보류할 수 있습니다.";
             render();
             return;
           }
@@ -2095,14 +2032,10 @@
         if (state.turn.cardPickMode === "gravity" && player.character === "뉴턴") {
           state.turn.gravityValue = card.value;
           state.turn.cardPickMode = null;
-          state.turn.feedback = `중력 이동 한도를 ${card.value}로 설정했습니다. 이동시킬 칸을 선택하세요.`;
+          const maxPush = Math.floor(card.value / 2);
+          state.turn.feedback = `중력 이동 한도를 ${maxPush}칸(소모 ${card.value})으로 설정했습니다. 이동시킬 칸을 선택하세요.`;
           render();
           return;
-        }
-
-        if (state.turn.cardPickMode === "circle" && player.character === "갈릴레이") {
-          state.turn.cardPickMode = null;
-          handleAbility("circle", card.value);
         }
       }
 
@@ -2149,7 +2082,7 @@
         const alreadyHitThisTurn = player.hazardHitTurn === state.turnCount;
         updateShootRestriction(player);
         if (!alreadyHitThisTurn && player.shootBlockedOwners.length) {
-          applyDamage(player, 1, "원형 위협");
+          applyDamage(player, 1, "위험 구역");
           player.hazardHitTurn = state.turnCount;
         }
       }
@@ -2273,9 +2206,16 @@
             render();
             return;
           }
-          const maxPush = state.turn.gravityValue ?? state.turn.remainingValue;
+          const gravityPower = state.turn.gravityValue ?? state.turn.remainingValue;
+          const maxPush = Math.floor(gravityPower / 2);
           if (distance > maxPush) {
-            state.turn.feedback = `선택한 카드 값 ${maxPush}로는 부족합니다.`;
+            state.turn.feedback = `선택한 숫자 ${gravityPower}로는 ${distance}칸을 밀 수 없습니다.`;
+            render();
+            return;
+          }
+          const pushCost = distance * 2;
+          if (pushCost > state.turn.remainingValue) {
+            state.turn.feedback = `잔여 포인트 ${state.turn.remainingValue}로는 ${distance}칸(소모 ${pushCost})을 이동시킬 수 없습니다.`;
             render();
             return;
           }
@@ -2290,7 +2230,7 @@
           pushed.position = target;
           player.statusText = `${pushed.character}을(를) 중력으로 이동`;
           logEvent(`뉴턴이 ${pushed.character}을(를) ${formatCoord(target)}로 밀어냈습니다.`);
-          state.turn.remainingValue -= distance;
+          state.turn.remainingValue -= pushCost;
           state.turn.gravityValue = null;
           state.turn.pendingAction = null;
           if (state.turn.remainingValue <= 0) {
@@ -2365,7 +2305,7 @@
             return;
           }
           if (victim && (player.shootBlockedOwners ?? []).includes(victim.id)) {
-            state.turn.feedback = "갈릴레이 원 안에서는 그 갈릴레이를 목표로 사격할 수 없습니다.";
+            state.turn.feedback = "위험 구역 안에서는 해당 구역의 소유자를 목표로 사격할 수 없습니다.";
             render();
             return;
           }
@@ -2465,13 +2405,13 @@
             state.turn.remainingValue = 0;
             state.turn.drawSummary = "-";
             state.turn.pendingAction = null;
-            const blockedGalileos = (candidate.shootBlockedOwners ?? [])
+            const blockedOwners = (candidate.shootBlockedOwners ?? [])
               .map((id) => state.players.find((p) => p.id === id)?.character ?? "")
               .filter(Boolean)
               .join(", ");
             const shootNote = [
               candidate.shootCooldown > 0 ? "이번 턴은 사격할 수 없습니다." : "",
-              blockedGalileos ? `${blockedGalileos} 원 안: 해당 갈릴레이에게 사격 불가.` : "",
+              blockedOwners ? `${blockedOwners} 구역 안: 해당 소유자에게 사격 불가.` : "",
             ]
               .filter(Boolean)
               .join(" ");
