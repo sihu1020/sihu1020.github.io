@@ -334,36 +334,16 @@
       }
 
       .game-columns {
+        grid-template-columns: 1fr;
         display: grid;
-        grid-template-columns: minmax(340px, 420px) minmax(760px, 1fr);
         gap: 1.75rem;
         align-items: start;
-      }
-
-      .game-columns.single-column {
-        grid-template-columns: 1fr;
       }
 
       .player-column {
         display: flex;
         flex-direction: column;
         gap: 1.25rem;
-      }
-
-      .board-column {
-        display: flex;
-        justify-content: flex-end;
-        width: 100%;
-      }
-
-      @media (max-width: 1080px) {
-        .game-columns {
-          grid-template-columns: 1fr;
-        }
-
-        .board-column {
-          justify-content: center;
-        }
       }
 
       .hud-grid {
@@ -1000,13 +980,6 @@
           </article>
         </div>
       </section>
-      <section class="guide-gallery collapsible">
-        <div class="collapse-actions">
-          <h2>캐릭터 능력 안내</h2>
-          <button class="btn btn-ghost" data-collapse-toggle="characters">접어두기</button>
-        </div>
-        <div class="guide-grid" data-character-grid data-collapsible-content="characters"></div>
-      </section>
       <section class="game-layout" data-game></section>
     </template>
 
@@ -1212,11 +1185,6 @@
           render();
         });
 
-        const characterGrid = view.querySelector("[data-character-grid]");
-        if (characterGrid) {
-          characterGrid.innerHTML = renderCharacterCards();
-        }
-
         const layout = view.querySelector("[data-game]");
         const hudBySlot = Object.fromEntries(
           state.players.map((player, index) => [player.slot, createHud(player, index)])
@@ -1236,18 +1204,27 @@
               <section class="status-section">
                 <div class="status-header">
                   <h2>캐릭터 진행상황</h2>
-                  <p>캐릭터 안내 바로 아래에서 현재 상태를 확인하세요.</p>
+                  <p>아래 능력 안내와 함께 현재 전투 흐름을 살펴보세요.</p>
                 </div>
                 <div class="status-strip">
                   ${hudPanels || '<div class="empty-status">캐릭터를 먼저 선택하세요.</div>'}
                 </div>
               </section>
-            </div>
-            <div class="board-column">
-              ${createBoard()}
+              <section class="guide-gallery collapsible">
+                <div class="collapse-actions">
+                  <h2>캐릭터 능력 안내</h2>
+                  <button class="btn btn-ghost" data-collapse-toggle="characters">접어두기</button>
+                </div>
+                <div class="guide-grid" data-character-grid data-collapsible-content="characters"></div>
+              </section>
             </div>
           </div>
         `;
+
+        const characterGrid = layout.querySelector("[data-character-grid]");
+        if (characterGrid) {
+          characterGrid.innerHTML = renderCharacterCards();
+        }
 
         bindGameEvents(view);
         bindCollapsibles(view);
