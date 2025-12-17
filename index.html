@@ -340,6 +340,10 @@
         align-items: start;
       }
 
+      .game-columns.single-column {
+        grid-template-columns: 1fr;
+      }
+
       .player-column {
         display: flex;
         flex-direction: column;
@@ -597,6 +601,18 @@
         gap: 1px;
         background: var(--grid-line);
         position: relative;
+      }
+
+      .board-removed-note {
+        margin-top: 1rem;
+        padding: 1rem 1.1rem;
+        border-radius: 14px;
+        background: rgba(255, 245, 240, 0.9);
+        border: 1px solid rgba(231, 76, 60, 0.2);
+        color: #7a332b;
+        display: grid;
+        gap: 0.35rem;
+        box-shadow: 0 12px 26px rgba(231, 76, 60, 0.15);
       }
 
       .cell {
@@ -1260,11 +1276,14 @@
           .join("");
 
         layout.innerHTML = `
-          <div class="game-columns">
+          <div class="game-columns single-column">
             <div class="player-column">
               <div class="hud-grid compact">${hudPanels}</div>
+              <div class="board-removed-note">
+                <strong>게임판이 제거되었습니다</strong>
+                <p style="margin:0;">기존 보드게임판 없이 카드와 HUD 기능만 사용할 수 있습니다.</p>
+              </div>
             </div>
-            <div class="board-column">${createBoard()}</div>
           </div>
         `;
 
