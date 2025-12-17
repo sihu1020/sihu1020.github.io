@@ -1323,16 +1323,22 @@
           .join("");
 
         layout.innerHTML = `
-          <section class="status-section">
-            <div class="status-header">
-              <h2>캐릭터 진행상황</h2>
-              <p>캐릭터 안내 바로 아래에서 현재 상태를 확인하세요.</p>
+          <div class="game-columns">
+            <div class="player-column">
+              <section class="status-section">
+                <div class="status-header">
+                  <h2>캐릭터 진행상황</h2>
+                  <p>캐릭터 안내 바로 아래에서 현재 상태를 확인하세요.</p>
+                </div>
+                <div class="status-strip">
+                  ${hudPanels || '<div class="empty-status">캐릭터를 먼저 선택하세요.</div>'}
+                </div>
+              </section>
             </div>
-            <div class="status-strip">
-              ${hudPanels || '<div class="empty-status">캐릭터를 먼저 선택하세요.</div>'}
+            <div class="board-column">
+              ${createBoard()}
             </div>
-          </section>
-          ${createBoard()}
+          </div>
         `;
 
         bindGameEvents(view);
