@@ -588,13 +588,39 @@
         background: #ff5c8d;
       }
 
+      .game-board-section {
+        margin-top: 2rem;
+      }
+
+      .board-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.75rem;
+      }
+
+      .board-header h2 {
+        margin: 0;
+        color: #0f5132;
+      }
+
+      .board-header p {
+        margin: 0;
+        color: rgba(19, 66, 38, 0.65);
+        font-size: 0.9rem;
+      }
+
       .board-wrapper {
         grid-area: board;
-        background: var(--card-face);
+        background: radial-gradient(circle at 20% 20%, rgba(55, 80, 120, 0.35), transparent 35%),
+          radial-gradient(circle at 80% 80%, rgba(25, 180, 180, 0.25), transparent 40%),
+          #0b0f16;
         border-radius: 24px;
-        border: 1px solid rgba(19, 66, 38, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.08);
         padding: clamp(0.85rem, 2.4vw, 1.25rem);
-        box-shadow: inset 0 0 32px rgba(116, 218, 114, 0.14), 0 20px 30px rgba(109, 174, 128, 0.22);
+        box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.45), 0 24px 36px rgba(4, 12, 18, 0.35);
         position: relative;
         overflow: hidden;
         display: flex;
@@ -628,9 +654,12 @@
         display: grid;
         grid-template-columns: repeat(var(--board-size), 1fr);
         grid-template-rows: repeat(var(--board-size), 1fr);
-        gap: 1px;
-        background: var(--grid-line);
+        gap: 0;
+        background: #0b0f16;
         position: relative;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.1);
       }
 
       .board-removed-note {
@@ -646,27 +675,25 @@
       }
 
       .cell {
-        background: rgba(255, 255, 255, 0.95);
+        background: transparent;
         position: relative;
         cursor: pointer;
-      }
-
-      .cell:nth-child(odd) {
-        background: rgba(231, 255, 238, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
       }
 
       .token {
         position: absolute;
-        inset: 3px;
-        border-radius: 12px;
+        inset: 6px;
+        border-radius: 999px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 0.65rem;
-        font-weight: 600;
-        background: rgba(116, 218, 114, 0.2);
-        border: 2px solid rgba(116, 218, 114, 0.35);
-        color: #0d3a1f;
+        font-size: 0.8rem;
+        font-weight: 700;
+        background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.6), rgba(59, 158, 255, 0.9));
+        border: 2px solid rgba(255, 255, 255, 0.7);
+        color: #0b1a2d;
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.35);
       }
 
       .token.shielded {
@@ -769,14 +796,14 @@
 
       .coord-display {
         position: absolute;
-        top: 8px;
-        right: 8px;
+        top: 12px;
+        right: 12px;
         padding: 0.35rem 0.55rem;
-        background: rgba(15, 156, 156, 0.08);
-        border: 1px solid rgba(15, 156, 156, 0.2);
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
         border-radius: 10px;
         font-size: 0.85rem;
-        color: #0f665e;
+        color: rgba(255, 255, 255, 0.9);
         pointer-events: none;
       }
 
@@ -979,6 +1006,13 @@
             </ul>
           </article>
         </div>
+      </section>
+      <section class="guide-gallery collapsible">
+        <div class="collapse-actions">
+          <h2>캐릭터 능력 안내</h2>
+          <button class="btn btn-ghost" data-collapse-toggle="characters">접어두기</button>
+        </div>
+        <div class="guide-grid" data-character-grid data-collapsible-content="characters"></div>
       </section>
       <section class="game-layout" data-game></section>
     </template>
@@ -1201,27 +1235,27 @@
         layout.innerHTML = `
           <div class="game-columns">
             <div class="player-column">
-              <section class="status-section">
-                <div class="status-header">
-                  <h2>캐릭터 진행상황</h2>
-                  <p>아래 능력 안내와 함께 현재 전투 흐름을 살펴보세요.</p>
-                </div>
+                <section class="status-section">
+                  <div class="status-header">
+                    <h2>캐릭터 진행상황</h2>
+                    <p>위 안내와 함께 현재 전투 흐름을 살펴보세요.</p>
+                  </div>
                 <div class="status-strip">
                   ${hudPanels || '<div class="empty-status">캐릭터를 먼저 선택하세요.</div>'}
                 </div>
               </section>
-              <section class="guide-gallery collapsible">
-                <div class="collapse-actions">
-                  <h2>캐릭터 능력 안내</h2>
-                  <button class="btn btn-ghost" data-collapse-toggle="characters">접어두기</button>
-                </div>
-                <div class="guide-grid" data-character-grid data-collapsible-content="characters"></div>
-              </section>
             </div>
           </div>
+          <section class="game-board-section">
+            <div class="board-header">
+              <h2>게임판 미리보기 (15x15)</h2>
+              <p>각 꼭짓점에 게임말이 배치된 초기 상황입니다.</p>
+            </div>
+            ${createBoard()}
+          </section>
         `;
 
-        const characterGrid = layout.querySelector("[data-character-grid]");
+        const characterGrid = view.querySelector("[data-character-grid]");
         if (characterGrid) {
           characterGrid.innerHTML = renderCharacterCards();
         }
