@@ -3,1691 +3,794 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>동신과학고 12기 뉴스룸</title>
+    <title>하루 일기</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
         color-scheme: light;
-        --bg: #f8fbff;
-        --bg-soft: rgba(224, 242, 254, 0.6);
-        --surface: rgba(255, 255, 255, 0.92);
-        --surface-solid: #ffffff;
-        --accent: #0ea5e9;
-        --accent-strong: #0284c7;
-        --accent-soft: rgba(14, 165, 233, 0.14);
-        --text: #1f2937;
-        --muted: #475569;
-        --border: rgba(148, 163, 184, 0.28);
-        --shadow: 0 22px 45px rgba(15, 118, 205, 0.18);
+        --bg: #fff7ed;
+        --surface: rgba(255, 255, 255, 0.88);
+        --surface-strong: #ffffff;
+        --ink: #2f241d;
+        --muted: #746457;
+        --accent: #f97316;
+        --accent-strong: #c2410c;
+        --accent-soft: rgba(251, 146, 60, 0.2);
+        --green: #16a34a;
+        --rose: #fb7185;
+        --border: rgba(194, 65, 12, 0.16);
+        --shadow: 0 22px 55px rgba(154, 52, 18, 0.16);
       }
 
       * {
         box-sizing: border-box;
       }
 
-      html,
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
+        min-height: 100vh;
         font-family: "Pretendard", system-ui, -apple-system, BlinkMacSystemFont,
           "Segoe UI", sans-serif;
         background:
-          radial-gradient(circle at top right, rgba(186, 230, 253, 0.6), transparent 45%),
-          radial-gradient(circle at bottom left, rgba(191, 219, 254, 0.5), transparent 55%),
-          var(--bg);
-        color: var(--text);
-        min-height: 100vh;
+          radial-gradient(circle at 15% 10%, rgba(253, 186, 116, 0.45), transparent 30%),
+          radial-gradient(circle at 85% 20%, rgba(251, 113, 133, 0.28), transparent 32%),
+          linear-gradient(135deg, #fff7ed 0%, #fffbeb 52%, #fff1f2 100%);
+        color: var(--ink);
+      }
+
+      button,
+      input,
+      textarea,
+      select {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
       }
 
       main {
-        max-width: 1200px;
+        width: min(1120px, calc(100% - 32px));
         margin: 0 auto;
-        padding: 2.75rem 1.75rem 4rem;
-        display: grid;
-        gap: 2rem;
+        padding: 32px 0 48px;
       }
 
-      header {
-        display: grid;
-        gap: 1.75rem;
-        padding: 2.2rem;
-        border-radius: 32px;
-        background: linear-gradient(135deg, rgba(224, 242, 254, 0.9), rgba(191, 219, 254, 0.7));
-        border: 1px solid rgba(125, 211, 252, 0.4);
-        box-shadow: var(--shadow);
+      .hero {
         position: relative;
         overflow: hidden;
+        display: grid;
+        gap: 28px;
+        padding: clamp(28px, 5vw, 56px);
+        border: 1px solid var(--border);
+        border-radius: 36px;
+        background:
+          linear-gradient(145deg, rgba(255, 255, 255, 0.82), rgba(255, 247, 237, 0.68)),
+          url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23fed7aa' stroke-width='2' opacity='0.55'%3E%3Cpath d='M28 48c20-28 52-28 72 0 20 28 52 28 72 0'/%3E%3Cpath d='M-12 108c20-28 52-28 72 0 20 28 52 28 72 0'/%3E%3C/g%3E%3C/svg%3E");
+        box-shadow: var(--shadow);
       }
 
-      header::after {
+      .hero::after {
         content: "";
         position: absolute;
-        inset: 0;
-        background: radial-gradient(circle at 12% 25%, rgba(59, 130, 246, 0.25), transparent 55%);
-        opacity: 0.9;
-        pointer-events: none;
+        right: -80px;
+        top: -80px;
+        width: 240px;
+        height: 240px;
+        border-radius: 999px;
+        background: rgba(249, 115, 22, 0.16);
       }
 
-      .branding {
+      .hero-content {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        gap: 18px;
+        max-width: 740px;
+      }
+
+      .eyebrow {
+        width: fit-content;
+        margin: 0;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 8vw, 5.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.08em;
+      }
+
+      .hero p:not(.eyebrow) {
+        color: var(--muted);
+        font-size: clamp(1.02rem, 2vw, 1.25rem);
+        line-height: 1.75;
+      }
+
+      .hero-actions {
         display: flex;
-        gap: 1.25rem;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .button {
+        display: inline-flex;
         align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 46px;
+        padding: 0 18px;
+        border: 0;
+        border-radius: 999px;
+        background: var(--accent);
+        color: white;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 12px 24px rgba(249, 115, 22, 0.24);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      }
+
+      .button:hover {
+        transform: translateY(-2px);
+        background: var(--accent-strong);
+        box-shadow: 0 16px 30px rgba(249, 115, 22, 0.28);
+      }
+
+      .button.secondary {
+        background: rgba(255, 255, 255, 0.82);
+        color: var(--accent-strong);
+        border: 1px solid var(--border);
+        box-shadow: none;
+      }
+
+      .dashboard {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
         position: relative;
         z-index: 1;
       }
 
-      .branding img {
-        width: clamp(82px, 18vw, 108px);
-        aspect-ratio: 1;
-        object-fit: contain;
-        border-radius: 50%;
-        border: 2px solid rgba(125, 211, 252, 0.45);
-        padding: 0.65rem;
-        background: rgba(191, 219, 254, 0.65);
-        backdrop-filter: blur(4px);
-      }
-
-      .branding h1 {
-        margin: 0;
-        font-size: clamp(2.1rem, 4vw, 2.8rem);
-        letter-spacing: 0.02em;
-        color: #0f172a;
-      }
-
-      .tagline {
-        margin: 0;
-        color: #1d4ed8;
-        font-weight: 500;
-      }
-
-      .grid-two {
-        display: grid;
-        gap: 1.6rem;
-      }
-
-      @media (min-width: 900px) {
-        .grid-two {
-          grid-template-columns: 1.35fr 1fr;
-        }
-      }
-
-      section.card {
-        background: var(--surface);
-        border-radius: 26px;
+      .stat {
+        padding: 18px;
         border: 1px solid var(--border);
-        padding: 2rem;
-        position: relative;
-        backdrop-filter: blur(6px);
-        box-shadow: 0 16px 40px rgba(148, 197, 235, 0.35);
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.68);
+        backdrop-filter: blur(8px);
       }
 
-      section.card h2 {
-        margin-top: 0;
-        margin-bottom: 1.5rem;
-        font-size: 1.45rem;
-        font-weight: 600;
-      }
-
-      .news-list {
-        display: grid;
-        gap: 1.1rem;
-      }
-
-      .news-card {
-        padding: 1.3rem 1.4rem;
-        border-radius: 20px;
-        background: linear-gradient(130deg, rgba(191, 219, 254, 0.3), rgba(224, 242, 254, 0.25));
-        border: 1px solid rgba(148, 163, 184, 0.22);
-        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        position: relative;
-      }
-
-      .news-card:hover {
-        transform: translateY(-4px);
-        border-color: rgba(14, 165, 233, 0.4);
-        box-shadow: 0 18px 38px rgba(59, 130, 246, 0.25);
-      }
-
-      .news-card h3 {
-        margin: 0;
-        font-size: 1.18rem;
-        font-weight: 600;
-      }
-
-      .news-card .meta {
-        margin-top: 0.35rem;
-        font-size: 0.9rem;
-        color: rgba(37, 99, 235, 0.8);
-      }
-
-      .news-card p {
-        margin: 0.9rem 0 0;
-        line-height: 1.6;
-      }
-
-      .news-actions {
-        margin-top: 0.9rem;
-        display: flex;
-        gap: 0.65rem;
-        flex-wrap: wrap;
-      }
-
-      .btn {
-        font: inherit;
-        border: none;
-        border-radius: 14px;
-        padding: 0.55rem 1rem;
-        background: var(--accent);
-        color: white;
-        cursor: pointer;
-        transition: background 0.25s ease, transform 0.25s ease;
-      }
-
-      .btn:hover {
-        background: var(--accent-strong);
-        transform: translateY(-1px);
-      }
-
-      .btn-outline {
-        background: transparent;
-        border: 1px solid rgba(59, 130, 246, 0.35);
+      .stat strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1.8rem;
         color: var(--accent-strong);
       }
 
-      .btn-outline:hover {
-        border-color: rgba(14, 165, 233, 0.65);
-        background: rgba(191, 219, 254, 0.35);
+      .stat span {
+        color: var(--muted);
+        font-weight: 600;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+        gap: 22px;
+        margin-top: 24px;
+      }
+
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background: var(--surface);
+        box-shadow: 0 18px 44px rgba(154, 52, 18, 0.09);
+        backdrop-filter: blur(10px);
+      }
+
+      .card-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 26px 26px 0;
+      }
+
+      .card h2 {
+        font-size: 1.55rem;
+        letter-spacing: -0.03em;
+      }
+
+      .card small {
+        color: var(--muted);
+        line-height: 1.6;
       }
 
       form {
         display: grid;
-        gap: 0.9rem;
+        gap: 16px;
+        padding: 24px 26px 26px;
       }
 
       label {
         display: grid;
-        gap: 0.45rem;
-        font-size: 0.95rem;
-        color: #1f3f75;
+        gap: 8px;
+        color: var(--muted);
+        font-weight: 700;
       }
 
       input,
       textarea,
       select {
-        font: inherit;
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.95);
-        border-radius: 14px;
-        border: 1px solid rgba(148, 163, 184, 0.4);
-        padding: 0.65rem 0.9rem;
-        transition: border 0.25s ease, box-shadow 0.25s ease;
+        width: 100%;
+        border: 1px solid rgba(154, 52, 18, 0.18);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--ink);
+        padding: 13px 15px;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      textarea {
+        min-height: 180px;
+        resize: vertical;
+        line-height: 1.7;
       }
 
       input:focus,
       textarea:focus,
       select:focus {
-        outline: none;
-        border-color: rgba(14, 165, 233, 0.65);
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        border-color: rgba(249, 115, 22, 0.68);
+        box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.14);
       }
 
-      textarea {
-        min-height: 120px;
-        resize: vertical;
-      }
-
-      .form-row {
+      .form-grid {
         display: grid;
-        gap: 0.75rem;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
       }
 
-      @media (min-width: 720px) {
-        .form-row.two {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
+      .mood-row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
       }
 
-      .status-message {
-        margin-top: 1rem;
-        padding: 0.75rem 1rem;
-        border-radius: 14px;
-        background: rgba(191, 219, 254, 0.5);
-        border: 1px solid rgba(96, 165, 250, 0.5);
-        color: #1e3a8a;
-        font-size: 0.95rem;
+      .mood-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
       }
 
-      .helper-text {
-        display: block;
-        font-size: 0.8rem;
-        color: rgba(37, 99, 235, 0.7);
+      .mood-option span {
+        display: grid;
+        place-items: center;
+        min-height: 52px;
+        border: 1px solid rgba(154, 52, 18, 0.16);
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.7);
+        font-size: 1.45rem;
+        transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
       }
 
-      .admin-actions {
+      .mood-option input:checked + span {
+        transform: translateY(-2px) scale(1.04);
+        border-color: rgba(249, 115, 22, 0.7);
+        background: var(--accent-soft);
+      }
+
+      .prompt-box {
+        padding: 16px;
+        border-radius: 20px;
+        background: #fff7ed;
+        color: var(--accent-strong);
+        line-height: 1.65;
+        font-weight: 700;
+      }
+
+      .entries {
+        display: grid;
+        gap: 14px;
+        padding: 22px 26px 26px;
+      }
+
+      .tools {
         display: flex;
-        gap: 0.75rem;
-        align-items: flex-end;
-        justify-content: flex-end;
-      }
-
-      .admin-actions .btn {
-        flex: 1;
-      }
-
-      .status-card {
-        padding: 1rem 1.25rem;
-        border-radius: 16px;
-        background: rgba(224, 242, 254, 0.8);
-        border: 1px solid rgba(96, 165, 250, 0.5);
-        color: #1e3a8a;
-        font-size: 0.92rem;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 719px) {
-        .admin-actions {
-          flex-direction: column;
-          align-items: stretch;
-        }
-      }
-
-      .hidden {
-        display: none !important;
-      }
-
-      .pill {
-        display: inline-flex;
+        gap: 10px;
         align-items: center;
-        gap: 0.35rem;
-        padding: 0.3rem 0.75rem;
-        border-radius: 999px;
-        font-size: 0.8rem;
-        background: rgba(191, 219, 254, 0.7);
-        color: #1e3a8a;
       }
 
-      .class-news-header {
+      .tools select {
+        min-width: 132px;
+        padding: 10px 12px;
+        border-radius: 999px;
+      }
+
+      .entry {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        border: 1px solid rgba(154, 52, 18, 0.14);
+        border-radius: 22px;
+        background: var(--surface-strong);
+      }
+
+      .entry-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .entry h3 {
+        font-size: 1.13rem;
+      }
+
+      .entry time,
+      .entry .tag {
+        color: var(--muted);
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      .entry p {
+        color: #4a3a30;
+        line-height: 1.72;
+        white-space: pre-wrap;
+      }
+
+      .entry-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1.5rem;
+        gap: 8px;
       }
 
-      .empty-state {
-        padding: 1.3rem 1.1rem;
-        border-radius: 18px;
-        border: 1px dashed rgba(148, 163, 184, 0.4);
-        color: rgba(37, 99, 235, 0.7);
+      .text-button {
+        border: 0;
+        border-radius: 999px;
+        background: #ffedd5;
+        color: var(--accent-strong);
+        padding: 8px 12px;
+        font-weight: 800;
+      }
+
+      .text-button.delete {
+        background: #ffe4e6;
+        color: #be123c;
+      }
+
+      .empty {
+        padding: 28px;
+        border: 1px dashed rgba(154, 52, 18, 0.22);
+        border-radius: 22px;
+        color: var(--muted);
         text-align: center;
+        line-height: 1.7;
+      }
+
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 24px;
+        transform: translateX(-50%) translateY(20px);
+        opacity: 0;
+        z-index: 10;
+        padding: 13px 18px;
+        border-radius: 999px;
+        background: #2f241d;
+        color: white;
+        font-weight: 700;
+        box-shadow: var(--shadow);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+      }
+
+      .toast.visible {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
       }
 
       footer {
+        padding: 28px 0 0;
+        color: var(--muted);
         text-align: center;
-        color: rgba(37, 99, 235, 0.6);
-        font-size: 0.85rem;
-        margin-bottom: 2.5rem;
+        font-size: 0.92rem;
       }
 
-      .attachments-preview {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
+      @media (max-width: 860px) {
+        .dashboard,
+        .layout,
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card-header {
+          flex-direction: column;
+        }
       }
 
-      .attachment-chip {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.45rem;
-        padding: 0.35rem 0.75rem;
-        border-radius: 999px;
-        background: rgba(191, 219, 254, 0.6);
-        color: #1f2937;
-        font-size: 0.85rem;
-      }
+      @media (max-width: 560px) {
+        main {
+          width: min(100% - 20px, 1120px);
+          padding-top: 10px;
+        }
 
-      .attachment-chip button {
-        border: none;
-        background: transparent;
-        color: #1d4ed8;
-        cursor: pointer;
-      }
+        .hero,
+        .card {
+          border-radius: 24px;
+        }
 
-      .attachments-block {
-        margin-top: 0.85rem;
-        border-top: 1px solid rgba(148, 163, 184, 0.25);
-        padding-top: 0.75rem;
-        display: grid;
-        gap: 0.6rem;
-      }
+        .mood-row {
+          grid-template-columns: repeat(3, 1fr);
+        }
 
-      .attachment-item {
-        display: grid;
-        gap: 0.35rem;
-      }
-
-      .attachments-block strong {
-        font-size: 0.85rem;
-        color: rgba(37, 99, 235, 0.85);
-      }
-
-      .attachments-block a {
-        color: var(--accent-strong);
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-
-      .attachments-block a:hover {
-        text-decoration: underline;
-      }
-
-      .attachment-image {
-        width: 100%;
-        max-height: 220px;
-        object-fit: cover;
-        border-radius: 14px;
-      }
-
-      .form-row.inline {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      .pin-indicator {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.35rem;
-        padding: 0.25rem 0.65rem;
-        border-radius: 999px;
-        background: rgba(250, 204, 21, 0.2);
-        color: #b45309;
-        font-size: 0.75rem;
-        font-weight: 600;
-      }
-
-      .news-card.pinned {
-        border-color: rgba(250, 204, 21, 0.45);
-        box-shadow: 0 20px 44px rgba(234, 179, 8, 0.25);
+        .hero-actions,
+        .entry-top,
+        .tools {
+          align-items: stretch;
+          flex-direction: column;
+        }
       }
     </style>
   </head>
   <body>
     <main>
-      <header>
-        <div class="branding">
-          <div>
-            <h1>동신과학고 12기 뉴스</h1>
-            <p class="tagline">우리 모두의 하루를 연결하는 공식 소식 허브</p>
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-content">
+          <p class="eyebrow">오늘을 붙잡는 작은 습관</p>
+          <h1 id="page-title">하루 일기</h1>
+          <p>
+            지나가기 쉬운 감정, 고마웠던 순간, 내일의 다짐을 한 곳에 모아보세요.
+            작성한 일기는 브라우저에 안전하게 저장되어 나만의 하루 기록장이 됩니다.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#diary-form">오늘 기록하기</a>
+            <a class="button secondary" href="#entries-section">지난 일기 보기</a>
           </div>
         </div>
-      </header>
-
-      <div class="grid-two">
-        <section class="card" id="general-news-section">
-          <h2>학년 전체 공지</h2>
-          <div class="news-list" id="general-news-list"></div>
-        </section>
-
-        <section class="card" id="class-news-section">
-          <div class="class-news-header">
-            <h2>우리 반 소식</h2>
-            <span class="pill" id="current-class-pill">반을 선택해주세요</span>
+        <div class="dashboard" aria-label="일기 통계">
+          <div class="stat">
+            <strong id="total-count">0</strong>
+            <span>저장된 일기</span>
           </div>
-          <form id="student-id-form" autocomplete="off">
-            <label>
-              학번 입력 (예: 1207)
-              <div class="form-row two">
-                <input type="text" id="student-id" placeholder="학번" maxlength="4" required />
-                <button class="btn" type="submit">확인</button>
-              </div>
-            </label>
-            <p class="status-message hidden" id="student-id-message"></p>
-          </form>
-          <div class="news-list" id="class-news-list"></div>
-        </section>
-      </div>
-
-      <section class="card" id="admin-panel">
-        <div class="class-news-header">
-          <h2>관리자 콘솔</h2>
-          <span class="pill" id="admin-status">비로그인 상태</span>
-        </div>
-        <form id="admin-login-form" autocomplete="off">
-          <div class="form-row two">
-            <label>
-              관리자 비밀번호
-              <input type="password" id="admin-password" placeholder="비밀번호를 입력하세요" />
-            </label>
-            <label>
-              <span style="visibility:hidden">submit</span>
-              <button class="btn" type="submit">로그인</button>
-            </label>
+          <div class="stat">
+            <strong id="streak-count">0</strong>
+            <span>연속 기록일</span>
           </div>
-          <p class="status-message hidden" id="admin-login-message"></p>
-        </form>
-
-        <div id="admin-tools" class="hidden">
-          <div class="status-card">
-            GitHub 저장소에 뉴스를 저장하여 모든 사용자가 새로고침만으로 최신 공지와 반별 소식을 확인할 수 있습니다.
-            토큰은 이 브라우저 세션에만 사용되며 저장되지 않습니다.
-          </div>
-
-          <div class="form-row two">
-            <label>
-              GitHub Personal Access Token
-              <input
-                type="password"
-                id="admin-token"
-                placeholder="repo 권한이 포함된 토큰을 입력하세요"
-                autocomplete="new-password"
-              />
-              <span class="helper-text">토큰이 없으면 저장이 진행되지 않습니다.</span>
-            </label>
-            <div class="admin-actions">
-              <button class="btn-outline btn" type="button" id="sync-refresh-button">최신 데이터 불러오기</button>
-            </div>
-          </div>
-
-          <p class="status-message hidden" id="sync-status-message"></p>
-
-          <div class="form-row">
-            <h3 style="margin: 0 0 0.5rem">학년 전체 공지 등록</h3>
-            <form id="general-news-form" autocomplete="off">
-              <label>
-                제목
-                <input type="text" id="general-title" placeholder="제목을 입력하세요" required />
-              </label>
-              <label>
-                내용
-                <textarea id="general-content" placeholder="공지 내용을 작성하세요" required></textarea>
-              </label>
-              <label>
-                첨부 파일 또는 사진
-                <input
-                  type="file"
-                  id="general-attachments-input"
-                  multiple
-                  accept="image/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                />
-                <span class="helper-text">여러 파일을 한 번에 선택할 수 있습니다.</span>
-              </label>
-              <label>
-                링크 첨부
-                <div class="form-row two">
-                  <input type="url" id="general-link-input" placeholder="https://example.com" />
-                  <button class="btn-outline btn" type="button" id="general-add-link">링크 추가</button>
-                </div>
-                <span class="helper-text">웹페이지, 드라이브 링크 등을 입력해주세요.</span>
-              </label>
-              <div class="attachments-preview" id="general-attachments-preview"></div>
-              <label class="form-row inline" style="align-items:center;">
-                <input type="checkbox" id="general-pinned" />
-                <span>이 공지를 상단에 고정하기</span>
-              </label>
-              <div class="form-row two">
-                <button class="btn" type="submit" id="general-submit-button">공지 등록</button>
-                <button class="btn-outline btn hidden" type="button" id="general-cancel-edit">취소</button>
-              </div>
-            </form>
-          </div>
-
-          <div class="form-row" style="margin-top: 2rem">
-            <h3 style="margin: 0 0 0.5rem">반별 소식 등록</h3>
-            <form id="class-news-form" autocomplete="off">
-              <div class="form-row two">
-                <label>
-                  학년
-                  <select id="class-grade" required>
-                    <option value="">선택</option>
-                    <option value="1">1학년</option>
-                    <option value="2">2학년</option>
-                    <option value="3">3학년</option>
-                  </select>
-                </label>
-                <label>
-                  반
-                  <select id="class-number" required>
-                    <option value="">선택</option>
-                    <option value="1">1반</option>
-                    <option value="2">2반</option>
-                    <option value="3">3반</option>
-                    <option value="4">4반</option>
-                    <option value="5">5반</option>
-                  </select>
-                </label>
-              </div>
-              <label>
-                제목
-                <input type="text" id="class-title" placeholder="제목을 입력하세요" required />
-              </label>
-              <label>
-                내용
-                <textarea id="class-content" placeholder="반 소식을 작성하세요" required></textarea>
-              </label>
-              <label>
-                첨부 파일 또는 사진
-                <input
-                  type="file"
-                  id="class-attachments-input"
-                  multiple
-                  accept="image/*,application/pdf,application/msword,application/vnd.ms-excel,application/vnd.ms-powerpoint,application/zip,application/x-zip-compressed,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.openxmlformats-officedocument.presentationml.presentation"
-                />
-                <span class="helper-text">사진이나 파일을 선택하면 자동으로 첨부됩니다.</span>
-              </label>
-              <label>
-                링크 첨부
-                <div class="form-row two">
-                  <input type="url" id="class-link-input" placeholder="https://example.com" />
-                  <button class="btn-outline btn" type="button" id="class-add-link">링크 추가</button>
-                </div>
-              </label>
-              <div class="attachments-preview" id="class-attachments-preview"></div>
-              <label class="form-row inline" style="align-items:center;">
-                <input type="checkbox" id="class-pinned" />
-                <span>이 소식을 우리 반 상단에 고정하기</span>
-              </label>
-              <div class="form-row two">
-                <button class="btn" type="submit" id="class-submit-button">소식 등록</button>
-                <button class="btn-outline btn hidden" type="button" id="class-cancel-edit">취소</button>
-              </div>
-            </form>
+          <div class="stat">
+            <strong id="favorite-mood">–</strong>
+            <span>자주 느낀 기분</span>
           </div>
         </div>
       </section>
 
-      <footer>© 2024 동신과학고 12기 뉴스룸 · 실시간으로 공유되는 우리 반 이야기</footer>
+      <div class="layout">
+        <section class="card" aria-labelledby="write-title">
+          <div class="card-header">
+            <div>
+              <h2 id="write-title">오늘의 일기 쓰기</h2>
+              <small>제목, 기분, 감사한 일을 적고 저장해보세요.</small>
+            </div>
+          </div>
+          <form id="diary-form">
+            <div class="form-grid">
+              <label>
+                날짜
+                <input id="entry-date" type="date" required />
+              </label>
+              <label>
+                제목
+                <input id="entry-title" type="text" maxlength="40" placeholder="오늘을 한 줄로 표현하면?" required />
+              </label>
+            </div>
+
+            <label>
+              오늘의 기분
+              <div class="mood-row" role="radiogroup" aria-label="오늘의 기분 선택">
+                <label class="mood-option"><input type="radio" name="mood" value="😊" checked /><span>😊</span></label>
+                <label class="mood-option"><input type="radio" name="mood" value="🥰" /><span>🥰</span></label>
+                <label class="mood-option"><input type="radio" name="mood" value="😌" /><span>😌</span></label>
+                <label class="mood-option"><input type="radio" name="mood" value="😮‍💨" /><span>😮‍💨</span></label>
+                <label class="mood-option"><input type="radio" name="mood" value="🌧️" /><span>🌧️</span></label>
+              </div>
+            </label>
+
+            <div class="prompt-box" id="daily-prompt"></div>
+
+            <label>
+              일기 내용
+              <textarea id="entry-body" placeholder="오늘 있었던 일과 마음에 남은 장면을 자유롭게 적어보세요." required></textarea>
+            </label>
+            <label>
+              감사한 일 3가지 또는 내일의 다짐
+              <input id="entry-gratitude" type="text" placeholder="예: 친구와 웃은 시간, 맛있는 저녁, 10분 산책" />
+            </label>
+            <button class="button" type="submit" id="save-button">일기 저장하기</button>
+          </form>
+        </section>
+
+        <section class="card" id="entries-section" aria-labelledby="entries-title">
+          <div class="card-header">
+            <div>
+              <h2 id="entries-title">지난 일기</h2>
+              <small>최근에 쓴 일기부터 보여드려요.</small>
+            </div>
+            <div class="tools">
+              <select id="mood-filter" aria-label="기분으로 일기 필터링">
+                <option value="all">전체 기분</option>
+                <option value="😊">😊</option>
+                <option value="🥰">🥰</option>
+                <option value="😌">😌</option>
+                <option value="😮‍💨">😮‍💨</option>
+                <option value="🌧️">🌧️</option>
+              </select>
+              <button class="text-button" type="button" id="export-button">내보내기</button>
+            </div>
+          </div>
+          <div class="entries" id="entries-list"></div>
+        </section>
+      </div>
+
+      <footer>© 2026 하루 일기 · 오늘의 나를 다정하게 기록하는 공간</footer>
     </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script>
+      const STORAGE_KEY = "daily-diary-entries";
+      const prompts = [
+        "오늘 나를 가장 웃게 만든 순간은 무엇이었나요?",
+        "오늘 배운 것 하나와 내일 시도하고 싶은 것 하나를 적어보세요.",
+        "지금의 나에게 건네고 싶은 다정한 말은 무엇인가요?",
+        "오늘 고마웠던 사람이나 장면을 자세히 떠올려보세요.",
+        "하루 중 가장 평온했던 10분은 언제였나요?"
+      ];
+
       const dom = {
-        generalList: document.getElementById("general-news-list"),
-        classList: document.getElementById("class-news-list"),
-        classPill: document.getElementById("current-class-pill"),
-        classForm: document.getElementById("student-id-form"),
-        studentIdInput: document.getElementById("student-id"),
-        studentIdMessage: document.getElementById("student-id-message"),
-        adminStatus: document.getElementById("admin-status"),
-        adminLoginForm: document.getElementById("admin-login-form"),
-        adminPassword: document.getElementById("admin-password"),
-        adminLoginMessage: document.getElementById("admin-login-message"),
-        adminTools: document.getElementById("admin-tools"),
-        generalForm: document.getElementById("general-news-form"),
-        generalTitle: document.getElementById("general-title"),
-        generalContent: document.getElementById("general-content"),
-        generalAttachmentsInput: document.getElementById("general-attachments-input"),
-        generalAttachmentsPreview: document.getElementById("general-attachments-preview"),
-        generalLinkInput: document.getElementById("general-link-input"),
-        generalAddLink: document.getElementById("general-add-link"),
-        generalPinned: document.getElementById("general-pinned"),
-        generalSubmitButton: document.getElementById("general-submit-button"),
-        generalCancelEdit: document.getElementById("general-cancel-edit"),
-        classNewsForm: document.getElementById("class-news-form"),
-        classGrade: document.getElementById("class-grade"),
-        classNumber: document.getElementById("class-number"),
-        classTitle: document.getElementById("class-title"),
-        classContent: document.getElementById("class-content"),
-        classAttachmentsInput: document.getElementById("class-attachments-input"),
-        classAttachmentsPreview: document.getElementById("class-attachments-preview"),
-        classLinkInput: document.getElementById("class-link-input"),
-        classAddLink: document.getElementById("class-add-link"),
-        classPinned: document.getElementById("class-pinned"),
-        classSubmitButton: document.getElementById("class-submit-button"),
-        classCancelEdit: document.getElementById("class-cancel-edit"),
-        adminToken: document.getElementById("admin-token"),
-        syncStatusMessage: document.getElementById("sync-status-message"),
-        syncRefreshButton: document.getElementById("sync-refresh-button")
+        form: document.getElementById("diary-form"),
+        date: document.getElementById("entry-date"),
+        title: document.getElementById("entry-title"),
+        body: document.getElementById("entry-body"),
+        gratitude: document.getElementById("entry-gratitude"),
+        prompt: document.getElementById("daily-prompt"),
+        entriesList: document.getElementById("entries-list"),
+        moodFilter: document.getElementById("mood-filter"),
+        exportButton: document.getElementById("export-button"),
+        totalCount: document.getElementById("total-count"),
+        streakCount: document.getElementById("streak-count"),
+        favoriteMood: document.getElementById("favorite-mood"),
+        toast: document.getElementById("toast")
       };
 
-      const STORAGE_KEY = "dongsin-news-data";
-      const ADMIN_SESSION_KEY = "dongsin-news-admin";
-      const ADMIN_PASSWORD = "0928";
-      const GITHUB_CONFIG = {
-        owner: "sihu1020",
-        repo: "sihu1020.github.io",
-        path: "data/news.json",
-        branch: "main"
-      };
+      let entries = loadEntries();
+      let editingId = null;
 
-      const STATUS_STYLES = {
-        info: {
-          background: "rgba(56, 189, 248, 0.12)",
-          border: "rgba(56, 189, 248, 0.32)"
-        },
-        success: {
-          background: "rgba(34, 197, 94, 0.16)",
-          border: "rgba(74, 222, 128, 0.38)"
-        },
-        error: {
-          background: "rgba(248, 113, 113, 0.18)",
-          border: "rgba(248, 113, 113, 0.45)"
-        }
-      };
-
-      const textEncoder = new TextEncoder();
-      const textDecoder = new TextDecoder();
-
-      let statusTimeout = null;
-      let remoteSha = null;
-      let isSaving = false;
-      let isFetching = false;
-      let hasInitialSync = false;
-
-      function uid() {
-        if (window.crypto?.randomUUID) {
-          return crypto.randomUUID();
-        }
-        return `id-${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      function todayString() {
+        const today = new Date();
+        const offset = today.getTimezoneOffset() * 60000;
+        return new Date(today.getTime() - offset).toISOString().slice(0, 10);
       }
 
-      const clone = (value) => {
+      function loadEntries() {
         try {
-          return structuredClone(value);
+          return JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? [];
         } catch (error) {
-          return JSON.parse(JSON.stringify(value));
+          console.error("일기 데이터를 불러오지 못했습니다.", error);
+          return [];
         }
-      };
+      }
+
+      function saveEntries() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      }
+
+      function getSelectedMood() {
+        return new FormData(dom.form).get("mood") ?? "😊";
+      }
+
+      function setSelectedMood(mood) {
+        const input = dom.form.querySelector(`input[name="mood"][value="${mood}"]`);
+        if (input) input.checked = true;
+      }
+
+      function formatDate(date) {
+        return new Intl.DateTimeFormat("ko-KR", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+          weekday: "short"
+        }).format(new Date(`${date}T00:00:00`));
+      }
+
+      function showToast(message) {
+        dom.toast.textContent = message;
+        dom.toast.classList.add("visible");
+        window.setTimeout(() => dom.toast.classList.remove("visible"), 2200);
+      }
+
+      function renderPrompt() {
+        const dayIndex = Math.floor(new Date(`${dom.date.value}T00:00:00`).getTime() / 86400000);
+        dom.prompt.textContent = `오늘의 질문 · ${prompts[Math.abs(dayIndex) % prompts.length]}`;
+      }
+
+      function calculateStreak() {
+        const uniqueDates = [...new Set(entries.map((entry) => entry.date))].sort().reverse();
+        if (!uniqueDates.length) return 0;
+
+        let streak = 0;
+        let cursor = new Date(`${todayString()}T00:00:00`);
+        const dateSet = new Set(uniqueDates);
+
+        while (dateSet.has(cursor.toISOString().slice(0, 10))) {
+          streak += 1;
+          cursor.setDate(cursor.getDate() - 1);
+        }
+        return streak;
+      }
+
+      function calculateFavoriteMood() {
+        if (!entries.length) return "–";
+        const counts = entries.reduce((acc, entry) => {
+          acc[entry.mood] = (acc[entry.mood] ?? 0) + 1;
+          return acc;
+        }, {});
+        return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+      }
+
+      function renderStats() {
+        dom.totalCount.textContent = entries.length;
+        dom.streakCount.textContent = calculateStreak();
+        dom.favoriteMood.textContent = calculateFavoriteMood();
+      }
+
+      function renderEntries() {
+        const filter = dom.moodFilter.value;
+        const visibleEntries = entries
+          .filter((entry) => filter === "all" || entry.mood === filter)
+          .sort((a, b) => new Date(b.date) - new Date(a.date) || b.createdAt.localeCompare(a.createdAt));
+
+        dom.entriesList.innerHTML = "";
+        if (!visibleEntries.length) {
+          dom.entriesList.innerHTML = `<div class="empty">아직 보여줄 일기가 없어요.<br />오늘의 첫 문장을 남겨보세요.</div>`;
+          return;
+        }
+
+        visibleEntries.forEach((entry) => {
+          const article = document.createElement("article");
+          article.className = "entry";
+          article.innerHTML = `
+            <div class="entry-top">
+              <div>
+                <h3>${entry.mood} ${escapeHtml(entry.title)}</h3>
+                <time datetime="${entry.date}">${formatDate(entry.date)}</time>
+              </div>
+              <span class="tag">${entry.gratitude ? "감사 기록 있음" : "자유 기록"}</span>
+            </div>
+            <p>${escapeHtml(entry.body)}</p>
+            ${entry.gratitude ? `<p><strong>감사/다짐</strong> · ${escapeHtml(entry.gratitude)}</p>` : ""}
+            <div class="entry-actions">
+              <button class="text-button" type="button" data-action="edit" data-id="${entry.id}">수정</button>
+              <button class="text-button delete" type="button" data-action="delete" data-id="${entry.id}">삭제</button>
+            </div>
+          `;
+          dom.entriesList.appendChild(article);
+        });
+      }
 
       function escapeHtml(value) {
-        return String(value ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#39;");
+        return value
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
       }
 
-      function sanitizeAttachment(raw) {
-        if (!raw || typeof raw !== "object") {
-          return null;
-        }
-        const allowedTypes = new Set(["image", "file", "link"]);
-        const type = allowedTypes.has(raw.type) ? raw.type : "file";
-        const url = typeof raw.url === "string" ? raw.url.trim() : "";
-        if (!url) {
-          return null;
-        }
-        const nameSource = typeof raw.name === "string" ? raw.name : "";
-        const attachment = {
-          id: typeof raw.id === "string" && raw.id ? raw.id : uid(),
-          type,
-          url,
-          name: nameSource.trim() || (type === "link" ? url : "첨부파일"),
-          mime: typeof raw.mime === "string" && raw.mime ? raw.mime : undefined,
-          isExternal: Boolean(raw.isExternal ?? type === "link")
-        };
-        return attachment;
+      function resetForm() {
+        editingId = null;
+        dom.form.reset();
+        dom.date.value = todayString();
+        document.getElementById("save-button").textContent = "일기 저장하기";
+        renderPrompt();
       }
 
-      const defaultData = {
-        general: [
-          {
-            id: uid(),
-            title: "신학기 전교생 오리엔테이션 안내",
-            content:
-              "3월 5일(화) 오전 9시, 본교 대강당에서 12기 전교생이 함께하는 오리엔테이션이 진행됩니다. 교복 착용과 필기도구 준비를 잊지 말아주세요!",
-            createdAt: new Date().toISOString(),
-            attachments: [],
-            pinned: true
-          },
-          {
-            id: uid(),
-            title: "과학탐구 진로 콘서트 신청",
-            content:
-              "4월 둘째 주에 열리는 과학탐구 진로 콘서트의 참가 신청을 3월 25일까지 받고 있습니다. 참가 희망자는 포스터의 QR코드로 신청해주세요.",
-            createdAt: new Date(Date.now() - 86400000 * 2).toISOString(),
-            attachments: [],
-            pinned: false
-          }
-        ],
-        classes: {
-          "1-1": [
-            {
-              id: uid(),
-              title: "1반 과학실 대청소",
-              content: "이번 주 금요일 7교시 종료 후 과학실 대청소가 있습니다. 청소도구는 3조가 준비합니다.",
-              createdAt: new Date(Date.now() - 86400000).toISOString(),
-              attachments: [],
-              pinned: false
-            }
-          ],
-          "1-2": [
-            {
-              id: uid(),
-              title: "2반 소프트웨어 스터디",
-              content: "매주 수요일 방과후 4층 프로젝트실에서 파이썬 스터디를 진행합니다. 지각 없이 참여해주세요!",
-              createdAt: new Date(Date.now() - 86400000 * 3).toISOString(),
-              attachments: [],
-              pinned: false
-            }
-          ],
-          "1-3": [],
-          "1-4": [],
-          "1-5": [],
-          "2-1": [],
-          "2-2": [],
-          "2-3": [],
-          "2-4": [],
-          "2-5": [],
-          "3-1": [],
-          "3-2": [],
-          "3-3": [],
-          "3-4": [],
-          "3-5": []
-        }
-      };
-
-      function sanitizeNewsItem(item) {
-        if (!item || typeof item !== "object") {
-          return null;
-        }
-        const normalized = {
-          id: typeof item.id === "string" && item.id ? item.id : uid(),
-          title: typeof item.title === "string" ? item.title : String(item.title ?? ""),
-          content: typeof item.content === "string" ? item.content : String(item.content ?? ""),
-          createdAt:
-            typeof item.createdAt === "string" && item.createdAt
-              ? item.createdAt
-              : new Date().toISOString(),
-          attachments: Array.isArray(item.attachments)
-            ? item.attachments.map(sanitizeAttachment).filter(Boolean)
-            : [],
-          pinned: Boolean(item.pinned)
-        };
-        if (!normalized.title.trim() || !normalized.content.trim()) {
-          return null;
-        }
-        return normalized;
-      }
-
-      function sanitizeData(raw) {
-        if (!raw || typeof raw !== "object") {
-          return clone(defaultData);
-        }
-
-        const sanitized = {
-          general: Array.isArray(raw.general)
-            ? raw.general.map(sanitizeNewsItem).filter(Boolean)
-            : [],
-          classes: {}
+      function upsertEntry(event) {
+        event.preventDefault();
+        const entry = {
+          id: editingId ?? crypto.randomUUID(),
+          date: dom.date.value,
+          title: dom.title.value.trim(),
+          mood: getSelectedMood(),
+          body: dom.body.value.trim(),
+          gratitude: dom.gratitude.value.trim(),
+          createdAt: editingId ? entries.find((item) => item.id === editingId).createdAt : new Date().toISOString()
         };
 
-        const classes = raw.classes && typeof raw.classes === "object" ? raw.classes : {};
-        const classKeys = new Set([...Object.keys(defaultData.classes), ...Object.keys(classes)]);
-
-        classKeys.forEach((key) => {
-          const list = Array.isArray(classes[key]) ? classes[key] : [];
-          sanitized.classes[key] = list.map(sanitizeNewsItem).filter(Boolean);
-        });
-
-        return sanitized;
-      }
-
-      function loadFromCache() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return clone(defaultData);
-          const parsed = JSON.parse(raw);
-          return sanitizeData(parsed);
-        } catch (error) {
-          console.error("캐시 불러오기 실패", error);
-          return clone(defaultData);
-        }
-      }
-
-      function updateCache(snapshot) {
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
-        } catch (error) {
-          console.warn("캐시 저장 실패", error);
-        }
-      }
-
-      function setSyncStatus(message, type = "info", persistent = false) {
-        if (!dom.syncStatusMessage) return;
-        const styles = STATUS_STYLES[type] ?? STATUS_STYLES.info;
-        dom.syncStatusMessage.textContent = message;
-        dom.syncStatusMessage.style.background = styles.background;
-        dom.syncStatusMessage.style.borderColor = styles.border;
-        dom.syncStatusMessage.classList.remove("hidden");
-        if (statusTimeout) {
-          clearTimeout(statusTimeout);
-        }
-        if (!persistent) {
-          statusTimeout = setTimeout(() => {
-            dom.syncStatusMessage.classList.add("hidden");
-          }, 5000);
-        }
-      }
-
-      function encodeContent(payload) {
-        const json = JSON.stringify(payload, null, 2);
-        const bytes = textEncoder.encode(json);
-        let binary = "";
-        bytes.forEach((byte) => {
-          binary += String.fromCharCode(byte);
-        });
-        return btoa(binary);
-      }
-
-      function decodeContent(content) {
-        const cleaned = (content ?? "").replace(/\n/g, "");
-        const binary = atob(cleaned);
-        const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-        return textDecoder.decode(bytes);
-      }
-
-      function getGitHubContentUrl() {
-        return `https://api.github.com/repos/${GITHUB_CONFIG.owner}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.path}?ref=${GITHUB_CONFIG.branch}`;
-      }
-
-      async function syncFromRemote(options = {}) {
-        const { showMessage = false } = options;
-        if (isSaving) {
-          if (showMessage) {
-            setSyncStatus("변경 사항을 저장 중입니다. 잠시 후 다시 시도하세요.");
-          }
-          return false;
-        }
-        if (isFetching) {
-          return false;
-        }
-        isFetching = true;
-        if (showMessage) {
-          setSyncStatus("최신 데이터를 불러오는 중입니다...", "info", true);
-        }
-        try {
-          const response = await fetch(getGitHubContentUrl(), {
-            headers: {
-              Accept: "application/vnd.github+json"
-            },
-            cache: "no-store"
-          });
-          if (response.status === 404) {
-            remoteSha = null;
-            hasInitialSync = true;
-            updateCache(data);
-            renderGeneralNews();
-            renderClassNews();
-            if (showMessage) {
-              setSyncStatus("새 데이터 파일을 생성할 준비가 되었습니다.", "success");
-            }
-            return true;
-          }
-          if (!response.ok) {
-            throw new Error(`원격 데이터를 불러오지 못했습니다: ${response.status}`);
-          }
-          const payload = await response.json();
-          const decoded = decodeContent(payload.content ?? "");
-          const parsed = JSON.parse(decoded);
-          data = sanitizeData(parsed);
-          remoteSha = payload.sha;
-          updateCache(data);
-          renderGeneralNews();
-          renderClassNews();
-          hasInitialSync = true;
-          if (showMessage) {
-            setSyncStatus("최신 데이터로 동기화되었습니다.", "success");
-          }
-          return true;
-        } catch (error) {
-          console.error("데이터 동기화 실패", error);
-          if (showMessage) {
-            setSyncStatus("데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.", "error", true);
-          }
-          return false;
-        } finally {
-          isFetching = false;
-        }
-      }
-
-      async function saveData(actionDescription = "데이터 업데이트") {
-        if (!isAdmin) {
-          return false;
-        }
-        if (!hasInitialSync) {
-          const synced = await syncFromRemote({ showMessage: true });
-          if (!synced) {
-            return false;
-          }
-        }
-        const token = dom.adminToken?.value.trim();
-        if (!token) {
-          setSyncStatus("GitHub 토큰을 입력해주세요.", "error", true);
-          return false;
-        }
-        if (isSaving) {
-          setSyncStatus("이미 저장 작업이 진행 중입니다.");
-          return false;
-        }
-        isSaving = true;
-        setSyncStatus("변경 사항을 저장하는 중입니다...", "info", true);
-        try {
-          const response = await fetch(getGitHubContentUrl(), {
-            method: "PUT",
-            headers: {
-              Accept: "application/vnd.github+json",
-              Authorization: `token ${token}`,
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              message: `[Newsroom] ${actionDescription}`,
-              content: encodeContent(data),
-              sha: remoteSha ?? undefined,
-              branch: GITHUB_CONFIG.branch
-            })
-          });
-          if (!response.ok) {
-            throw new Error(`저장 실패: ${response.status}`);
-          }
-          const payload = await response.json();
-          remoteSha = payload.content?.sha ?? remoteSha;
-          updateCache(data);
-          hasInitialSync = true;
-          setSyncStatus("변경 사항이 저장되었습니다.", "success");
-          return true;
-        } catch (error) {
-          console.error("데이터 저장 실패", error);
-          setSyncStatus("저장 중 오류가 발생했습니다. 토큰과 저장소 권한을 확인해주세요.", "error", true);
-          return false;
-        } finally {
-          isSaving = false;
-        }
-      }
-
-      function deepCloneData(snapshot) {
-        return clone(snapshot);
-      }
-
-      async function applyChange(mutator, actionDescription, onSuccess) {
-        const previous = deepCloneData(data);
-        mutator();
-        renderGeneralNews();
-        renderClassNews();
-        const saved = await saveData(actionDescription);
-        if (saved) {
-          if (typeof onSuccess === "function") {
-            onSuccess();
-          }
+        if (editingId) {
+          entries = entries.map((item) => (item.id === editingId ? entry : item));
+          showToast("일기를 수정했어요.");
         } else {
-          data = previous;
-          renderGeneralNews();
-          renderClassNews();
+          entries = [entry, ...entries];
+          showToast("오늘의 일기를 저장했어요.");
         }
+
+        saveEntries();
+        resetForm();
+        render();
       }
 
-      let data = loadFromCache();
-      let currentClassKey = null;
-      let isAdmin = sessionStorage.getItem(ADMIN_SESSION_KEY) === "true";
-      let generalAttachments = [];
-      let classAttachments = [];
-      let editingGeneralId = null;
-      let editingClassId = null;
-      let editingClassOriginKey = null;
-
-      function formatDate(dateString) {
-        try {
-          return new Date(dateString).toLocaleDateString("ko-KR", {
-            month: "short",
-            day: "numeric",
-            weekday: "short"
-          });
-        } catch (error) {
-          return "최근";
-        }
-      }
-
-      function sortNews(items = []) {
-        return items
-          .slice()
-          .sort((a, b) => {
-            if (a.pinned === b.pinned) {
-              return new Date(b.createdAt) - new Date(a.createdAt);
-            }
-            return a.pinned ? -1 : 1;
-          });
-      }
-
-      function renderAttachmentsBlock(attachments = []) {
-        if (!attachments.length) {
-          return "";
-        }
-        const items = attachments
-          .map((attachment) => {
-            const safeName = escapeHtml(attachment.name || "첨부파일");
-            if (attachment.type === "image" && !attachment.isExternal) {
-              return `
-                <div class="attachment-item">
-                  <img src="${attachment.url}" alt="${safeName}" class="attachment-image" />
-                  <a href="${attachment.url}" download="${safeName}">${safeName} 다운로드</a>
-                </div>
-              `;
-            }
-            const attrs = attachment.isExternal
-              ? 'target="_blank" rel="noopener noreferrer"'
-              : `download="${safeName}"`;
-            return `<div class="attachment-item"><a href="${attachment.url}" ${attrs}>${safeName}</a></div>`;
-          })
-          .join("");
-        return `<div class="attachments-block"><strong>첨부</strong>${items}</div>`;
-      }
-
-      function updateAttachmentPreview(scope) {
-        const isGeneral = scope === "general";
-        const container = isGeneral ? dom.generalAttachmentsPreview : dom.classAttachmentsPreview;
-        if (!container) return;
-        const attachments = isGeneral ? generalAttachments : classAttachments;
-        if (!attachments.length) {
-          container.innerHTML = '<span class="helper-text">첨부된 항목이 없습니다.</span>';
-          return;
-        }
-        container.innerHTML = attachments
-          .map((attachment) => {
-            const safeName = escapeHtml(attachment.name || attachment.url || "첨부파일");
-            return `<span class="attachment-chip" data-id="${attachment.id}"><span>${safeName}</span><button type="button" data-remove-id="${attachment.id}">&times;</button></span>`;
-          })
-          .join("");
-      }
-
-      function readFileAttachment(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            resolve({
-              id: uid(),
-              type: file.type.startsWith("image/") ? "image" : "file",
-              name: file.name,
-              url: reader.result,
-              mime: file.type || "application/octet-stream",
-              isExternal: false
-            });
-          };
-          reader.onerror = () => {
-            reject(reader.error || new Error("파일을 불러올 수 없습니다."));
-          };
-          reader.readAsDataURL(file);
-        });
-      }
-
-      async function addFileAttachments(scope, files) {
-        if (!files?.length) return;
-        const list = Array.from(files).slice(0, 12);
-        try {
-          const loaded = await Promise.all(list.map((file) => readFileAttachment(file)));
-          if (scope === "general") {
-            generalAttachments = generalAttachments.concat(loaded);
-            updateAttachmentPreview("general");
-          } else {
-            classAttachments = classAttachments.concat(loaded);
-            updateAttachmentPreview("class");
-          }
-        } catch (error) {
-          alert("파일을 불러오는 중 오류가 발생했습니다. 다시 시도해주세요.");
-        }
-      }
-
-      function normalizeUrl(raw) {
-        if (!raw) return "";
-        const trimmed = raw.trim();
-        if (!trimmed) return "";
-        const hasProtocol = /^https?:\/\//i.test(trimmed);
-        const candidate = hasProtocol ? trimmed : `https://${trimmed}`;
-        try {
-          const url = new URL(candidate);
-          return url.href;
-        } catch (error) {
-          return "";
-        }
-      }
-
-      function makeLinkAttachment(url) {
-        try {
-          const parsed = new URL(url);
-          const pathname = parsed.pathname === "/" ? "" : parsed.pathname;
-          const label = `${parsed.hostname.replace(/^www\./, "")}${pathname}` || url;
-          return {
-            id: uid(),
-            type: "link",
-            name: label,
-            url,
-            mime: null,
-            isExternal: true
-          };
-        } catch (error) {
-          return null;
-        }
-      }
-
-      function resetGeneralFormState() {
-        dom.generalForm?.reset();
-        generalAttachments = [];
-        editingGeneralId = null;
-        updateAttachmentPreview("general");
-        if (dom.generalSubmitButton) {
-          dom.generalSubmitButton.textContent = "공지 등록";
-        }
-        dom.generalCancelEdit?.classList.add("hidden");
-        if (dom.generalLinkInput) {
-          dom.generalLinkInput.value = "";
-        }
-        if (dom.generalAttachmentsInput) {
-          dom.generalAttachmentsInput.value = "";
-        }
-      }
-
-      function startGeneralEdit(item) {
-        if (!item) return;
-        editingGeneralId = item.id;
-        dom.generalTitle.value = item.title;
-        dom.generalContent.value = item.content;
-        if (dom.generalPinned) {
-          dom.generalPinned.checked = Boolean(item.pinned);
-        }
-        generalAttachments = clone(item.attachments || []);
-        updateAttachmentPreview("general");
-        if (dom.generalSubmitButton) {
-          dom.generalSubmitButton.textContent = "공지 수정";
-        }
-        dom.generalCancelEdit?.classList.remove("hidden");
-        if (dom.generalLinkInput) {
-          dom.generalLinkInput.value = "";
-        }
-        if (dom.generalAttachmentsInput) {
-          dom.generalAttachmentsInput.value = "";
-        }
-        dom.generalForm?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-
-      function resetClassFormState() {
-        dom.classNewsForm?.reset();
-        classAttachments = [];
-        editingClassId = null;
-        editingClassOriginKey = null;
-        updateAttachmentPreview("class");
-        if (dom.classSubmitButton) {
-          dom.classSubmitButton.textContent = "소식 등록";
-        }
-        dom.classCancelEdit?.classList.add("hidden");
-        if (dom.classLinkInput) {
-          dom.classLinkInput.value = "";
-        }
-        if (dom.classAttachmentsInput) {
-          dom.classAttachmentsInput.value = "";
-        }
-      }
-
-      function startClassEdit(item, key) {
-        if (!item) return;
-        editingClassId = item.id;
-        editingClassOriginKey = key;
-        const [grade, clazz] = key.split("-");
-        if (dom.classGrade) {
-          dom.classGrade.value = grade;
-        }
-        if (dom.classNumber) {
-          dom.classNumber.value = clazz;
-        }
-        dom.classTitle.value = item.title;
-        dom.classContent.value = item.content;
-        if (dom.classPinned) {
-          dom.classPinned.checked = Boolean(item.pinned);
-        }
-        classAttachments = clone(item.attachments || []);
-        updateAttachmentPreview("class");
-        if (dom.classSubmitButton) {
-          dom.classSubmitButton.textContent = "소식 수정";
-        }
-        dom.classCancelEdit?.classList.remove("hidden");
-        if (dom.classLinkInput) {
-          dom.classLinkInput.value = "";
-        }
-        if (dom.classAttachmentsInput) {
-          dom.classAttachmentsInput.value = "";
-        }
-        dom.classNewsForm?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-
-      function renderGeneralNews() {
-        dom.generalList.innerHTML = "";
-        if (!data.general.length) {
-          dom.generalList.innerHTML = '<div class="empty-state">아직 등록된 학년 공지가 없습니다.</div>';
-          return;
-        }
-
-        sortNews(data.general).forEach((item) => {
-          const article = document.createElement("article");
-          article.className = `news-card${item.pinned ? " pinned" : ""}`;
-          article.dataset.id = item.id;
-          const contentHtml = item.content.replace(/\n/g, "<br>");
-          article.innerHTML = `
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;">
-              <h3 style="margin:0;">${item.title}</h3>
-              ${item.pinned ? '<span class="pin-indicator">고정</span>' : ""}
-            </div>
-            <div class="meta">${formatDate(item.createdAt)} · 학년 공지</div>
-            <p>${contentHtml}</p>
-            ${renderAttachmentsBlock(item.attachments)}
-            ${
-              isAdmin
-                ? `<div class="news-actions">
-                    <button class="btn-outline btn" data-action="edit-general">수정</button>
-                    <button class="btn-outline btn" data-action="delete-general">삭제</button>
-                    <button class="btn-outline btn" data-action="toggle-pin-general">${item.pinned ? "고정 해제" : "고정"}</button>
-                  </div>`
-                : ""
-            }
-          `;
-          dom.generalList.appendChild(article);
-        });
-      }
-
-      function ensureClassKey(key) {
-        if (!data.classes[key]) {
-          data.classes[key] = [];
-        }
-      }
-
-      function renderClassNews() {
-        dom.classList.innerHTML = "";
-        if (!currentClassKey) {
-          dom.classList.innerHTML = '<div class="empty-state">학번을 입력하면 우리 반 소식을 확인할 수 있습니다.</div>';
-          return;
-        }
-        ensureClassKey(currentClassKey);
-        const items = data.classes[currentClassKey];
-        if (!items.length) {
-          dom.classList.innerHTML = '<div class="empty-state">아직 우리 반 소식이 없습니다. 첫 소식을 기다려보세요!</div>';
-          return;
-        }
-
-        sortNews(items).forEach((item) => {
-          const article = document.createElement("article");
-          article.className = `news-card${item.pinned ? " pinned" : ""}`;
-          article.dataset.id = item.id;
-          const contentHtml = item.content.replace(/\n/g, "<br>");
-          const classLabel = currentClassKey.replace("-", "학년 ");
-          article.innerHTML = `
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:0.75rem;">
-              <h3 style="margin:0;">${item.title}</h3>
-              ${item.pinned ? '<span class="pin-indicator">고정</span>' : ""}
-            </div>
-            <div class="meta">${formatDate(item.createdAt)} · ${classLabel}반</div>
-            <p>${contentHtml}</p>
-            ${renderAttachmentsBlock(item.attachments)}
-            ${
-              isAdmin
-                ? `<div class="news-actions">
-                    <button class="btn-outline btn" data-action="edit-class">수정</button>
-                    <button class="btn-outline btn" data-action="delete-class">삭제</button>
-                    <button class="btn-outline btn" data-action="toggle-pin-class">${item.pinned ? "고정 해제" : "고정"}</button>
-                  </div>`
-                : ""
-            }
-          `;
-          dom.classList.appendChild(article);
-        });
-      }
-
-      function setClassPill(text) {
-        dom.classPill.textContent = text;
-      }
-
-      function updateAdminUI() {
-        if (isAdmin) {
-          dom.adminStatus.textContent = "관리자 모드 활성화";
-          dom.adminStatus.style.background = "rgba(34, 197, 94, 0.28)";
-          dom.adminStatus.style.color = "#bbf7d0";
-          dom.adminTools.classList.remove("hidden");
-          dom.adminLoginForm.classList.add("hidden");
-        } else {
-          dom.adminStatus.textContent = "비로그인 상태";
-          dom.adminStatus.style.background = "rgba(56, 189, 248, 0.15)";
-          dom.adminStatus.style.color = "rgba(226, 232, 240, 0.85)";
-          dom.adminTools.classList.add("hidden");
-          dom.adminLoginForm.classList.remove("hidden");
-        }
-        renderGeneralNews();
-        renderClassNews();
-      }
-
-      dom.classForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const id = dom.studentIdInput.value.trim();
-        if (!/^\d{4}$/.test(id)) {
-          dom.studentIdMessage.textContent = "학번은 4자리 숫자로 입력해주세요.";
-          dom.studentIdMessage.classList.remove("hidden");
-          return;
-        }
-        dom.studentIdMessage.classList.add("hidden");
-        const grade = id.slice(0, 1);
-        const clazz = id.slice(1, 2);
-        currentClassKey = `${grade}-${clazz}`;
-        ensureClassKey(currentClassKey);
-        setClassPill(`${grade}학년 ${clazz}반 소식`);
-        renderClassNews();
-      });
-
-      dom.adminLoginForm.addEventListener("submit", (event) => {
-        event.preventDefault();
-        const password = dom.adminPassword.value.trim();
-        if (password === ADMIN_PASSWORD) {
-          isAdmin = true;
-          sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
-          dom.adminLoginMessage.textContent = "관리자 인증이 완료되었습니다.";
-          dom.adminLoginMessage.classList.remove("hidden");
-          dom.adminLoginMessage.style.background = "rgba(34, 197, 94, 0.18)";
-          dom.adminLoginMessage.style.borderColor = "rgba(74, 222, 128, 0.35)";
-          dom.adminPassword.value = "";
-          updateAdminUI();
-          setSyncStatus("GitHub 토큰을 입력하면 변경 사항을 저장할 수 있습니다.");
-        } else {
-          dom.adminLoginMessage.textContent = "비밀번호가 일치하지 않습니다.";
-          dom.adminLoginMessage.classList.remove("hidden");
-          dom.adminLoginMessage.style.background = "rgba(248, 113, 113, 0.12)";
-          dom.adminLoginMessage.style.borderColor = "rgba(248, 113, 113, 0.32)";
-          dom.adminPassword.focus();
-        }
-      });
-
-      dom.generalForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        if (!isAdmin) return;
-        const title = dom.generalTitle.value.trim();
-        const content = dom.generalContent.value.trim();
-        if (!title || !content) return;
-        const attachments = clone(generalAttachments);
-        const pinned = Boolean(dom.generalPinned?.checked);
-        if (editingGeneralId) {
-          const item = data.general.find((news) => news.id === editingGeneralId);
-          if (!item) {
-            resetGeneralFormState();
-            return;
-          }
-          const originalTitle = item.title;
-          await applyChange(
-            () => {
-              item.title = title;
-              item.content = content;
-              item.attachments = clone(attachments);
-              item.pinned = pinned;
-              item.createdAt = new Date().toISOString();
-            },
-            `학년 공지 수정 - ${originalTitle}`,
-            () => {
-              resetGeneralFormState();
-            }
-          );
-          return;
-        }
-
-        await applyChange(
-          () => {
-            data.general.push({
-              id: uid(),
-              title,
-              content,
-              attachments: clone(attachments),
-              pinned,
-              createdAt: new Date().toISOString()
-            });
-          },
-          `학년 공지 등록 - ${title}`,
-          () => {
-            resetGeneralFormState();
-          }
-        );
-      });
-
-      dom.generalAttachmentsInput?.addEventListener("change", (event) => {
-        addFileAttachments("general", event.target.files);
-        if (dom.generalAttachmentsInput) {
-          dom.generalAttachmentsInput.value = "";
-        }
-      });
-
-      dom.classAttachmentsInput?.addEventListener("change", (event) => {
-        addFileAttachments("class", event.target.files);
-        if (dom.classAttachmentsInput) {
-          dom.classAttachmentsInput.value = "";
-        }
-      });
-
-      dom.generalAddLink?.addEventListener("click", () => {
-        const normalized = normalizeUrl(dom.generalLinkInput?.value || "");
-        if (!normalized) {
-          alert("올바른 링크를 입력해주세요.");
-          return;
-        }
-        const attachment = makeLinkAttachment(normalized);
-        if (!attachment) {
-          alert("링크를 처리할 수 없습니다. 다시 확인해주세요.");
-          return;
-        }
-        generalAttachments.push(attachment);
-        updateAttachmentPreview("general");
-        if (dom.generalLinkInput) {
-          dom.generalLinkInput.value = "";
-        }
-      });
-
-      dom.classAddLink?.addEventListener("click", () => {
-        const normalized = normalizeUrl(dom.classLinkInput?.value || "");
-        if (!normalized) {
-          alert("올바른 링크를 입력해주세요.");
-          return;
-        }
-        const attachment = makeLinkAttachment(normalized);
-        if (!attachment) {
-          alert("링크를 처리할 수 없습니다. 다시 확인해주세요.");
-          return;
-        }
-        classAttachments.push(attachment);
-        updateAttachmentPreview("class");
-        if (dom.classLinkInput) {
-          dom.classLinkInput.value = "";
-        }
-      });
-
-      dom.generalAttachmentsPreview?.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-remove-id]");
+      function handleEntryAction(event) {
+        const button = event.target.closest("button[data-action]");
         if (!button) return;
-        const id = button.dataset.removeId;
-        generalAttachments = generalAttachments.filter((attachment) => attachment.id !== id);
-        updateAttachmentPreview("general");
-      });
+        const entry = entries.find((item) => item.id === button.dataset.id);
+        if (!entry) return;
 
-      dom.classAttachmentsPreview?.addEventListener("click", (event) => {
-        const button = event.target.closest("button[data-remove-id]");
-        if (!button) return;
-        const id = button.dataset.removeId;
-        classAttachments = classAttachments.filter((attachment) => attachment.id !== id);
-        updateAttachmentPreview("class");
-      });
-
-      dom.generalCancelEdit?.addEventListener("click", () => {
-        resetGeneralFormState();
-      });
-
-      dom.classCancelEdit?.addEventListener("click", () => {
-        resetClassFormState();
-      });
-
-      dom.classNewsForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        if (!isAdmin) return;
-        const grade = dom.classGrade.value;
-        const clazz = dom.classNumber.value;
-        const title = dom.classTitle.value.trim();
-        const content = dom.classContent.value.trim();
-        if (!grade || !clazz || !title || !content) return;
-        const key = `${grade}-${clazz}`;
-        ensureClassKey(key);
-        const attachments = clone(classAttachments);
-        const pinned = Boolean(dom.classPinned?.checked);
-
-        if (editingClassId) {
-          const originKey = editingClassOriginKey || key;
-          ensureClassKey(originKey);
-          const originItems = data.classes[originKey];
-          const targetItem = originItems.find((news) => news.id === editingClassId);
-          if (!targetItem) {
-            resetClassFormState();
-            return;
-          }
-          const originalTitle = targetItem.title;
-          await applyChange(
-            () => {
-              if (originKey === key) {
-                targetItem.title = title;
-                targetItem.content = content;
-                targetItem.attachments = clone(attachments);
-                targetItem.pinned = pinned;
-                targetItem.createdAt = new Date().toISOString();
-              } else {
-                data.classes[originKey] = originItems.filter((news) => news.id !== editingClassId);
-                ensureClassKey(key);
-                data.classes[key].push({
-                  id: editingClassId,
-                  title,
-                  content,
-                  attachments: clone(attachments),
-                  pinned,
-                  createdAt: new Date().toISOString()
-                });
-              }
-            },
-            `${grade}학년 ${clazz}반 소식 수정 - ${originalTitle}`,
-            () => {
-              resetClassFormState();
-              if (currentClassKey === key || currentClassKey === originKey) {
-                renderClassNews();
-              }
-            }
-          );
+        if (button.dataset.action === "delete") {
+          entries = entries.filter((item) => item.id !== entry.id);
+          saveEntries();
+          render();
+          showToast("일기를 삭제했어요.");
           return;
         }
 
-        await applyChange(
-          () => {
-            data.classes[key].push({
-              id: uid(),
-              title,
-              content,
-              attachments: clone(attachments),
-              pinned,
-              createdAt: new Date().toISOString()
-            });
-          },
-          `${grade}학년 ${clazz}반 소식 등록 - ${title}`,
-          () => {
-            resetClassFormState();
-            if (currentClassKey === key) {
-              renderClassNews();
-            }
-          }
-        );
-      });
-
-      dom.generalList.addEventListener("click", async (event) => {
-        const action = event.target.dataset.action;
-        if (!action || !isAdmin) return;
-        const article = event.target.closest(".news-card");
-        if (!article) return;
-        const id = article.dataset.id;
-        const item = data.general.find((news) => news.id === id);
-        if (!item) return;
-
-        if (action === "delete-general") {
-          if (!confirm("이 공지를 삭제할까요?")) return;
-          const title = item.title;
-          await applyChange(
-            () => {
-              data.general = data.general.filter((news) => news.id !== id);
-            },
-            `학년 공지 삭제 - ${title}`,
-            () => {
-              if (editingGeneralId === id) {
-                resetGeneralFormState();
-              }
-            }
-          );
-        }
-        if (action === "edit-general") {
-          startGeneralEdit(item);
-        }
-        if (action === "toggle-pin-general") {
-          const willPin = !item.pinned;
-          await applyChange(
-            () => {
-              item.pinned = willPin;
-              item.createdAt = new Date().toISOString();
-            },
-            `학년 공지 ${willPin ? "고정" : "고정 해제"} - ${item.title}`
-          );
-        }
-      });
-
-      dom.classList.addEventListener("click", async (event) => {
-        const action = event.target.dataset.action;
-        if (!action || !isAdmin || !currentClassKey) return;
-        const article = event.target.closest(".news-card");
-        if (!article) return;
-        const id = article.dataset.id;
-        const items = data.classes[currentClassKey];
-        const item = items.find((news) => news.id === id);
-        if (!item) return;
-
-        if (action === "delete-class") {
-          if (!confirm("이 반 소식을 삭제할까요?")) return;
-          const title = item.title;
-          await applyChange(
-            () => {
-              data.classes[currentClassKey] = items.filter((news) => news.id !== id);
-            },
-            `${currentClassKey.replace("-", "학년 ")}반 소식 삭제 - ${title}`,
-            () => {
-              if (editingClassId === id) {
-                resetClassFormState();
-              }
-            }
-          );
-        }
-        if (action === "edit-class") {
-          startClassEdit(item, currentClassKey);
-        }
-        if (action === "toggle-pin-class") {
-          const willPin = !item.pinned;
-          await applyChange(
-            () => {
-              item.pinned = willPin;
-              item.createdAt = new Date().toISOString();
-            },
-            `${currentClassKey.replace("-", "학년 ")}반 소식 ${willPin ? "고정" : "고정 해제"} - ${item.title}`
-          );
-        }
-      });
-
-      dom.syncRefreshButton?.addEventListener("click", () => {
-        syncFromRemote({ showMessage: true });
-      });
-
-      function initialize() {
-        resetGeneralFormState();
-        resetClassFormState();
-        renderGeneralNews();
-        renderClassNews();
-        if (isAdmin) {
-          updateAdminUI();
-        }
-        syncFromRemote();
+        editingId = entry.id;
+        dom.date.value = entry.date;
+        dom.title.value = entry.title;
+        dom.body.value = entry.body;
+        dom.gratitude.value = entry.gratitude;
+        setSelectedMood(entry.mood);
+        document.getElementById("save-button").textContent = "수정 내용 저장하기";
+        renderPrompt();
+        dom.form.scrollIntoView({ behavior: "smooth", block: "start" });
       }
 
-      initialize();
+      function exportEntries() {
+        if (!entries.length) {
+          showToast("내보낼 일기가 없어요.");
+          return;
+        }
+        const lines = entries
+          .sort((a, b) => new Date(b.date) - new Date(a.date))
+          .map((entry) => [`# ${entry.mood} ${entry.title}`, formatDate(entry.date), entry.body, entry.gratitude ? `감사/다짐: ${entry.gratitude}` : ""].filter(Boolean).join("\n"));
+        const blob = new Blob([lines.join("\n\n---\n\n")], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "하루-일기.txt";
+        link.click();
+        URL.revokeObjectURL(url);
+        showToast("일기 파일을 만들었어요.");
+      }
+
+      function render() {
+        renderStats();
+        renderEntries();
+      }
+
+      dom.date.value = todayString();
+      renderPrompt();
+      render();
+      dom.date.addEventListener("change", renderPrompt);
+      dom.form.addEventListener("submit", upsertEntry);
+      dom.entriesList.addEventListener("click", handleEntryAction);
+      dom.moodFilter.addEventListener("change", renderEntries);
+      dom.exportButton.addEventListener("click", exportEntries);
     </script>
   </body>
 </html>
